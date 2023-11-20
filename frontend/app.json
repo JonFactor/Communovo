@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "scheme": "myapp",
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Select and Upload Images",
+          "cameraPermission": "Allow Communivo to Access your camera"
+        }
+      ],
+      "expo-router"
+    ],
+    "name": "frontend",
+    "slug": "frontend",
+    "ios": {
+      "bundleIdentifier": "com.anonymous.frontend"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2aa2f461-1c74-40ae-837c-3ce2dcda86c6"
+      }
+    },
+    "android": {
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.anonymous.frontend"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-communivo-dev-221707-authRole",
+      "UnauthRoleArn": "arn:aws:iam::288720590997:role/amplify-communivo-dev-221707-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::288720590997:role/amplify-communivo-dev-221707-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-communivo-dev-221707-deployment",
+      "UnauthRoleName": "amplify-communivo-dev-221707-unauthRole",
+      "StackName": "amplify-communivo-dev-221707",
+      "StackId": "arn:aws:cloudformation:us-east-1:288720590997:stack/amplify-communivo-dev-221707/70696c00-6d5c-11ee-9200-0a7a06add88f",
+      "AmplifyAppId": "d1abaubnq9j2m7"
+    },
+    "categories": {
+      "auth": {
+        "communivo7041e6ee": {}
+      },
+      "storage": {
+        "s3057f5457": {}
+      }
+    }
+  }
+}
