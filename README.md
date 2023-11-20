@@ -35,3 +35,17 @@
 ### cd frontend | go into frontend directory
 
 ### npx expo run:ios | start and build the project
+
+# About Communovo
+
+## Stack
+
+### Communovo uses the following: Django -> Backend, Expo.js -> Frontend, Axios -> Api fetching, Mysql -> Database, and Nativewind -> Css styling.
+
+## Mission Statment
+
+### Make the process of promoting and scheduling events easier for everyone involved.
+
+## Team
+
+### This is a solo dev project including only myself.
