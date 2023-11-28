@@ -36,7 +36,7 @@ export const AddUserToGroupView = async (
   isCoOwner: boolean,
   isMember: boolean,
   isBanned: boolean
-): Promise<boolean> => {
+) => {
   const response = api.post("addUserToGroup", {
     email,
     title,

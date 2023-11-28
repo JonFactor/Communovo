@@ -3,6 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# other
+
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+staticfiles
+
 # C extensions
 *.so
 

@@ -22,7 +22,7 @@ export const EventCreate = async (
   coverImg: string,
   eventGroup: string
   // coverImg: string
-): Promise<boolean> => {
+) => {
   const response = api.post("eventCreate", {
     title,
     description,
@@ -66,7 +66,7 @@ export const User2Event = async (
   isOwner: boolean,
   isCoOwner: boolean,
   isGuest: boolean
-): Promise<boolean> => {
+) => {
   const response = api.post("event2userCreate", {
     viaEmail,
     email,
@@ -82,7 +82,7 @@ export const setEventUserPref = async (
   eventTitle: string,
   isLiked: boolean,
   isDisliked: boolean
-): Promise<boolean> => {
+) => {
   const response = api.post("eventUserPreferencesSet", {
     eventTitle,
     isLiked,

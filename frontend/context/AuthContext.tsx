@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   UserGetDetails,
@@ -12,7 +12,24 @@ import { v4 as uuidv4 } from "uuid";
 
 import useSWR from "swr";
 
-export const AuthContext = createContext(null);
+interface IAuthContextProps {
+  loginViaCookies: (
+    userTok?: string,
+    sendToBackend?: boolean
+  ) => Promise<boolean>;
+  loginViaCredentials: (email: string, pass: string) => Promise<Response>;
+  logout: (sendToBackend: boolean) => Promise<boolean>;
+  isLoading: boolean;
+  getUserInfo: () => Promise<IUser>;
+  getUserProfilePhoto: () => Promise<String>;
+  setUserProfilePhoto: (image: string, userId?: number) => Promise<boolean>;
+  isLoggedIn: () => Promise<boolean>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setStopLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  useAuth: () => IAuthContextProps;
+}
+
+export const AuthContext = createContext<IAuthContextProps>(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   const loginViaCookies = async (
     userTok: string = null,
     sendToBackend: boolean = true
-  ): Promise<boolean> => {
+  ) => {
     setIsLoading(true);
     if (userTok === null) {
       userTok = await AsyncStorage.getItem("userToken");
@@ -52,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
-  const logout = async (sendToBackend: boolean): Promise<boolean> => {
+  const logout = async (sendToBackend: boolean) => {
     setIsLoading(true);
     setUserToken(null);
     AsyncStorage.removeItem("userToken");
@@ -68,7 +85,7 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
-  const isLoggedIn = async (): Promise<boolean> => {
+  const isLoggedIn = async () => {
     setIsLoading(true);
     let userToken = await AsyncStorage.getItem("userToken");
     const loginOk = await UserLoginViaCookies(userToken);
@@ -125,10 +142,7 @@ export const AuthProvider = ({ children }) => {
     return photo;
   };
 
-  const setUserProfilePhoto = async (
-    image: String,
-    userId: number = null
-  ): Promise<boolean> => {
+  const setUserProfilePhoto = async (image: String, userId: number = null) => {
     setIsLoading(true);
     const imageKey = uuidv4();
     const imgPath = "profile/" + imageKey;
@@ -185,6 +199,10 @@ export const AuthProvider = ({ children }) => {
     isLoggedIn();
   }, []);
 
+  const useAuth: () => IAuthContextProps = () => {
+    return useContext<IAuthContextProps>(AuthContext);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -198,6 +216,7 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         setIsLoading,
         setStopLoading,
+        useAuth,
       }}
     >
       {children}

@@ -40,7 +40,7 @@ export const UserRegister = async (
   password: string,
   firstName: string,
   lastName: string
-): Promise<boolean> => {
+) => {
   const response = api.post("register", {
     name,
     email,
@@ -51,7 +51,7 @@ export const UserRegister = async (
   return (await response).status === 200;
 };
 
-export const UserLoginViaCookies = async (jwt: string): Promise<boolean> => {
+export const UserLoginViaCookies = async (jwt: string) => {
   if (jwt === null) {
     return false;
   }
@@ -62,10 +62,7 @@ export const UserLoginViaCookies = async (jwt: string): Promise<boolean> => {
   return (await response).status === 200;
 };
 
-export const UserUpdateProfile = async (
-  profilePicUrl: String,
-  id: String
-): Promise<boolean> => {
+export const UserUpdateProfile = async (profilePicUrl: String, id: String) => {
   const response = api
     .post("setProfile", { profilePicUrl, id })
     .catch((err) => {

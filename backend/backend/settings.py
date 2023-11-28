@@ -26,8 +26,7 @@ SECRET_KEY = "django-insecure-qh5en!x%-_&)(pe-wtph(bz##y3p0!b1li8=$k(xs#olvrx+aj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS = [".awsapprunner.com", "*"]
 
 # Application definition
 
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+        "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -84,9 +84,11 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "Communivo",
-        'USER': 'root',
-        'PASSWORD': 'VBBG9DAa1'
+        "NAME": "Communovo",
+        'USER': 'admin',
+        'PASSWORD': 'VBBG9DAa1=1+1',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 
@@ -126,6 +128,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATUC_ROOT = BASE_DIR / "staticfiles"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
