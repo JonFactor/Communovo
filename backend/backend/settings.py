@@ -150,3 +150,5 @@ AUTH_USER_MODEL = 'users.User'
 # allow backend to be accessed everywhere w/ cookies 
 CORS_ORIGN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+STATIC_ROOT = Path("./")

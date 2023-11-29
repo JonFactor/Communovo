@@ -12,7 +12,15 @@ __pycache__
 db.sqlite3
 media
 staticfiles
-
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+staticfiles
+rest_framework
+admin
 # C extensions
 *.so
 
