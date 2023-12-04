@@ -83,12 +83,12 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "Communovo",
-        'USER': 'admin',
-        'PASSWORD': 'VBBG9DAa1=1+1',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "communovo",
+        'USER': 'postgres',
+        'PASSWORD': 'VBBG9DAa1',
+        'HOST': 'communovo-db.cqf1muzp2oo3.us-east-1.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
