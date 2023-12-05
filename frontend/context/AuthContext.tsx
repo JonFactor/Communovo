@@ -26,7 +26,7 @@ interface IAuthContextProps {
   isLoggedIn: () => Promise<boolean>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setStopLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  useAuth: () => IAuthContextProps;
+  // useAuth: () => IAuthContextProps;
 }
 
 export const AuthContext = createContext<IAuthContextProps>(null);
@@ -199,9 +199,9 @@ export const AuthProvider = ({ children }) => {
     isLoggedIn();
   }, []);
 
-  const useAuth: () => IAuthContextProps = () => {
-    return useContext<IAuthContextProps>(AuthContext);
-  };
+  // const useAuth: () => IAuthContextProps = () => {
+  //   return useContext<IAuthContextProps>(AuthContext);
+  // };
 
   return (
     <AuthContext.Provider
@@ -216,7 +216,7 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         setIsLoading,
         setStopLoading,
-        useAuth,
+        // useAuth,
       }}
     >
       {children}

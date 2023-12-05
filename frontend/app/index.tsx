@@ -1,16 +1,15 @@
 import { Redirect, Stack } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import "../app.js";
-import { AuthContext } from "../context/AuthContext.js";
+//import "../app.js";
+import { AuthContext } from "../context/AuthContext";
 
 import { Amplify } from "aws-amplify";
 import awsmobile from "../src/aws-exports.js";
 Amplify.configure(awsmobile);
 
 const StartPage = () => {
-  const { isLoading, userToken, getUserInfo, isLoggedIn } =
-    useContext(AuthContext);
+  const { isLoading, getUserInfo, isLoggedIn } = useContext(AuthContext);
   const [isExpired, setIsExpired] = useState(true);
 
   useEffect(() => {
