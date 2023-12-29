@@ -85,8 +85,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "communovo",
         'USER': 'postgres',
-        'PASSWORD': 'VBBG9DAa1',
-        'HOST': 'communovo-db.cqf1muzp2oo3.us-east-1.rds.amazonaws.com',
+        'PASSWORD': 'Holygrail97',
+        'HOST': 'communovo.c5wm2yqqooyn.us-east-1.rds.amazonaws.com',
         'PORT': '5432'
     }
 }
