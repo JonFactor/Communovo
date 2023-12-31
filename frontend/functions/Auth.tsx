@@ -76,3 +76,8 @@ export const UserViaId = async (id: string): Promise<IUser> => {
   const response = api.post("userViaId", { id });
   return (await response).data;
 };
+
+export const SendEmail = async (email: string) => {
+  const response = api.post("passwordReset", { email });
+  return (await response).status === 200;
+};

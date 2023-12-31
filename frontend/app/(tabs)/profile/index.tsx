@@ -1,4 +1,4 @@
-import { View, Text, RefreshControl } from "react-native";
+import { View, Text, RefreshControl, Modal, BackHandler } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -14,6 +14,7 @@ import { IUser, UserViaId } from "../../../functions/Auth";
 import { FindFollowing, IUserToUser } from "../../../functions/Relations";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
+import { Redirect } from "expo-router";
 
 const profile = () => {
   const { logout, getUserInfo, getUserProfilePhoto, setUserProfilePhoto } =
@@ -26,12 +27,16 @@ const profile = () => {
   const [userDescription, setUserDesctiption] = useState("");
   const [navSelected, setNavSelected] = useState(0);
   const [userId, setUserId] = useState(null);
+  const [menuModal, setMenuModal] = useState(false);
+  const [redirectLogin, setRedirectLogin] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
       const content: IUser = await getUserInfo();
       // set user desc
-
+      if (content == null) {
+        return <Redirect href={"/login"}></Redirect>;
+      }
       setUserDesctiption(content.description);
       setUserName(content.name);
       setUserId(content.id);
@@ -100,9 +105,37 @@ const profile = () => {
     setNavSelected(2);
   };
 
-  const handleDisplayProfileActions = () => {};
+  const handleDisplayProfileActions = () => {
+    setMenuModal(true);
+  };
   return (
     <ScrollView className=" mt-20">
+      {redirectLogin && <Redirect href="/login"></Redirect>}
+      {menuModal && (
+        <View className=" bg-transparent w-full h-16 flex-row ml-12">
+          <TouchableOpacity
+            className="p-1 px-3 bg-md-blue rounded-md"
+            onPress={() => router.replace("/register")}
+          >
+            <Text className=" text-xl">Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="p-1 px-3 bg-md-blue rounded-md ml-12"
+            onPress={() => {
+              logout(true);
+              setRedirectLogin(true);
+            }}
+          >
+            <Text className=" text-xl">Logout</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="p-1 px-3 bg-md-blue rounded-md  ml-12"
+            onPress={() => setMenuModal(false)}
+          >
+            <Text className="text-xl">Close</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <View className=" flex-row ml-8 ">
         <TouchableOpacity className=" flex  " onPress={() => router.back()}>
           <View className=" flex w-5 h-7">
@@ -133,7 +166,6 @@ const profile = () => {
           className=" ml-2 w-1/6"
           onPress={() => {
             handleDisplayProfileActions();
-            logout();
           }}
         >
           <View className=" flex w-2 h-10">

@@ -185,10 +185,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getUserInfo = async (): Promise<IUser> => {
-    if (stopLoading) {
-      console.log("1234");
-      return null;
-    }
+    // if (stopLoading) {
+    //   console.log("1234");
+    //   return null;
+    // }
     setIsLoading(true);
     const response = await UserGetDetails();
     setIsLoading(false);

@@ -8,7 +8,16 @@ const AccountRecovery = ({ parentSetter }) => {
   const [email, setEmail] = useState("");
 
   const validateEntry = () => {
+    if (!email.includes("@") || email.indexOf(" ") > -1) {
+      setErrorMessage("invalid Email");
+    }
     return true;
+  };
+
+  const sendRequest = () => {
+    const validated = validateEntry();
+    if (validated) {
+    }
   };
   return (
     <View>
@@ -40,11 +49,19 @@ const AccountRecovery = ({ parentSetter }) => {
             />
           </View>
           <TextInput
+            onChangeText={(text) => setEmail(text)}
+            value={email}
             placeholder="Registered Email"
             className=" text-3xl w-[80%] flex ml-4"
           ></TextInput>
         </View>
         <View className=" w-[90%] flex h-1 mt-2 bg-md-blue" />
+        <TouchableOpacity
+          className=" mt-12 px-4 py-2 bg-md-blue rounded-xl"
+          onPress={() => sendRequest}
+        >
+          <Text className=" text-2xl">Send Email</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
