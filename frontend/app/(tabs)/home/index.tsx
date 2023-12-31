@@ -38,7 +38,7 @@ const home = () => {
   const [currentFilter, setCurrentFilter] = useState([]);
   const [gotoLogin, setGotoLogin] = useState(false);
 
-  const { login, getUserInfo, setStopLoading } = useContext(AuthContext);
+  const { getUserInfo, setStopLoading } = useContext(AuthContext);
 
   useEffect(() => {
     const setUser = async () => {
@@ -53,11 +53,11 @@ const home = () => {
     setUser();
   }, []);
 
-  useEffect(() => {
-    if (gotoLogin) {
-      router.replace("/login");
-    }
-  }, [gotoLogin]);
+  // useEffect(() => {
+  //   if (gotoLogin) {
+  //     router.replace("/login");
+  //   }
+  // }, [gotoLogin]);
 
   const handleFilterBtnPress = (index: number) => {
     if (!currentFilter.includes(groupTypes[index])) {

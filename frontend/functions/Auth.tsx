@@ -12,25 +12,43 @@ export interface IUser {
   favColor: string;
 }
 
-export const UserGetDetails = async (): Promise<IUser> => {
-  const response = api
-    .get("user")
-    .then((response) => {
-      return response.data;
-    })
-    .catch((err) => {
+export const UserGetDetails = async (): Promise<any> => {
+  console.log("here");
+  const requType: string = "SELF";
+  //   const response = api
+  //     .get("user/SELF")
+  //     .then((response) => {
+  //       return response.data;
+  //     })
+  //     .catch((err) => {
+  //       return null;
+  //     });
+  //   return await response;
+  // };
+  const response = fetch(
+    `${process.env.EXPO_PUBLIC_BACKEND_URL}/user/details=${encodeURIComponent(
+      JSON.stringify(requType)
+    )}`,
+    {
+      method: "GET",
+    }
+  ).then(async (response) => {
+    if (!response.ok) {
       return null;
-    });
-  return await response;
+    }
+    return await response.json;
+  });
 };
-
 export const UserLogin = async (
   email: string,
   password: string
 ): Promise<Response> => {
-  const response = api.post("login", { email, password }).catch((err) => {
-    return null;
-  });
+  const requType = "AUTH";
+  const response = api
+    .post("login", { email, password, requType })
+    .catch((err) => {
+      return null;
+    });
   return await response;
 };
 
@@ -41,7 +59,7 @@ export const UserRegister = async (
   firstName: string,
   lastName: string
 ) => {
-  const response = api.post("register", {
+  const response = api.post("user", {
     name,
     email,
     password,
@@ -56,23 +74,20 @@ export const UserLoginViaCookies = async (jwt: string) => {
     return false;
   }
 
-  console.log(jwt);
-
-  const response = api.post("cookieLogin", { jwt });
+  const requType = "COOKIES";
+  const response = api.post("login", { jwt, requType });
   return (await response).status === 200;
 };
 
 export const UserUpdateProfile = async (profilePicUrl: String, id: String) => {
-  const response = api
-    .post("setProfile", { profilePicUrl, id })
-    .catch((err) => {
-      console.log("profile:" + err);
-      return response;
-    });
+  const response = api.put("setProfile", { profilePicUrl, id }).catch((err) => {
+    console.log("profile:" + err);
+    return response;
+  });
   return (await response).status === 200;
 };
 
 export const UserViaId = async (id: string): Promise<IUser> => {
-  const response = api.post("userViaId", { id });
+  const response = api.get("userViaId", { data: { requType: "ID", id: id } });
   return (await response).data;
 };

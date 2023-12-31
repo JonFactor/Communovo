@@ -43,19 +43,21 @@ export const EventsGetAll = async (
   isBaisedOnGroup: boolean = false,
   groupTitle: string = ""
 ): Promise<Array<IEvent>> => {
-  const response = api.post("eventCollection", {
-    isOnlyDisliked,
-    isOnlyLiked,
-    excludeDisliked,
-    isBaisedOnGroup,
-    groupTitle,
+  const response = api.get("eventCollection", {
+    data: {
+      isOnlyDisliked: isOnlyDisliked,
+      isOnlyLiked: isOnlyLiked,
+      excludeDisliked: excludeDisliked,
+      isBaisedOnGroup: isBaisedOnGroup,
+      groupTitle: groupTitle,
+    },
   });
 
   return (await response).data;
 };
 
 export const EventsGetDetails = async (id: string): Promise<IEvent> => {
-  const response = api.post("eventData", { id });
+  const response = api.get("event", { data: { id: id, requType: "ID" } });
   return (await response).data;
 };
 
@@ -67,7 +69,7 @@ export const User2Event = async (
   isCoOwner: boolean,
   isGuest: boolean
 ) => {
-  const response = api.post("event2userCreate", {
+  const response = api.post("event2user", {
     viaEmail,
     email,
     eventTitle,
@@ -83,7 +85,7 @@ export const setEventUserPref = async (
   isLiked: boolean,
   isDisliked: boolean
 ) => {
-  const response = api.post("eventUserPreferencesSet", {
+  const response = api.post("eventUserPreference", {
     eventTitle,
     isLiked,
     isDisliked,
@@ -95,6 +97,8 @@ export const GetEventMembers = async (
   id: string,
   isStaffOnly: boolean = false
 ): Promise<Array<IUser>> => {
-  const response = api.post("getMembersFromEvent", { id, isStaffOnly });
+  const response = api.get("event", {
+    data: { id: id, isStaffOnly: isStaffOnly, requType: "MEMBERS" },
+  });
   return (await response).data;
 };

@@ -212,7 +212,7 @@ const register = () => {
             </View>
             <TextInput
               secureTextEntry={true}
-              className=" text-2xl ml-4"
+              className=" text-2xl ml-7 flex-1"
               value={password}
               onChangeText={(text) => {
                 setPassword(text);
@@ -234,7 +234,7 @@ const register = () => {
             </View>
             <TextInput
               secureTextEntry={true}
-              className=" text-2xl ml-4"
+              className=" text-2xl ml-5 flex-1"
               value={passConfrim}
               onChangeText={(text) => {
                 setPassConfrim(text);

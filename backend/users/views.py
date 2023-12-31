@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
-import datetime
+import datetime, json
 
 from .serializers import UserSerializer, UserRelationshipSerializer
 from .models import User, UserRelationships
@@ -18,24 +18,34 @@ class UserView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    def update(self, request):
+    def update(self, request): # id profilePic
         reqId = request.data['id']
         profileUriKey = request.data['profilePicUrl']
         User.objects.filter(id = reqId).update(profilePic=profileUriKey)
         
         response = Response()
         return response
-    def get(self, request):
-        id = request.data["id"]
-        
-        user = User.objects.filter(id=id).first()
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+    def get(self, request, details):  # requType
+        requType = json.loads(details)
+        print(requType)
+        if requType == "ID": # id
+            id = request.data["id"]
+            
+            user = User.objects.filter(id=id).first()
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        elif requType == "SELF":
+            user = getUser(request)
+            if user == None:
+                return Response(status=400)
+            serializer = UserSerializer(user)
 
+            return Response(serializer.data)
+        
 class LoginView(APIView): 
-    def post(self, request):
+    def post(self, request): # requType
         requType = request.data['requType']
-        if requType == "COOKIES":
+        if requType == "COOKIES": # jwt
             token = request.data['jwt']
             response = Response()
             response.set_cookie(key="jwt", value=token, httponly=True)
@@ -45,7 +55,7 @@ class LoginView(APIView):
             }
             
             return response
-        elif requType == "AUTH":
+        elif requType == "AUTH": # email password
             email = request.data['email']
             password = request.data['password']
 
@@ -74,15 +84,6 @@ class LoginView(APIView):
             }
 
             return response
-
-class UserView(APIView):
-    def get(self, request):
-        user = getUser(request)
-        if user == None:
-            return Response(status=400)
-        serializer = UserSerializer(user)
-
-        return Response(serializer.data)
 
 class LogoutView(APIView):
     def post(self, request):

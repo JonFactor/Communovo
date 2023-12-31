@@ -57,7 +57,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "backend.urls"
-CSRF_COOKIE_SECURE = False
 
 TEMPLATES = [
     {
@@ -147,7 +146,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'users.User'
 
 # allow backend to be accessed everywhere w/ cookies 
-CORS_ORIGN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 STATIC_ROOT = Path("./")

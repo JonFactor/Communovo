@@ -15,6 +15,7 @@ const StartPage = () => {
   useEffect(() => {
     const cookieIsNotExpired = async () => {
       const result = await isLoggedIn();
+      console.log(result);
       setIsExpired(!result);
     };
     cookieIsNotExpired();

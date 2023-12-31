@@ -39,8 +39,8 @@ class EventView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    def get(self, request):
-            requType = request.data['type']
+    def get(self, request): # requType
+            requType = request.data['requType']
             if requType == "ID": # id
                 requId = request.data['id']
                 event = Event.objects.filter(id = requId).first()
@@ -70,7 +70,7 @@ class EventView(APIView):
                 return Response(serializer.data)
         
 class EventCollectionView(APIView):
-    def post(self, request): # isBaisedOnGroup groupTitle excludeDisliked isOnlyDisliked isOnlyLiked
+    def get(self, request): # isBaisedOnGroup groupTitle excludeDisliked isOnlyDisliked isOnlyLiked
         user = getUser(request)
         if user == None:
             return Response(status=400)

@@ -15,7 +15,7 @@ export const CreateGroup = async (
   image: string,
   groupType: string
 ): Promise<IGroup> => {
-  const response = api.post("createGroup", {
+  const response = api.post("group", {
     title,
     description,
     image,
@@ -25,7 +25,7 @@ export const CreateGroup = async (
 };
 
 export const GetAllGroups = async (): Promise<Array<IGroup>> => {
-  const response = api.get("getAllGroups");
+  const response = api.get("group", { data: { requType: "ALL" } });
   return (await response).data;
 };
 
@@ -37,7 +37,7 @@ export const AddUserToGroupView = async (
   isMember: boolean,
   isBanned: boolean
 ) => {
-  const response = api.post("addUserToGroup", {
+  const response = api.post("userToGroup", {
     email,
     title,
     isOwner,
@@ -49,12 +49,14 @@ export const AddUserToGroupView = async (
 };
 
 export const GetGroupsViaUser = async (): Promise<Array<IGroup>> => {
-  const response = api.post("getGroupViaUser");
+  const response = api.get("group", { data: { requType: "USER" } });
   return (await response).data;
 };
 
 export const GetGroupDetails = async (title: string): Promise<IGroup> => {
-  const response = api.post("getGroupData");
+  const response = api.get("group", {
+    data: { requType: "TITLE", title: title },
+  });
   return (await response).data;
 };
 
@@ -62,11 +64,15 @@ export const GetGroupMembers = async (
   title: string,
   isStaffOnly: boolean = false
 ): Promise<Array<IUser>> => {
-  const response = api.post("getMembersFromGroup", { title, isStaffOnly });
+  const response = api.get("group", {
+    data: { title: title, isStaffOnly: isStaffOnly, requType: "MEMBERS" },
+  });
   return (await response).data;
 };
 
 export const GetGroupViaId = async (id: number): Promise<IGroup> => {
-  const response = api.post("getGroupViaId", { id });
+  const response = api.get("getGroupViaId", {
+    data: { id: id, requType: "ID" },
+  });
   return (await response).data;
 };

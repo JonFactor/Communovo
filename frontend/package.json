@@ -14,7 +14,7 @@
     "@react-native-community/netinfo": "^9.3.10",
     "@types/react": "~18.2.14",
     "aws-amplify": "^5.3.11",
-    "axios": "^1.6.0",
+    "axios": "^1.6.3",
     "expo": "^49.0.3",
     "expo-asset": "^8.10.1",
     "expo-auth-session": "~5.0.2",
