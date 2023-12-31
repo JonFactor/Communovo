@@ -9,41 +9,23 @@ from .serializers import UserSerializer, UserRelationshipSerializer
 from .models import User, UserRelationships
 from functions.getUser import getUser
 
-class RegisterView(APIView):
+class UserView(APIView):
     def post(self, request):
-        
         request.data.update({"description":"nothing to see here"})
         request.data.update({"profilePic":"http://www.gravatar.com/avatar"})
-        print(request.data)
+        
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    
-class SetProfileView(APIView):
-    def post(self, request):
+    def update(self, request):
         reqId = request.data['id']
         profileUriKey = request.data['profilePicUrl']
         User.objects.filter(id = reqId).update(profilePic=profileUriKey)
         
         response = Response()
         return response
-
-class LoginViaCookiesView(APIView):
-    def post(self, request):
-        
-        token = request.data['jwt']
-        response = Response()
-        response.set_cookie(key="jwt", value=token, httponly=True)
-
-        response.data = {
-            "jwt": token
-        }
-        
-        return response
-    
-class UserViaIdView(APIView):
-    def post(self, request):
+    def get(self, request):
         id = request.data["id"]
         
         user = User.objects.filter(id=id).first()
@@ -52,36 +34,46 @@ class UserViaIdView(APIView):
 
 class LoginView(APIView): 
     def post(self, request):
-        email = request.data['email']
-        password = request.data['password']
+        requType = request.data['requType']
+        if requType == "COOKIES":
+            token = request.data['jwt']
+            response = Response()
+            response.set_cookie(key="jwt", value=token, httponly=True)
 
-        user = User.objects.filter(email=email).first()
-        if user is None:
-            raise AuthenticationFailed('User not found')
+            response.data = {
+                "jwt": token
+            }
+            
+            return response
+        elif requType == "AUTH":
+            email = request.data['email']
+            password = request.data['password']
 
-        if not user.check_password(password):
-            raise AuthenticationFailed('Incorrect password')
+            user = User.objects.filter(email=email).first()
+            if user is None:
+                raise AuthenticationFailed('User not found')
 
-        payload = {
-            'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.utcnow()
-        }
+            if not user.check_password(password):
+                raise AuthenticationFailed('Incorrect password')
 
-        token = jwt.encode(payload, 'secret',
-                           algorithm='HS256')
+            payload = {
+                'id': user.id,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+                'iat': datetime.datetime.utcnow()
+            }
 
-        response = Response()
+            token = jwt.encode(payload, 'secret',
+                            algorithm='HS256')
 
-        response.set_cookie(key="jwt", value=token, httponly=True)
+            response = Response()
 
-        response.data = {
-            "jwt": token
-        }
+            response.set_cookie(key="jwt", value=token, httponly=True)
 
-        return response
+            response.data = {
+                "jwt": token
+            }
 
-
+            return response
 
 class UserView(APIView):
     def get(self, request):
@@ -102,7 +94,7 @@ class LogoutView(APIView):
 
         return response
 
-class RelationshipCreateView(APIView):
+class UserToUserView(APIView):
     def post(self, request):
         # secondUserEmail, isBlocked, isFollowed
         token = request.COOKIES.get('jwt')
@@ -120,11 +112,7 @@ class RelationshipCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    # return nothing | take in user cookies (default), relationship-Type, secondUserId
-
-class RelationshipViewView(APIView):
-    def post(self, request):
-        # userEmail, checkFollow, checkBlocked
+    def get(self, request):
         token = request.COOKIES.get('jwt')
         
         try:
@@ -145,4 +133,4 @@ class RelationshipViewView(APIView):
             
         serializer = UserRelationshipSerializer(listOfFollowing, many=True)
         return(Response(data=serializer.data))
-    # return a list of all the ids of who the user is following | take in user cookies (defualt)
+    # return nothing | take in user cookies (default), relationship-Type, secondUserId
