@@ -1,5 +1,5 @@
-from django.urls import path
-from .views import RegisterView, ResetUserPasswordView, LoginView, UserView, LogoutView, LoginViaCookiesView, SetProfileView,  RelationshipCreateView, RelationshipViewView, UserViaIdView
+from django.urls import path, include
+from .views import RegisterView, RequestPasswordResetEmailView, SetNewPasswordView, PasswordTokenValidateView, LoginView, UserView, LogoutView, LoginViaCookiesView, SetProfileView,  RelationshipCreateView, RelationshipViewView, UserViaIdView
 
 urlpatterns = [
     path("login", LoginView.as_view()),
@@ -9,6 +9,15 @@ urlpatterns = [
     path("viewRelationships", RelationshipViewView.as_view()),
     path("createRelationship",RelationshipCreateView.as_view() ),
     path("userViaId", UserViaIdView.as_view()),
-    path("passwordReset", ResetUserPasswordView.as_view())
+    path("register", RegisterView.as_view()),
+    path("setProfile", RegisterView.as_view()),
+    # password resset
+    path("passwordReset/<uidb64>/<token>/", PasswordTokenValidateView.as_view(),
+         name='passwordResetConfrim'),
+    path("requestPasswordReset", RequestPasswordResetEmailView.as_view(),
+         name="requestPasswordReset"),
+    path("passwordResetComplete", SetNewPasswordView.as_view(), name="SetNewPasswordView"),
+   # path("passwordResetForm", )
+    #path("passwordReset", include('django_rest_passwordreset.urls', namespace='password_reset'))
 ]
  

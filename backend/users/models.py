@@ -24,3 +24,10 @@ class UserRelationships(models.Model):
     isBlocked = models.BooleanField()
     isFollowed = models.BooleanField()
     # isMutual = models.BooleanField()
+
+class EmailVerificationCode(models.Model):
+    code = models.CharField( max_length=6, unique=True)
+    uidb64 = models.CharField(max_length=100)
+    token = models.CharField(max_length=100)
+    
+    

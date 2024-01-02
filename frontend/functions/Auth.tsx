@@ -78,6 +78,11 @@ export const UserViaId = async (id: string): Promise<IUser> => {
 };
 
 export const SendEmail = async (email: string) => {
-  const response = api.post("passwordReset", { email });
+  const response = api.post("requestPasswordReset", { email });
   return (await response).status === 200;
+};
+
+export const PasswordResetCode = async (code: string, password: string) => {
+  const repsonse = api.post("passwordResetComplete", { code, password });
+  return (await repsonse).status === 200;
 };

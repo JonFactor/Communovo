@@ -17,7 +17,6 @@ const LoginPage = () => {
   const [userPassword, setUserPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [passwordAttempts, setPasswordAttempts] = useState(0);
   const [passwordResetModal, setPasswordResetModal] = useState(false);
 
   const validateUserEntry = () => {
@@ -116,6 +115,7 @@ const LoginPage = () => {
               />
             </View>
             <TextInput
+              autoCapitalize="none"
               className="w-72 h-12 text-3xl"
               placeholder="Email"
               onChangeText={(text) => setUserEmail(text)}

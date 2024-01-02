@@ -151,3 +151,16 @@ CORS_ORIGN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 STATIC_ROOT = Path("./")
+
+#email sending
+# mwyp apjw tlpz ykpz
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'jon.factor2@gmail.com'
+EMAIL_HOST_PASSWORD = 'mwyp apjw tlpz ykpz'
+
+#crsf not working
+CSRF_COOKIE_SECURE = False
