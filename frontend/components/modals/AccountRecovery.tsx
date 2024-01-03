@@ -177,7 +177,9 @@ const AccountRecovery = ({ parentSetter }) => {
             <Text className=" text-2xl">Submit Code</Text>
           </TouchableOpacity>
           <Text
-            className={`text-lg text-${codeSectionError ? "red" : "green"}-400`}
+            className={`text-lg text-${
+              codeSectionError ? "red" : "green"
+            }-400 text-center mt-4`}
           >
             {codeSectionMessage}
           </Text>

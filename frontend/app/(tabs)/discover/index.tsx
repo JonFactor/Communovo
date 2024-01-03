@@ -13,9 +13,24 @@ import { Image } from "expo-image";
 import { GetAllGroups, IGroup } from "../../../functions/Groups";
 import { Storage } from "aws-amplify";
 import GroupCard from "../../../components/cards/GroupCard";
+import { IEvent } from "../../../functions/Events";
+import { IUser } from "../../../functions/Auth";
+import { SearchAllDB } from "../../../functions/Misc";
 
 const DiscoverPage = () => {
   const [groupData, setGroupData] = useState(Array<IGroup>);
+  const [searchActivated, setSearchActivated] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [searchResult, setSearchResult] = useState({
+    event: Array<IEvent>,
+    group: Array<IGroup>,
+    user: Array<IUser>,
+  });
+  const [searchResultsThere, setSearchResultsThere] = useState({
+    events: false,
+    groups: false,
+    users: false,
+  });
 
   useEffect(() => {
     const getGroupData = async () => {
@@ -33,6 +48,15 @@ const DiscoverPage = () => {
     return await Storage.get(group.image);
   };
 
+  const searchResultsLoad = async (text: string) => {
+    const searchRes = await SearchAllDB(text);
+    setSearchResult(searchRes);
+    console.log(searchResult);
+    if (searchRes["user"] !== "None") {
+      setSearchResultsThere({ events: false, groups: false, users: true });
+    }
+  };
+
   return (
     <ScrollView className=" flex space-y-8 mt-16">
       <View className=" w-full items-center flex ">
@@ -40,6 +64,16 @@ const DiscoverPage = () => {
           <TextInput
             className=" p-4 text-2xl w-64"
             placeholder="Search"
+            value={searchText}
+            onChangeText={(text) => {
+              setSearchText(text);
+              if (text === "") {
+                setSearchActivated(false);
+              } else {
+                setSearchActivated(true);
+                searchResultsLoad(text);
+              }
+            }}
           ></TextInput>
           <View className=" w-9 h-10 flex mt-2 ">
             <Image
@@ -50,28 +84,51 @@ const DiscoverPage = () => {
           </View>
         </View>
       </View>
-      {GroupTypes.map((item: string, index) => {
-        return (
-          <View className=" mt-4" key={index}>
-            <Text className=" ml-12 text-2xl text-gray-500 ">{item}</Text>
-            <View>
-              <ScrollView className=" h-40 p-2 flex space-x-6" horizontal>
-                {groupData.map((subItem: IGroup, index: number) => {
-                  if (item === subItem.groupType) {
-                    return (
-                      <GroupCard
-                        key={index}
-                        item={subItem}
-                        routingIgnore={false}
-                      ></GroupCard>
-                    );
-                  }
-                })}
-              </ScrollView>
+      {!searchActivated ? (
+        GroupTypes.map((item: string, index) => {
+          return (
+            <View className=" mt-4" key={index}>
+              <Text className=" ml-12 text-2xl text-gray-500 ">{item}</Text>
+              <View>
+                <ScrollView className=" h-40 p-2 flex space-x-6" horizontal>
+                  {groupData.map((subItem: IGroup, index: number) => {
+                    if (item === subItem.groupType) {
+                      return (
+                        <GroupCard
+                          key={index}
+                          item={subItem}
+                          routingIgnore={false}
+                        ></GroupCard>
+                      );
+                    }
+                  })}
+                </ScrollView>
+              </View>
             </View>
-          </View>
-        );
-      })}
+          );
+        })
+      ) : (
+        <View>
+          <ScrollView horizontal={true}>
+            {searchResult["event"] !== undefined &&
+              searchResult["event"].length > 0 && (
+                <Text>{searchResult["event"][0].toString()}</Text>
+              )}
+          </ScrollView>
+          <ScrollView horizontal={true}>
+            {searchResult["group"] !== undefined &&
+              searchResult["group"].length > 0 && (
+                <Text>{searchResult["group"][0].toString()}</Text>
+              )}
+          </ScrollView>
+          <ScrollView horizontal={true}>
+            {searchResult["user"] !== undefined &&
+              searchResult["user"].length > 0 && (
+                <Text>{searchResult["user"][0].toString()}</Text>
+              )}
+          </ScrollView>
+        </View>
+      )}
     </ScrollView>
   );
 };

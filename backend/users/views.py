@@ -20,6 +20,44 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import Util
 
+from events.models import Event
+from events.serializers import EventSerializer
+from groups.serializers import GroupSerializer
+from groups.models import Group
+# this view is for all the apps but has no other place to be put but the main app
+class SearchDatabaseView(APIView): # search | returns a list of ids for the given models
+    def post(self, request):
+        keywords = str(request.data["search"])
+
+        groups = Group.objects.filter(title__contains=keywords)
+        events = Event.objects.filter(title__contains=keywords)
+        users = User.objects.filter(name__contains=keywords)
+        
+        userList = []
+        eventList = []
+        groupList = []
+        
+        # mapped to object
+        modelObjs = [groups, events, users]
+        dataObjs = [groupList, eventList, userList]
+        
+        for i in modelObjs:
+            dataObj = dataObjs[modelObjs.index(i)]
+            if len(i) < 1:
+                continue
+
+            for ii in i:
+                dataObj.append(ii.id)
+                print(i, dataObj)
+                i = dataObj
+
+        for i in dataObjs:
+            if len(i) < 1:
+                i = "None"
+        
+        #print({"user":userList, "event":eventList, "group":groupList})
+        return Response(data={"user":userList, "event":eventList, "group":groupList})
+
 class RegisterView(APIView):
     def post(self, request):
         request.data.update({"description":"nothing to see here"})
@@ -196,8 +234,9 @@ class RequestPasswordResetEmailView(APIView):
             seralizer.save()
             
             emailBody = f'Hello from Communovo, Use the verification code below in the app to reset your password \n {ranNum}'
-            data = {'emailBody':emailBody, 'emailSubject':'Communovo password reset',
+            data = {'emailBody':emailBody, 'emailSubject':'noreply',
                     'emailTo':[user.email]}
+            
             Util.SendEmail(data)
                 
         return Response({'success':'An email has been sent with a code to reset your password'}

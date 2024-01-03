@@ -66,13 +66,9 @@ const profile = () => {
       quality: 1,
     });
 
-    if (result.canceled) {
-      return;
-    }
-
-    const userProfilePhoto = await setUserProfilePhoto(result);
-
+    console.log("here");
     await fetchImageFromUri(result).then((result) => {
+      console.log(result);
       setUserProfilePic(result);
       console.log(result);
     });
@@ -177,24 +173,29 @@ const profile = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <View className=" flex-col mt-4 w-full items-center  flex">
-        <View className=" flex-row mt-4">
-          <TouchableOpacity
-            className=" rounded-full border-[3px] border-light-blue py-2 px-10"
-            onPress={handleMessageUser}
-          >
-            <Text className=" text-xl font-semibold text-light-blue">
-              Message
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className=" rounded-full bg-light-blue py-3 px-14 ml-3"
-            onPress={handleFollowUser}
-          >
-            <Text className=" text-xl text-white font-semibold">Follow</Text>
-          </TouchableOpacity>
+      {
+        // messageing and following is not yet finished, set to true when feature functional
+      }
+      {false && (
+        <View className=" flex-col mt-4 w-full items-center  flex">
+          <View className=" flex-row mt-4">
+            <TouchableOpacity
+              className=" rounded-full border-[3px] border-light-blue py-2 px-10"
+              onPress={handleMessageUser}
+            >
+              <Text className=" text-xl font-semibold text-light-blue">
+                Message
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className=" rounded-full bg-light-blue py-3 px-14 ml-3"
+              onPress={handleFollowUser}
+            >
+              <Text className=" text-xl text-white font-semibold">Follow</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      )}
       <View>
         <View className=" flex-row space-x-12 px-12 mt-8">
           <TouchableOpacity onPress={handleLoadEvents}>

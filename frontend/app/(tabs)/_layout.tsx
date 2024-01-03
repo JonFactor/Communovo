@@ -33,7 +33,8 @@ export default () => {
       <Tabs.Screen
         name="profile"
         options={{
-          tabBarIcon: () => <ProfilePictureCard width={"10"} />,
+          tabBarIcon: () =>
+            logoSetting(require("../../assets/navbarIcons/profile.png")),
         }}
       />
       <Tabs.Screen

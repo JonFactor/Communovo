@@ -4,12 +4,12 @@ import router from "../../common/routerHook";
 
 const EventOrGroupCreation = ({ thisDisplaySetter }) => {
   const handleEventClick = () => {
-    router.push("events");
+    router.push("/events");
     thisDisplaySetter(false);
   };
 
   const handleGroupClick = () => {
-    router.push("createGroup");
+    router.push("/createGroup");
     thisDisplaySetter(false);
   };
 

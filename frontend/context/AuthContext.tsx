@@ -22,7 +22,7 @@ interface IAuthContextProps {
   isLoading: boolean;
   getUserInfo: () => Promise<IUser>;
   getUserProfilePhoto: () => Promise<String>;
-  setUserProfilePhoto: (image: string, userId?: number) => Promise<boolean>;
+  setUserProfilePhoto: (image, userId?: number) => Promise<boolean>;
   isLoggedIn: () => Promise<boolean>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setStopLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -142,9 +142,10 @@ export const AuthProvider = ({ children }) => {
     return photo;
   };
 
-  const setUserProfilePhoto = async (image: String, userId: number = null) => {
+  const setUserProfilePhoto = async (image, userId: number = null) => {
     setIsLoading(true);
     const imageKey = uuidv4();
+    console.log(image);
     const imgPath = "profile/" + imageKey;
 
     const img = await fetchImageFromUri(image["assets"][0]["uri"]);
@@ -163,6 +164,9 @@ export const AuthProvider = ({ children }) => {
       }
       oldUser = userInfo.profilePic;
       userId = userInfo.id;
+
+      const responseOk = await UserUpdateProfile(imageKey, userId.toString());
+      console.log(responseOk);
     }
 
     const userIdConvert: string = userId.toString();
