@@ -16,6 +16,7 @@ import GroupCard from "../../../components/cards/GroupCard";
 import { IEvent } from "../../../functions/Events";
 import { IUser } from "../../../functions/Auth";
 import { SearchAllDB } from "../../../functions/Misc";
+import UserCollection from "../../../components/collections/UserCollection";
 
 const DiscoverPage = () => {
   const [groupData, setGroupData] = useState(Array<IGroup>);
@@ -51,7 +52,7 @@ const DiscoverPage = () => {
   const searchResultsLoad = async (text: string) => {
     const searchRes = await SearchAllDB(text);
     setSearchResult(searchRes);
-    console.log(searchResult);
+    console.log(searchRes);
     if (searchRes["user"] !== "None") {
       setSearchResultsThere({ events: false, groups: false, users: true });
     }
@@ -111,22 +112,13 @@ const DiscoverPage = () => {
         <View>
           <ScrollView horizontal={true}>
             {searchResult["event"] !== undefined &&
-              searchResult["event"].length > 0 && (
-                <Text>{searchResult["event"][0].toString()}</Text>
-              )}
+              searchResult["event"].length > 0 && <Text>Test</Text>}
           </ScrollView>
           <ScrollView horizontal={true}>
             {searchResult["group"] !== undefined &&
-              searchResult["group"].length > 0 && (
-                <Text>{searchResult["group"][0].toString()}</Text>
-              )}
+              searchResult["group"].length > 0 && <Text>Test</Text>}
           </ScrollView>
-          <ScrollView horizontal={true}>
-            {searchResult["user"] !== undefined &&
-              searchResult["user"].length > 0 && (
-                <Text>{searchResult["user"][0].toString()}</Text>
-              )}
-          </ScrollView>
+          <UserCollection />
         </View>
       )}
     </ScrollView>
