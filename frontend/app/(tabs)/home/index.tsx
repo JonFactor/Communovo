@@ -15,6 +15,7 @@ import groupTypes from "../../../constants/GroupTypes";
 import router from "../../../common/routerHook";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
 import EventOrGroupCreation from "../../../components/modals/EventOrGroupCreation";
+import { Linker } from "../../../utils/Linker";
 
 export const FilterContext = createContext(null);
 
@@ -55,7 +56,7 @@ const home = () => {
 
   useEffect(() => {
     if (gotoLogin) {
-      router.replace("/login");
+      Linker("/login");
     }
   }, [gotoLogin]);
 
@@ -143,7 +144,7 @@ const home = () => {
           </TouchableOpacity>
           <Text className=" text-2xl mt-2 ml-4">{randomizedPostMessage}</Text>
         </View>
-        <View className=" w-full">
+        <View className=" w-full h-full">
           <EventsCollection
             filters={currentFilter}
             noFilter={false}
@@ -151,6 +152,8 @@ const home = () => {
             isOnlyLiked={false}
             isOnlyDisliked={false}
             baisedOnGroup={false}
+            justSmallCards={false}
+            groupTitle=""
           />
         </View>
       </ScrollView>

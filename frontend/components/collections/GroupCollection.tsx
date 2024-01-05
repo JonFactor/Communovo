@@ -54,7 +54,6 @@ const GroupCollection = ({
       ) : (
         <View className=" mt-6 ml-4 space-y-6 ">
           {groupUser.map((value: IGroup, index: number) => {
-            console.log(cardWidth);
             return (
               <View key={index} className="">
                 <LargeGroupCard

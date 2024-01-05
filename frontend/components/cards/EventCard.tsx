@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Storage } from "aws-amplify";
 import { router } from "expo-router";
 import { setEventUserPref } from "../../functions/Events";
+import { Linker } from "../../utils/Linker";
 
 const EventCard = ({
   location,
@@ -50,14 +51,14 @@ const EventCard = ({
   const handleNavToEvent = async () => {
     const responseOk = await setEventUserPref(title, true, false);
     if (responseOk) {
-      router.push(`events/${id}`);
+      Linker(`/events/${id}`);
     }
   };
 
   const handleDislikeEvent = async () => {
     const responseOk = await setEventUserPref(title, false, true);
     if (responseOk) {
-      router.replace("home");
+      Linker("/home");
     }
   };
 
@@ -179,7 +180,7 @@ const EventCard = ({
         <TouchableOpacity
           className=" bg-gray-200 rounded-lg w-40 aspect-square"
           onPress={() => {
-            router.replace(`/events/${id}`);
+            Linker(`/events/${id}`);
           }}
         >
           <Image

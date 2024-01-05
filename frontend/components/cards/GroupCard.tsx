@@ -5,6 +5,7 @@ import { router } from "expo-router";
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import { LinearGradient } from "expo-linear-gradient";
+import { Linker } from "../../utils/Linker";
 
 const GroupCard = ({ item, routingIgnore }) => {
   const [image, setImage] = useState(null);
@@ -24,7 +25,7 @@ const GroupCard = ({ item, routingIgnore }) => {
 
   const handleGroupSelect = () => {
     if (routingIgnore !== "True") {
-      router.push(`discover/${item.title}`);
+      Linker(`discover/${item.title}`);
     }
   };
 

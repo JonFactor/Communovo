@@ -26,6 +26,7 @@ import { Storage } from "aws-amplify";
 import { GetGroupViaId, IGroup } from "../../../functions/Groups";
 import { IUser } from "../../../functions/Auth";
 import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
+import { Linker } from "../../../utils/Linker";
 
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
@@ -75,7 +76,7 @@ const eventDetailsPage = () => {
     );
 
     if (joinEvent) {
-      router.back();
+      Linker("/home");
     }
   };
 
@@ -95,7 +96,7 @@ const eventDetailsPage = () => {
             <TouchableOpacity
               className=" ml-8 mt-1 w-12 h-6  relative"
               onPress={() => {
-                router.back();
+                Linker("/home");
               }}
             >
               <Text className=" text-red-400 text-2xl">exit</Text>

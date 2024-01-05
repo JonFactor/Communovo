@@ -1,6 +1,11 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { Stack, useLocalSearchParams, useSearchParams } from "expo-router";
+import {
+  Redirect,
+  Stack,
+  useLocalSearchParams,
+  useSearchParams,
+} from "expo-router";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import router from "../../../common/routerHook";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
@@ -17,6 +22,7 @@ import { IUser } from "../../../functions/Auth";
 import { AuthContext } from "../../../context/AuthContext";
 import EventsCollection from "../../../components/collections/EventsCollection";
 import { Storage } from "aws-amplify";
+import { Linker } from "../../../utils/Linker";
 
 const CatigoryDetailsPage = () => {
   const { name } = useLocalSearchParams();
@@ -81,7 +87,7 @@ const CatigoryDetailsPage = () => {
       false
     );
     if (responseOk) {
-      router.back();
+      Linker("/home");
     }
   };
 
@@ -95,7 +101,7 @@ const CatigoryDetailsPage = () => {
             <TouchableOpacity
               className=""
               onPress={() => {
-                router.back();
+                Linker("/home");
               }}
             >
               <Text className=" text-red-400 text-xl">exit</Text>

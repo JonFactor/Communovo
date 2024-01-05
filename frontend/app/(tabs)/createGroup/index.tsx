@@ -17,6 +17,7 @@ import {
 import GroupTypeSelectionModal from "../../../components/modals/GroupTypeSelectionModal";
 import { v4 as uuidv4 } from "uuid";
 import { Storage } from "aws-amplify";
+import { Linker } from "../../../utils/Linker";
 
 const createGroup = () => {
   const [groupTitle, setGroupTitle] = useState("");
@@ -92,7 +93,7 @@ const createGroup = () => {
     }
 
     setIsLoading(false);
-    router.back();
+    Linker("/home");
   };
 
   const fetchImageFromUri = async (uri: string) => {
@@ -154,7 +155,7 @@ const createGroup = () => {
           <View className=" ml-8 flex-row mt-16">
             <TouchableOpacity
               className=" flex w-5 h-7   "
-              onPress={() => router.back()}
+              onPress={() => Linker("/home")}
             >
               <View className=" flex w-5 h-7">
                 <Image

@@ -1,6 +1,6 @@
 import { View, Text, TextInput, ActivityIndicator, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { Redirect } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import register from "../register";
@@ -18,6 +18,7 @@ import EventTypeModal from "../../../components/modals/EventTypeModal";
 import AddUserModal from "../../../components/modals/AddUserModal";
 import { IGroup } from "../../../functions/Groups";
 import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
+import { Linker } from "../../../utils/Linker";
 
 const events = () => {
   const { getUserInfo } = useContext(AuthContext);
@@ -177,11 +178,11 @@ const events = () => {
     }
 
     setIsLoading(false);
-    router.back();
+    Linker("/home");
   };
 
   const handleEventBack = () => {
-    router.back();
+    Linker("/home");
   };
 
   const handleAddPhoto = async () => {

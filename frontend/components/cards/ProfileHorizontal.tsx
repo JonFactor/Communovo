@@ -5,6 +5,7 @@ import { Image } from "expo-image";
 import { IUser } from "../../functions/Auth";
 import { Storage } from "aws-amplify";
 import router from "../../common/routerHook";
+import { Linker } from "../../utils/Linker";
 
 const ProfileHorizontal = ({ profile, goToProfile }) => {
   const [userProfilePic, setUserProfilePic] = useState("");
@@ -26,7 +27,7 @@ const ProfileHorizontal = ({ profile, goToProfile }) => {
         className=" flex-row ml-2"
         onPress={() => {
           if (goToProfile) {
-            router.replace(`profile/${profile.name}`);
+            Linker(`profile/${profile.name}`);
           }
         }}
       >

@@ -6,6 +6,7 @@ import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import ProfilePictureCard from "../cards/ProfilePictureCard";
 import router from "../../common/routerHook";
+import { Linker } from "../../utils/Linker";
 
 const UserCollection = ({ userList }) => {
   const [currentUserDetails, setCurrentUserDetails] = useState({});
@@ -36,7 +37,7 @@ const UserCollection = ({ userList }) => {
               className=" w-28 aspect-square bg-gray-200 border-2 border-black border-solid rounded-xl mt-2 ml-4"
               key={index}
               onPress={() => {
-                router.replace(`/profile/${name}`);
+                Linker(`/profile/${name}`);
               }}
             >
               <View className=" flex-1 w-full h-full items-center mt-2">

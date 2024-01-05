@@ -1,15 +1,24 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import router from "../../common/routerHook";
+import { Linker } from "../../utils/Linker";
 
 const EventOrGroupCreation = ({ thisDisplaySetter }) => {
   const handleEventClick = () => {
-    router.push("/events");
+    const redirected = Linker("/events");
+    if (!redirected) {
+      thisDisplaySetter(true);
+      return;
+    }
     thisDisplaySetter(false);
   };
 
   const handleGroupClick = () => {
-    router.push("/createGroup");
+    const redirected = Linker("/createGroup");
+    if (!redirected) {
+      thisDisplaySetter(true);
+      return;
+    }
     thisDisplaySetter(false);
   };
 

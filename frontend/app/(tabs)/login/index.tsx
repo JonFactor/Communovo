@@ -8,6 +8,7 @@ import { Image } from "expo-image";
 import { AuthContext } from "../../../context/AuthContext";
 import router from "../../../common/routerHook";
 import AccountRecovery from "../../../components/modals/AccountRecovery";
+import { Linker } from "../../../utils/Linker";
 
 const LoginPage = () => {
   const { loginViaCookies, loginViaCredentials, getUserInfo } =
@@ -61,7 +62,7 @@ const LoginPage = () => {
       );
       const responseOk = await getUserInfo();
       if (responseOk) {
-        router.back();
+        Linker("/home");
         return;
       }
     }
@@ -80,11 +81,11 @@ const LoginPage = () => {
 
     loginViaCookies(cookie);
 
-    router.back();
+    Linker("/home");
   };
 
   const handleSignUpClick = () => {
-    router.replace("/register");
+    Linker("/register");
   };
 
   const handleForgotPasswordClick = () => {

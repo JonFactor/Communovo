@@ -62,8 +62,11 @@ const EventsCollection = ({
       } else {
         params = [];
       }
+
       content = await EventsGetAll(...params);
+
       setEventData(content);
+      console.log(content);
     };
 
     getEventData();
@@ -118,6 +121,7 @@ const EventsCollection = ({
                         id={id}
                         imagePath={coverImg}
                         eventType={eventType}
+                        justSmallCards={false}
                       />
                     </View>
                   );
@@ -127,32 +131,34 @@ const EventsCollection = ({
         </View>
       ) : (
         <View>
-          {eventData !== undefined &&
-            eventData !== null &&
-            eventData.map(
-              ({ date, eventType, location, title, id, coverImg }, index) => {
-                const day = date.split("-")[1];
-                const month = date.split("-")[2];
-                const isFiltered = handleIsFiltered(eventType);
+          {eventData !== undefined && eventData !== null && (
+            <ScrollView horizontal={true} className=" space-x-6">
+              {eventData.map(
+                ({ date, eventType, location, title, id, coverImg }, index) => {
+                  const day = date.split("-")[1];
+                  const month = date.split("-")[2];
+                  const isFiltered = handleIsFiltered(eventType);
 
-                if (isFiltered) {
-                  return (
-                    <View key={index} className=" mt-4 w-screen  flex">
-                      <EventCard
-                        title={title}
-                        day={day}
-                        month={month}
-                        location={location}
-                        id={id}
-                        imagePath={coverImg}
-                        eventType={eventType}
-                        justSmallCards={justSmallCards}
-                      />
-                    </View>
-                  );
+                  if (isFiltered) {
+                    return (
+                      <View key={index} className=" mt-4  flex">
+                        <EventCard
+                          title={title}
+                          day={day}
+                          month={month}
+                          location={location}
+                          id={id}
+                          imagePath={coverImg}
+                          eventType={eventType}
+                          justSmallCards={justSmallCards}
+                        />
+                      </View>
+                    );
+                  }
                 }
-              }
-            )}
+              )}
+            </ScrollView>
+          )}
         </View>
       )}
     </View>

@@ -4,6 +4,7 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { UserRegister } from "../../../functions/Auth";
 import { Image } from "expo-image";
 import router from "../../../common/routerHook";
+import { Linker } from "../../../utils/Linker";
 
 const register = () => {
   const [firstName, setFirstName] = useState("");
@@ -106,14 +107,14 @@ const register = () => {
       return;
     }
 
-    router.back();
+    Linker("/home");
   };
   return (
     <View className=" p-10">
       <View className=" flex-row mt-8">
         <TouchableOpacity
           onPress={() => {
-            router.back();
+            Linker("/home");
           }}
         >
           <View className=" flex h-6 w-5 ">

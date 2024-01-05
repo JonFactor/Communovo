@@ -15,6 +15,7 @@ import { FindFollowing, IUserToUser } from "../../../functions/Relations";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import { Redirect } from "expo-router";
+import { Linker } from "../../../utils/Linker";
 
 const profile = () => {
   const { logout, getUserInfo, getUserProfilePhoto, setUserProfilePhoto } =
@@ -107,7 +108,7 @@ const profile = () => {
         <View className=" bg-transparent w-full h-16 flex-row ml-12">
           <TouchableOpacity
             className="p-1 px-3 bg-md-blue rounded-md"
-            onPress={() => router.replace("/register")}
+            onPress={() => Linker("/register")}
           >
             <Text className=" text-xl">Edit</Text>
           </TouchableOpacity>
@@ -129,7 +130,7 @@ const profile = () => {
         </View>
       )}
       <View className=" flex-row ml-8 ">
-        <TouchableOpacity className=" flex  " onPress={() => router.back()}>
+        <TouchableOpacity className=" flex  " onPress={() => Linker("/home")}>
           <View className=" flex w-5 h-7">
             <Image
               contentFit="cover"

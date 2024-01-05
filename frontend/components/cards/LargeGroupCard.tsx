@@ -5,6 +5,7 @@ import { Image } from "expo-image";
 import { IGroup } from "../../functions/Groups";
 import { Storage } from "aws-amplify";
 import { router } from "expo-router";
+import { Linker } from "../../utils/Linker";
 
 const LargeGroupCard = ({ group, cardWidth = 96, cardSquare = false }) => {
   const [image, setImage] = useState(null);
@@ -19,7 +20,7 @@ const LargeGroupCard = ({ group, cardWidth = 96, cardSquare = false }) => {
   }, []);
 
   const handleGroupClick = () => {
-    router.push(`discover/${group.title}`);
+    Linker(`discover/${group.title}`);
   };
 
   return (

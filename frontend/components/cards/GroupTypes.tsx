@@ -3,12 +3,13 @@ import React, { useEffect, useRef } from "react";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { TouchableHighlight } from "react-native-gesture-handler";
+import { Linker } from "../../utils/Linker";
 
 const GroupTypes = ({ color, scale, title, logo, gradient }) => {
   // color -> backround color | size -> scaleing | title -> text | logo -> path | gradient -> bool
 
   const handleGroupPress = () => {
-    router.push(`/groups/${title}`);
+    Linker(`/groups/${title}`);
   };
 
   return (
