@@ -17,6 +17,8 @@ import { IEvent } from "../../../functions/Events";
 import { IUser } from "../../../functions/Auth";
 import { SearchAllDB } from "../../../functions/Misc";
 import UserCollection from "../../../components/collections/UserCollection";
+import GroupCollection from "../../../components/collections/GroupCollection";
+import EventsCollection from "../../../components/collections/EventsCollection";
 
 const DiscoverPage = () => {
   const [groupData, setGroupData] = useState(Array<IGroup>);
@@ -52,7 +54,7 @@ const DiscoverPage = () => {
   const searchResultsLoad = async (text: string) => {
     const searchRes = await SearchAllDB(text);
     setSearchResult(searchRes);
-    console.log(searchRes);
+
     if (searchRes["user"] !== "None") {
       setSearchResultsThere({ events: false, groups: false, users: true });
     }
@@ -109,16 +111,38 @@ const DiscoverPage = () => {
           );
         })
       ) : (
-        <View>
-          <ScrollView horizontal={true}>
-            {searchResult["event"] !== undefined &&
-              searchResult["event"].length > 0 && <Text>Test</Text>}
-          </ScrollView>
-          <ScrollView horizontal={true}>
-            {searchResult["group"] !== undefined &&
-              searchResult["group"].length > 0 && <Text>Test</Text>}
-          </ScrollView>
-          <UserCollection />
+        <View className=" flex space-y-8">
+          <View>
+            <Text className=" text-2xl ml-4">Event Results</Text>
+            <ScrollView horizontal={true} className=" ml-4">
+              <EventsCollection
+                filters={[]}
+                noFilter={true}
+                isOnlyLiked={false}
+                isOnlyDisliked={false}
+                excludeDisliked={false}
+                baisedOnGroup={false}
+                groupTitle={null}
+                justSmallCards={true}
+              ></EventsCollection>
+            </ScrollView>
+          </View>
+          <View>
+            <Text className=" text-2xl ml-4">Group Results</Text>
+            <ScrollView horizontal={true} className=" h-44">
+              <GroupCollection
+                groupIds={searchResult["group"]}
+                groupsViaUser={false}
+                horizontal={true}
+                cardWidth={36}
+                cardSquare={true}
+              />
+            </ScrollView>
+          </View>
+          <View>
+            <Text className=" text-2xl ml-4 mb-1">User Results</Text>
+            <UserCollection userList={searchResult["user"]} />
+          </View>
         </View>
       )}
     </ScrollView>

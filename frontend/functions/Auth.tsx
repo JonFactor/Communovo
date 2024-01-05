@@ -56,8 +56,6 @@ export const UserLoginViaCookies = async (jwt: string) => {
     return false;
   }
 
-  console.log(jwt);
-
   const response = api.post("cookieLogin", { jwt });
   return (await response).status === 200;
 };
@@ -66,7 +64,6 @@ export const UserUpdateProfile = async (profilePicUrl: String, id: String) => {
   const response = api
     .post("setProfile", { profilePicUrl, id })
     .catch((err) => {
-      console.log("profile:" + err);
       return response;
     });
   return (await response).status === 200;

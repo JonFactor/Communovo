@@ -149,7 +149,7 @@ class UserPreferenceSetView(APIView): # credentails, isLiked, isDisliked, eventT
         serializer.is_valid(raise_exception=True)
         serializer.save()
         
-        token = request.COOKIES.get('jwt').split("=")[1].split(";")[0]
+        token = request.COOKIES.get('jwt')
         print(token)
         
         return Response()#serializer.data)

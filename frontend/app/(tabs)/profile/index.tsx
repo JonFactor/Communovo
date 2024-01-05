@@ -46,7 +46,6 @@ const profile = () => {
 
       const follows = await FindFollowing(content.email);
       if (follows === null) {
-        console.log("following nulled");
       } else {
         for (let i = 0; i < follows.length; i++) {
           const user = await UserViaId(follows[i].secondUser.toString());
@@ -66,11 +65,8 @@ const profile = () => {
       quality: 1,
     });
 
-    console.log("here");
     await fetchImageFromUri(result).then((result) => {
-      console.log(result);
       setUserProfilePic(result);
-      console.log(result);
     });
   };
 

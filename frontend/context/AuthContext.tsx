@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }) => {
   const setUserProfilePhoto = async (image, userId: number = null) => {
     setIsLoading(true);
     const imageKey = uuidv4();
-    console.log(image);
+
     const imgPath = "profile/" + imageKey;
 
     const img = await fetchImageFromUri(image["assets"][0]["uri"]);
@@ -166,7 +166,6 @@ export const AuthProvider = ({ children }) => {
       userId = userInfo.id;
 
       const responseOk = await UserUpdateProfile(imageKey, userId.toString());
-      console.log(responseOk);
     }
 
     const userIdConvert: string = userId.toString();
@@ -176,7 +175,6 @@ export const AuthProvider = ({ children }) => {
       userIdConvert
     ).then((response) => {
       if (response && oldUser !== null) {
-        console.log("12");
         // const removeSuccess = await Storage.remove(oldUser, {
         //   level: "public",
         // });
@@ -189,10 +187,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getUserInfo = async (): Promise<IUser> => {
-    // if (stopLoading) {
-    //   console.log("1234");
-    //   return null;
-    // }
     setIsLoading(true);
     const response = await UserGetDetails();
     setIsLoading(false);

@@ -118,6 +118,7 @@ const events = () => {
     const date = `${dateList[2]}-${dateList[0]}-${dateList[1]}`;
     const catigory = eventType.join(", ");
     const group = eventGroupId.toString();
+
     const responseOk = await EventCreate(
       eventTitle,
       eventDescription,
@@ -129,7 +130,6 @@ const events = () => {
     );
 
     if (!responseOk) {
-      console.log(1);
       setIsLoading(false);
       return;
     }
@@ -143,7 +143,6 @@ const events = () => {
       false
     );
     if (!ownerEventOk) {
-      console.log(2);
       setIsLoading(false);
       return;
     }
@@ -158,7 +157,6 @@ const events = () => {
         false
       );
       if (!resultOk) {
-        console.log(3);
         setIsLoading(false);
         return;
       }
@@ -173,14 +171,13 @@ const events = () => {
         true
       );
       if (!resultOk) {
-        console.log(4);
         setIsLoading(false);
         return;
       }
     }
 
-    router.back();
     setIsLoading(false);
+    router.back();
   };
 
   const handleEventBack = () => {

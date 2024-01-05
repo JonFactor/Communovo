@@ -19,7 +19,6 @@ const AddUserModal = ({ setter, parentSetter, parentValue, isGuests }) => {
       const userData = await getUserInfo();
       const follows = await FindFollowing(userData.email);
       if (follows === null) {
-        console.log("following nulled");
       } else {
         for (let i = 0; i < follows.length; i++) {
           const user = await UserViaId(follows[i].secondUser.toString());
@@ -39,7 +38,6 @@ const AddUserModal = ({ setter, parentSetter, parentValue, isGuests }) => {
 
   const GroupSelection = (value: IUser) => {
     if (parentValue.includes(value)) {
-      console.log("q");
       setSelectedItems(
         selectedItems.filter((item: string) => item !== value.email.toString())
       );
@@ -48,9 +46,8 @@ const AddUserModal = ({ setter, parentSetter, parentValue, isGuests }) => {
       );
     } else {
       setSelectedItems((list) => [...list, value.email]);
-      console.log(value);
+
       if (!parentValue.includes(value)) {
-        console.log("huh");
         parentSetter((list) => [...list, value]);
       }
     }

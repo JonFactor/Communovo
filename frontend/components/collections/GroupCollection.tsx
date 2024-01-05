@@ -1,12 +1,22 @@
 import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import { GetGroupsViaUser, IGroup } from "../../functions/Groups";
+import {
+  GetGroupViaId,
+  GetGroupsViaUser,
+  IGroup,
+} from "../../functions/Groups";
 import { IUser } from "../../functions/Auth";
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import LargeGroupCard from "../cards/LargeGroupCard";
 
-const GroupCollection = () => {
+const GroupCollection = ({
+  groupsViaUser = true,
+  groupIds = [null],
+  cardWidth = 96,
+  cardSquare = false,
+  horizontal = false,
+}) => {
   const [groupUser, setGroupUser] = useState<Array<IGroup>>(null);
   useEffect(() => {
     const getGroups = async () => {
@@ -17,7 +27,19 @@ const GroupCollection = () => {
       }
     };
 
-    getGroups();
+    const getGroupsViaIds = async () => {
+      const groupData: Array<IGroup> = [];
+
+      for (let i = 0; i < groupIds.length; i++) {
+        const currentGroupData = await GetGroupViaId(groupIds[i]);
+        if (currentGroupData !== null) groupData.push(currentGroupData);
+      }
+
+      setGroupUser(groupData);
+    };
+
+    if (groupsViaUser) getGroups();
+    if (groupIds !== null) getGroupsViaIds();
   }, []);
 
   return (
@@ -32,9 +54,14 @@ const GroupCollection = () => {
       ) : (
         <View className=" mt-6 ml-4 space-y-6 ">
           {groupUser.map((value: IGroup, index: number) => {
+            console.log(cardWidth);
             return (
               <View key={index} className="">
-                <LargeGroupCard group={value} />
+                <LargeGroupCard
+                  group={value}
+                  cardWidth={cardWidth}
+                  cardSquare={cardSquare}
+                />
               </View>
             );
           })}

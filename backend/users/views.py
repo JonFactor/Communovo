@@ -55,7 +55,7 @@ class SearchDatabaseView(APIView): # search | returns a list of ids for the give
             if len(i) < 1:
                 i = "None"
         
-        #print({"user":userList, "event":eventList, "group":groupList})
+        print({"user":userList, "event":eventList, "group":groupList})
         return Response(data={"user":userList, "event":eventList, "group":groupList})
 
 class RegisterView(APIView):

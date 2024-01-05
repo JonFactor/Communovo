@@ -61,7 +61,6 @@ const AccountRecovery = ({ parentSetter }) => {
 
     setCodesectionMessage("");
     const success = await PasswordResetCode(code, pass).then((success) => {
-      console.log(success);
       if (!success) {
         setCodeSectionError(true);
         setCodesectionMessage(

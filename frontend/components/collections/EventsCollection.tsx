@@ -12,6 +12,7 @@ interface params {
   excludeDisliked: boolean;
   baisedOnGroup: boolean;
   groupTitle: string;
+  justSmallCards: boolean;
 }
 
 const EventsCollection = ({
@@ -22,8 +23,10 @@ const EventsCollection = ({
   excludeDisliked,
   baisedOnGroup,
   groupTitle,
+  justSmallCards,
 }: params) => {
   // pull events from db
+  const [smallCards, setSmallCards] = useState(false);
 
   if (filters !== undefined) {
     filters = filters["filters"];
@@ -31,6 +34,12 @@ const EventsCollection = ({
   const [eventData, setEventData] = useState([]);
 
   useEffect(() => {
+    if (justSmallCards === undefined) {
+      setSmallCards(false);
+    } else {
+      setSmallCards(justSmallCards);
+    }
+
     const getEventData = async () => {
       let content;
       let params = [];
@@ -87,32 +96,65 @@ const EventsCollection = ({
   };
 
   return (
-    <View className="flex h-5/6 w-full  ">
-      {eventData !== undefined &&
-        eventData !== null &&
-        eventData.map(
-          ({ date, eventType, location, title, id, coverImg }, index) => {
-            const day = date.split("-")[1];
-            const month = date.split("-")[2];
-            const isFiltered = handleIsFiltered(eventType);
+    <View>
+      {!smallCards ? (
+        <View className="flex h-5/6 w-full  ">
+          {eventData !== undefined &&
+            eventData !== null &&
+            eventData.map(
+              ({ date, eventType, location, title, id, coverImg }, index) => {
+                const day = date.split("-")[1];
+                const month = date.split("-")[2];
+                const isFiltered = handleIsFiltered(eventType);
 
-            if (isFiltered) {
-              return (
-                <View key={index} className=" mt-4 w-screen  flex">
-                  <EventCard
-                    title={title}
-                    day={day}
-                    month={month}
-                    location={location}
-                    id={id}
-                    imagePath={coverImg}
-                    eventType={eventType}
-                  />
-                </View>
-              );
-            }
-          }
-        )}
+                if (isFiltered) {
+                  return (
+                    <View key={index} className=" mt-4 w-screen  flex">
+                      <EventCard
+                        title={title}
+                        day={day}
+                        month={month}
+                        location={location}
+                        id={id}
+                        imagePath={coverImg}
+                        eventType={eventType}
+                      />
+                    </View>
+                  );
+                }
+              }
+            )}
+        </View>
+      ) : (
+        <View>
+          {eventData !== undefined &&
+            eventData !== null &&
+            eventData.map(
+              ({ date, eventType, location, title, id, coverImg }, index) => {
+                const day = date.split("-")[1];
+                const month = date.split("-")[2];
+                const isFiltered = handleIsFiltered(eventType);
+
+                if (isFiltered) {
+                  return (
+                    <View key={index} className=" mt-4 w-screen  flex">
+                      <EventCard
+                        title={title}
+                        day={day}
+                        month={month}
+                        location={location}
+                        id={id}
+                        imagePath={coverImg}
+                        eventType={eventType}
+                        justSmallCards={justSmallCards}
+                      />
+                    </View>
+                  );
+                }
+              }
+            )}
+        </View>
+      )}
     </View>
   );
 };

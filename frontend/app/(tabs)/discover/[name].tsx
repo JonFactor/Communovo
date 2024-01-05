@@ -81,7 +81,6 @@ const CatigoryDetailsPage = () => {
       false
     );
     if (responseOk) {
-      console.log("user added");
       router.back();
     }
   };

@@ -148,6 +148,9 @@ const home = () => {
             filters={currentFilter}
             noFilter={false}
             excludeDisliked={true}
+            isOnlyLiked={false}
+            isOnlyDisliked={false}
+            baisedOnGroup={false}
           />
         </View>
       </ScrollView>
