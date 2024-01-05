@@ -10,6 +10,7 @@ export interface IUser {
   profilePic: string;
   description: string;
   favColor: string;
+  phoneNum?: string;
 }
 
 export const UserGetDetails = async (): Promise<IUser> => {
@@ -82,4 +83,9 @@ export const SendEmail = async (email: string) => {
 export const PasswordResetCode = async (code: string, password: string) => {
   const repsonse = api.post("passwordResetComplete", { code, password });
   return (await repsonse).status === 200;
+};
+
+export const UserPhoneNumberAdd = async (number: string): Promise<boolean> => {
+  const response = api.post("userAddPhoneNumber", { number });
+  return (await response).status === 200;
 };

@@ -52,6 +52,7 @@ const home = () => {
     };
 
     setUser();
+    console.log(userData); // use the user data
   }, []);
 
   useEffect(() => {

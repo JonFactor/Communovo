@@ -107,14 +107,14 @@ const register = () => {
       return;
     }
 
-    Linker("/home");
+    Linker("/login");
   };
   return (
     <View className=" p-10">
       <View className=" flex-row mt-8">
         <TouchableOpacity
           onPress={() => {
-            Linker("/home");
+            Linker("/login");
           }}
         >
           <View className=" flex h-6 w-5 ">

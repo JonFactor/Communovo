@@ -289,13 +289,13 @@ const events = () => {
             </LinearGradient>
           </View>
           {}
-          <View className=" flex">
+          <View className=" flex ww-full">
             <View className=" mt-4">
               <View className=" w-full items-center flex">
                 <Text className=" text-2xl text-red-400 flex">{warning}</Text>
               </View>
               <TextInput
-                className=" text-3xl ml-4"
+                className=" text-3xl"
                 placeholder="Event Title"
                 value={eventTitle}
                 onChangeText={(text) => {

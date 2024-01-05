@@ -5,6 +5,7 @@ import {
   ScrollView,
   Touchable,
   TouchableHighlight,
+  Modal,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -24,9 +25,11 @@ import {
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import { GetGroupViaId, IGroup } from "../../../functions/Groups";
-import { IUser } from "../../../functions/Auth";
+import { IUser, UserGetDetails } from "../../../functions/Auth";
 import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
 import { Linker } from "../../../utils/Linker";
+import { GetWeatherData } from "../../../utils/Weather";
+import { UserAddPhoneModal } from "../../../components/modals/UserAddPhoneModal";
 
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
@@ -36,6 +39,8 @@ const eventDetailsPage = () => {
   const [groupDetails, setGroupDetails] = useState<IGroup>(null);
   const [eventMembers, setEventMembers] = useState<Array<IUser>>(null);
   const [eventStaff, setEventStaff] = useState<Array<IUser>>(null);
+  const [eventWeather, setEventWeather] = useState(null);
+  const [userAddPhoneModal, setUserAddPhoneModal] = useState(false);
 
   useEffect(() => {
     const eventDetails = async () => {
@@ -60,6 +65,12 @@ const eventDetailsPage = () => {
       if (responseStaff != null) {
         setEventStaff(responseStaff);
       }
+
+      const responseWeather = await GetWeatherData(content.location);
+      if (responseWeather !== null) {
+        setEventWeather(responseWeather.message);
+      }
+      console.log(responseWeather);
     };
 
     eventDetails();
@@ -80,6 +91,22 @@ const eventDetailsPage = () => {
     }
   };
 
+  const handleAddReminder = async () => {
+    const userDetails: IUser = await UserGetDetails();
+    console.log(userDetails.phoneNum);
+    if (
+      userDetails.phoneNum !== undefined &&
+      userDetails.phoneNum !== null &&
+      userDetails.phoneNum !== ""
+    ) {
+      console.log("1234");
+      // send message...
+    } else {
+      // ask user to sign up...
+      setUserAddPhoneModal(true);
+    }
+  };
+
   return (
     <ScrollView>
       <Stack.Screen options={{ headerShown: false }} />
@@ -92,6 +119,12 @@ const eventDetailsPage = () => {
         </View>
       ) : (
         <View className="py-12 relative">
+          <Modal
+            visible={userAddPhoneModal}
+            className=" w-full h-screen bg-black"
+          >
+            <UserAddPhoneModal eventId={readId}></UserAddPhoneModal>
+          </Modal>
           <View className=" flex-row w-full">
             <TouchableOpacity
               className=" ml-8 mt-1 w-12 h-6  relative"
@@ -101,7 +134,7 @@ const eventDetailsPage = () => {
             >
               <Text className=" text-red-400 text-2xl">exit</Text>
             </TouchableOpacity>
-            <View className=" w-1/5 h-1 " />
+            <View className=" w-3 h-1 " />
             <Text className=" text-3xl font-semibold mt-2">
               {eventData.title}
             </Text>
@@ -183,12 +216,26 @@ const eventDetailsPage = () => {
                 })}
             </ScrollView>
           </View>
+          <View>
+            <Text className=" ml-6 mt-4 text-2xl">
+              Current Weather Conditions
+            </Text>
+            <Text className=" text-xl mt-4 ml-4">{eventWeather}</Text>
+          </View>
           <TouchableOpacity
             className=" bg-green-500 w-screen mt-8 h-12 flex items-center"
             onPress={handleEventJoinClick}
           >
             <Text className=" text-3xl text-white mt-1 font-semibold">
               Book event
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className=" bg-yellow-500 w-screen mt-2 h-12 flex items-center"
+            onPress={handleAddReminder}
+          >
+            <Text className=" text-3xl text-white mt-1 font-semibold">
+              Add Reminder
             </Text>
           </TouchableOpacity>
           <View className=" h-12 w-1"></View>

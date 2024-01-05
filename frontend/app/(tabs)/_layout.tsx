@@ -6,10 +6,21 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import ProfilePictureCard from "../../components/cards/ProfilePictureCard";
 export default () => {
-  const logoSetting = (imgSrc) => {
+  const logoSetting = (imgSrc, focused) => {
+    if (focused) {
+      if (imgSrc.toString().includes("home")) {
+        console.log(imgSrc);
+      }
+    }
+
+    // if (imgSrc !== "") {
+    //   imgSrc = require(imgSrc);
+    // }
     return (
       <View style={styles.logoContain}>
-        <Image style={styles.logo} source={imgSrc} contentFit="cover" />
+        {imgSrc !== "" && (
+          <Image style={styles.logo} source={imgSrc} contentFit="cover" />
+        )}
       </View>
     );
   };
@@ -19,22 +30,31 @@ export default () => {
       <Tabs.Screen
         name="home"
         options={{
-          tabBarIcon: () =>
-            logoSetting(require("../../assets/navbarIcons/house.png")),
+          tabBarIcon: (params) =>
+            logoSetting(
+              require("../../assets/navbarIcons/house.png"),
+              params["focused"]
+            ),
         }}
-      />
+      ></Tabs.Screen>
       <Tabs.Screen
         name="discover"
         options={{
-          tabBarIcon: () =>
-            logoSetting(require("../../assets/navbarIcons/groups.png")),
+          tabBarIcon: (params) =>
+            logoSetting(
+              require("../../assets/navbarIcons/groups.png"),
+              params["focused"]
+            ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          tabBarIcon: () =>
-            logoSetting(require("../../assets/navbarIcons/profile.png")),
+          tabBarIcon: (params) =>
+            logoSetting(
+              require("../../assets/navbarIcons/profile.png"),
+              params["focused"]
+            ),
         }}
       />
       <Tabs.Screen
