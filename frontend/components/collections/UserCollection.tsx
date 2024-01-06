@@ -21,6 +21,7 @@ const UserCollection = ({ userList }) => {
         userList.map((user: number, index) => {
           // GetUserDetails(user);
           const name = currentUserDetails["name"];
+          const id = currentUserDetails["id"];
 
           // const userPhotoUri = currentUserDetails["profilePic"];
 
@@ -37,7 +38,7 @@ const UserCollection = ({ userList }) => {
               className=" w-28 aspect-square bg-gray-200 border-2 border-black border-solid rounded-xl mt-2 ml-4"
               key={index}
               onPress={() => {
-                Linker(`/profile/${name}`);
+                Linker(`/profile/${id}`);
               }}
             >
               <View className=" flex-1 w-full h-full items-center mt-2">

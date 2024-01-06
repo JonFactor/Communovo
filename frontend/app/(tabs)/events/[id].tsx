@@ -34,6 +34,7 @@ import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
 import { Linker } from "../../../utils/Linker";
 import { GetWeatherData } from "../../../utils/Weather";
 import { UserAddPhoneModal } from "../../../components/modals/UserAddPhoneModal";
+import { Notification } from "../../../utils/PushNotifications";
 
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
@@ -113,6 +114,8 @@ const eventDetailsPage = () => {
       // ask user to sign up...
       setUserAddPhoneModal(true);
     }
+    const { expoPushToken } = Notification();
+    console.log(expoPushToken);
   };
 
   return (

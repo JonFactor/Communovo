@@ -13,7 +13,8 @@ module.exports = {
   "./app/(tabs)/discover/index.tsx",
   "./app/(tabs)/createGroup/index.tsx",
   './app/(tabs)/discover/[name].tsx',
-  "./app/(tabs)/accountRecovery/index.tsx"
+  "./app/(tabs)/accountRecovery/index.tsx",
+  "./app/(tabs)/profile/[id].tsx"
 ],
   theme: {
     extend: {
