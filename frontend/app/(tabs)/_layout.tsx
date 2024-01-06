@@ -5,6 +5,7 @@ import { useAssets } from "expo-asset";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import ProfilePictureCard from "../../components/cards/ProfilePictureCard";
+import * as calendar from "expo-calendar";
 export default () => {
   const logoSetting = (imgSrc, focused) => {
     if (focused) {

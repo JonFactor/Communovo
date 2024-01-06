@@ -12,12 +12,19 @@
           "cameraPermission": "Allow Communivo to Access your camera"
         }
       ],
-      "expo-router"
+      "expo-router",
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Allow Communovo To Access Your Calendar"
+        }
+      ]
     ],
     "name": "frontend",
     "slug": "frontend",
     "ios": {
-      "bundleIdentifier": "com.anonymous.frontend"
+      "bundleIdentifier": "com.anonymous.frontend",
+      "config": {"googleMapsApiKey": "AIzaSyCS_zdjnBorQw1PsbhVtsPdTSV1ia9o-_Y"}
     },
     "extra": {
       "router": {

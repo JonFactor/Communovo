@@ -20,7 +20,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import Util
 
-from events.models import Event
+
+from events.models import Event, User2Event
 from events.serializers import EventSerializer
 from groups.serializers import GroupSerializer
 from groups.models import Group
@@ -314,15 +315,19 @@ class UserAddPhoneView(APIView):
         return Response(status=200)
     
 class UserNotifyPhoneView(APIView):
-    def post(self, request): # eventTitle, eventDate
+    def post(self, request): # eventTitle, eventDate TWILLO CAPS THE REQUESTS
         # update users phone number
         user = getUser(request=request)
         if user == None:
             return Response({"message":"Could Not Find User. Please Login and Try Again."}, status=401)
-        print(user.phoneNum)
+        
+        hasAlreadyBeenReminded = User2Event.objects.filter(user=user.id, event=Event.objects.filter(title=request.data["eventTitle"]).first()).first().hasBeenNotified
+        if hasAlreadyBeenReminded:
+            return Response(status=401)
         # send message to phone number
         sentMessage = Util.SendSMS(user.phoneNum, f"An event occuring on: {request.data['eventDate']}, by the name of: {request.data['eventTitle']}. Has registered you for SMS notifications. REPLY CANCEL to stop notifications.")
         if (not sentMessage):    
             return Response({"message":"Confrimation message has not been sent but is still scheduled."},status=401)
         
+        User2Event.objects.filter(user=user.id, event=Event.objects.filter(title=request.data["eventTitle"]).first()).update({"hasBeenNotified":True})
         return Response(status=200)

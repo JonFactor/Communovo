@@ -35,6 +35,8 @@ import { Linker } from "../../../utils/Linker";
 import { GetWeatherData } from "../../../utils/Weather";
 import { UserAddPhoneModal } from "../../../components/modals/UserAddPhoneModal";
 import { Notification } from "../../../utils/PushNotifications";
+import { Calendar } from "../../../utils/Calendar";
+import { OutputMapInfo } from "../../../utils/Maps";
 
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
@@ -98,24 +100,26 @@ const eventDetailsPage = () => {
 
   const handleAddReminder = async () => {
     const userDetails: IUser = await UserGetDetails();
-    console.log(userDetails.phoneNum);
     if (
       userDetails.phoneNum !== undefined &&
       userDetails.phoneNum !== null &&
       userDetails.phoneNum !== ""
     ) {
-      UserPhoneNumberNotify(
-        userDetails.phoneNum,
-        eventData.title,
-        eventData.date
-      );
+      // UserPhoneNumberNotify(
+      //   userDetails.phoneNum,
+      //   eventData.title,
+      //   eventData.date
+      // );
       // send message...
     } else {
       // ask user to sign up...
       setUserAddPhoneModal(true);
     }
-    const { expoPushToken } = Notification();
-    console.log(expoPushToken);
+
+    // add reminder to calender
+    Calendar();
+    // const { expoPushToken } = Notification();
+    // console.log(expoPushToken);
   };
 
   return (
@@ -188,6 +192,7 @@ const eventDetailsPage = () => {
             <View className=" flex-row">
               <Text className="text-2xl">Locaiton: </Text>
               <Text className=" ml-1 text-2xl">{eventData.location}</Text>
+              <OutputMapInfo></OutputMapInfo>
             </View>
             <View className=" flex-row">
               <Text className="text-2xl">Date: </Text>
