@@ -6,6 +6,7 @@ import {
   UserLoginViaCookies,
   IUser,
   UserLogin,
+  UserViaId,
 } from "../functions/Auth";
 import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
@@ -107,17 +108,25 @@ export const AuthProvider = ({ children }) => {
     return blob;
   };
 
-  const getUserProfilePhoto = async (): Promise<string> => {
+  const getUserProfilePhoto = async (
+    viaId: boolean = false,
+    userId: string = "0"
+  ): Promise<string> => {
     setIsLoading(true);
     // check of already saved
-    if (userProfilePic !== null) {
-      return userProfilePic;
-    }
+    // if (userProfilePic !== null) {
+    //   return userProfilePic;
+    // }
 
     // check from storage
     let userPhotoUri;
     // check from db
-    const userInfo = await getUserInfo();
+    let userInfo;
+    if (viaId) {
+      userInfo = await UserViaId(userId);
+    } else {
+      userInfo = await getUserInfo();
+    }
     if (userInfo === null) {
       setIsLoading(false);
       return null;

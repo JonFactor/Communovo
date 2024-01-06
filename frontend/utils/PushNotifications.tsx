@@ -1,4 +1,4 @@
-import * as Device from "expo-device";
+// import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { Platform } from "react-native";
@@ -9,7 +9,11 @@ export interface IPushNotification {
   notification?: Notifications.Notification;
 }
 
-export const Notification = (): IPushNotification => {
+export const Notification = () => {
+  if (true) {
+    // turn off when paid for push notificaitons
+    return null;
+  }
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldPlaySound: true,
@@ -29,31 +33,38 @@ export const Notification = (): IPushNotification => {
   const responseListener = useRef<Notifications.Subscription>();
 
   const RegisterForPushNotifications = async () => {
-    let token;
-    if (Device.isDevice) {
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        alert("push notifications not granted permissions.");
-        return;
-      }
-
-      token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas.projectId,
-      });
-    } else {
-      alert("must be using a physical device for push notifications.");
+    if (true) {
+      // turn off when paid for push notificaitons
+      return null;
     }
+    let token;
+
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("push notifications not granted permissions.");
+      return;
+    }
+
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig?.extra?.eas.projectId,
+    });
+    alert("must be using a physical device for push notifications.");
+
     return token;
   };
 
   useEffect(() => {
+    if (true) {
+      // turn off when paid for push notificaitons
+      return null;
+    }
     RegisterForPushNotifications().then((token) => {
       setExpoPushToken(token);
     });
@@ -70,9 +81,4 @@ export const Notification = (): IPushNotification => {
       Notifications.removeNotificationSubscription(responseListener.current!);
     };
   }, []);
-
-  return {
-    expoPushToken,
-    notification,
-  };
 };
