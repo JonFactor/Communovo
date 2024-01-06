@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    "sms",
     "users",
     "events",
     "groups"
@@ -164,3 +165,5 @@ EMAIL_HOST_PASSWORD = 'nvyz ptzb lkhi prao'
 
 #crsf not working
 CSRF_COOKIE_SECURE = False
+
+SMS_BACKEND = 'sms.backends.console.SmsBackend'

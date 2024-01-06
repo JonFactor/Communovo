@@ -297,3 +297,32 @@ class SetNewPasswordView(APIView): # code, password
         return Response({'success':True, 'message':'Password Reset Successful'},
                         status=200)
         
+class UserAddPhoneView(APIView):
+    def post(self, request): # number, eventTitle, eventDate
+        # update users phone number
+        user = getUser(request=request)
+        if user == None:
+            return Response({"message":"Could Not Find User. Please Login and Try Again."}, status=401)
+        
+        User.objects.filter(id=user.id).update(phoneNum=request.data['number'])
+        
+        # send message to phone number
+        sentMessage = Util.SendSMS(user.phoneNum, f"An event occuring on: {request.data['eventDate']}, by the name of: {request.data['eventTitle']}. Has registered you for SMS notifications. REPLY CANCEL to stop notifications.")
+        if (not sentMessage):    
+            return Response({"message":"Confrimation message has not been sent but is still scheduled."},status=401)
+        
+        return Response(status=200)
+    
+class UserNotifyPhoneView(APIView):
+    def post(self, request): # eventTitle, eventDate
+        # update users phone number
+        user = getUser(request=request)
+        if user == None:
+            return Response({"message":"Could Not Find User. Please Login and Try Again."}, status=401)
+        print(user.phoneNum)
+        # send message to phone number
+        sentMessage = Util.SendSMS(user.phoneNum, f"An event occuring on: {request.data['eventDate']}, by the name of: {request.data['eventTitle']}. Has registered you for SMS notifications. REPLY CANCEL to stop notifications.")
+        if (not sentMessage):    
+            return Response({"message":"Confrimation message has not been sent but is still scheduled."},status=401)
+        
+        return Response(status=200)

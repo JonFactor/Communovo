@@ -12,6 +12,7 @@ class User(AbstractUser):
     profilePic = models.CharField(max_length=225, blank=True)
     description = models.CharField(max_length=225, default="nothing to see here")
     favColor = models.CharField(max_length=225, null="black")
+    phoneNum = models.CharField(max_length=50, null="", default="")
     
     username = None         # uses none due to login wanting to be handled by email not username
 

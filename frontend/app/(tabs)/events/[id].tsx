@@ -25,7 +25,11 @@ import {
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import { GetGroupViaId, IGroup } from "../../../functions/Groups";
-import { IUser, UserGetDetails } from "../../../functions/Auth";
+import {
+  IUser,
+  UserGetDetails,
+  UserPhoneNumberNotify,
+} from "../../../functions/Auth";
 import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
 import { Linker } from "../../../utils/Linker";
 import { GetWeatherData } from "../../../utils/Weather";
@@ -99,7 +103,11 @@ const eventDetailsPage = () => {
       userDetails.phoneNum !== null &&
       userDetails.phoneNum !== ""
     ) {
-      console.log("1234");
+      UserPhoneNumberNotify(
+        userDetails.phoneNum,
+        eventData.title,
+        eventData.date
+      );
       // send message...
     } else {
       // ask user to sign up...
@@ -123,7 +131,12 @@ const eventDetailsPage = () => {
             visible={userAddPhoneModal}
             className=" w-full h-screen bg-black"
           >
-            <UserAddPhoneModal eventId={readId}></UserAddPhoneModal>
+            <UserAddPhoneModal
+              eventId={readId}
+              parentSetter={setUserAddPhoneModal}
+              eventTitle={eventData.title}
+              eventDate={eventData.date}
+            ></UserAddPhoneModal>
           </Modal>
           <View className=" flex-row w-full">
             <TouchableOpacity

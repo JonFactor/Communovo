@@ -85,7 +85,28 @@ export const PasswordResetCode = async (code: string, password: string) => {
   return (await repsonse).status === 200;
 };
 
-export const UserPhoneNumberAdd = async (number: string): Promise<boolean> => {
-  const response = api.post("userAddPhoneNumber", { number });
+export const UserPhoneNumberAdd = async (
+  number: string,
+  eventTitle: string,
+  eventDate: string
+): Promise<boolean> => {
+  const response = api.post(`userAddPhoneNumber`, {
+    number,
+    eventTitle,
+    eventDate,
+  });
+  return (await response).status === 200;
+};
+
+export const UserPhoneNumberNotify = async (
+  number: string,
+  eventTitle: string,
+  eventDate: string
+) => {
+  const response = api.post("userPhoneNumberNotify", {
+    number,
+    eventTitle,
+    eventDate,
+  });
   return (await response).status === 200;
 };

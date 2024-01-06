@@ -2,17 +2,29 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Linker } from "../../utils/Linker";
 import { useState } from "react";
-import { UserPhoneNumberAdd } from "../../functions/Auth";
+import {
+  UserPhoneNumberAdd,
+  UserPhoneNumberNotify,
+} from "../../functions/Auth";
 
-export const UserAddPhoneModal = ({ eventId, parentSetter }) => {
+export const UserAddPhoneModal = ({
+  eventId,
+  parentSetter,
+  eventTitle,
+  eventDate,
+}) => {
   const [number, setNumber] = useState("");
   const handlePhoneNumberSubmit = async () => {
     if (number === "" || number === undefined) {
       return;
     }
-    const responseSuccess = await UserPhoneNumberAdd(number);
+    const responseSuccess = await UserPhoneNumberAdd(
+      number,
+      eventTitle,
+      eventDate
+    );
     if (responseSuccess) {
-      parentSetter(false);
+      UserPhoneNumberNotify(number, eventTitle, eventDate);
       Linker(`/events/${eventId}`);
     }
   };
@@ -21,7 +33,7 @@ export const UserAddPhoneModal = ({ eventId, parentSetter }) => {
       <View className=" flex-row w-full">
         <TouchableOpacity
           onPress={() => {
-            parentSetter(false);
+            // parentSetter(false);
             Linker(`/events/${eventId}`);
           }}
         >

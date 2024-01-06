@@ -1,4 +1,8 @@
 from django.core.mail import EmailMessage
+from sms import send_sms
+from googlevoice import Voice
+from twilio.rest import Client
+# from googlevoice import Voice
 
 class Util:
     @staticmethod
@@ -7,4 +11,32 @@ class Util:
             subject=data['emailSubject'], body=data['emailBody'], to=data['emailTo'], from_email="communovoapp@gmail.com"
         )
         email.send()
+    
+    @staticmethod
+    def SendSMS(number, message):
+        account_sid = 'AC5d2dc28208340b3c01746af367ad5101'
+        auth_token = '1a561bc58fc7b0d6ac5670fdfbcc0500'
+        client = Client(account_sid, auth_token)
+
+        messages = client.messages.create(
+        from_='+18336583627',
+        body=message,
+        to="+1" + number.replace("-", "")
+        )
+
+        if messages.status == "queued" :
+            return True
         
+        # voice.send_sms(phoneNumber, text)
+        return False
+        # number = number.replace("-", "")
+        # sent = send_sms(message,"+18143853288",  ["+1" + number])
+        # print(sent)
+        # return sent
+        # user = 'jon.factor2@gmail.com'
+        # password = 'VBBG9DAa1'
+        
+        # voice = Voice()
+        # voice.login(user, password)
+        # voice.send_sms(number, message)
+        # return True

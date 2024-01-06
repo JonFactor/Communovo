@@ -1,5 +1,6 @@
 from django.urls import path, include
-from .views import RegisterView, RequestPasswordResetEmailView,SearchDatabaseView, SetNewPasswordView, PasswordTokenValidateView, LoginView, UserView, LogoutView, LoginViaCookiesView, SetProfileView,  RelationshipCreateView, RelationshipViewView, UserViaIdView
+from .views import RegisterView, UserAddPhoneView,UserNotifyPhoneView, RequestPasswordResetEmailView,SearchDatabaseView, SetNewPasswordView, PasswordTokenValidateView, LoginView, UserView, LogoutView, LoginViaCookiesView, SetProfileView,  RelationshipCreateView, RelationshipViewView, UserViaIdView
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path("login", LoginView.as_view()),
@@ -17,7 +18,9 @@ urlpatterns = [
     path("requestPasswordReset", RequestPasswordResetEmailView.as_view(),
          name="requestPasswordReset"),
     path("passwordResetComplete", SetNewPasswordView.as_view(), name="SetNewPasswordView"),
-    path("searchAll", SearchDatabaseView.as_view())
+    path("searchAll", SearchDatabaseView.as_view()),
+    path("userAddPhoneNumber", UserAddPhoneView.as_view()),
+    path("userPhoneNumberNotify", UserNotifyPhoneView.as_view())
    # path("passwordResetForm", )
     #path("passwordReset", include('django_rest_passwordreset.urls', namespace='password_reset'))
 ]
