@@ -19,6 +19,7 @@ import AddUserModal from "../../../components/modals/AddUserModal";
 import { IGroup } from "../../../functions/Groups";
 import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
 import { Linker } from "../../../utils/Linker";
+import { InputMapInfo } from "../../../utils/Maps";
 
 const events = () => {
   const { getUserInfo } = useContext(AuthContext);
@@ -35,6 +36,7 @@ const events = () => {
   const [eventCoHosts, setEventCoHosts] = useState(Array<IUser>);
   const [eventGuests, setEventGuests] = useState(Array<IUser>);
   const [eventDate, setEventDate] = useState("");
+  const [eventRegion, setEventRegion] = useState(null);
 
   const [addUserModal, setAddUserModal] = useState(false);
   const [selectGroupModal, setSelectGroupModal] = useState(false);
@@ -64,12 +66,15 @@ const events = () => {
     if (eventTitle === "") {
       setWarning("Title is required");
       return false;
+    } else if (eventRegion === null) {
+      setWarning("Please set a location");
+      return false;
     } else if (eventDescription === "") {
       setWarning("Description is required");
       return false;
     } else if (eventImgs === null) {
-      // setWarning("Background required");
-      // return false;
+      setWarning("Background required");
+      return false;
     } else if (eventGroupId === null) {
       setEventGroupId(null);
     } else if (eventLocation === null) {
@@ -88,6 +93,9 @@ const events = () => {
     ) {
       setWarning("date must be real. (mm < 13, dd < 32, yyyy < 2024)");
       return false;
+    } else if (eventType === null) {
+      setWarning("Please set a cover image.");
+      return false;
     }
     return true;
   };
@@ -105,7 +113,6 @@ const events = () => {
       setIsLoading(false);
       return;
     }
-
     const imageKey = uuidv4();
     const img = await fetchImageFromUri(eventImgs);
     const imgPath = "events/" + imageKey;
@@ -117,9 +124,9 @@ const events = () => {
 
     let dateList = eventDate.split("/");
     const date = `${dateList[2]}-${dateList[0]}-${dateList[1]}`;
-    const catigory = eventType.join(", ");
-    const group = eventGroupId.toString();
-
+    const catigory = eventType.length > 0 ? eventType.join(", ") : "misc";
+    const group = eventGroupId !== null ? eventGroupId.toString() : "1";
+    const cords = JSON.stringify(eventRegion);
     const responseOk = await EventCreate(
       eventTitle,
       eventDescription,
@@ -127,11 +134,12 @@ const events = () => {
       catigory,
       eventLocation,
       imgPath,
-      group
+      group,
+      cords
     );
-
     if (!responseOk) {
       setIsLoading(false);
+      Linker("/home");
       return;
     }
 
@@ -275,7 +283,7 @@ const events = () => {
               <Image className=" flex-1" contentFit="cover" source={eventImgs}>
                 <TouchableOpacity
                   onPress={handleAddPhoto}
-                  className=" flex  bg-md-purple rounded-full aspect-square w-20 border-4 border-white ml-80 mt-44"
+                  className=" flex  bg-md-purple rounded-full aspect-square w-20 border-4 border-white ml-72 mt-44"
                 >
                   <View className=" p-4 flex-1 h-12 mt-1">
                     <Image
@@ -287,6 +295,7 @@ const events = () => {
                 </TouchableOpacity>
               </Image>
             </LinearGradient>
+            <View className=" w-full h-1 bg-md-purple" />
           </View>
           {}
           <View className=" flex ww-full">
@@ -295,17 +304,19 @@ const events = () => {
                 <Text className=" text-2xl text-red-400 flex">{warning}</Text>
               </View>
               <TextInput
-                className=" text-3xl"
+                autoCapitalize="none"
+                className=" text-3xl ml-4"
                 placeholder="Event Title"
                 value={eventTitle}
                 onChangeText={(text) => {
                   setEventTitle(text);
                 }}
               ></TextInput>
-              <View className=" w-3/4 bg-light-purple h-2 mt-4 " />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-4 " />
             </View>
             <View className=" mt-4">
               <TextInput
+                autoCapitalize="none"
                 className=" text-2xl ml-4 "
                 placeholder="Description"
                 multiline={true}
@@ -314,10 +325,11 @@ const events = () => {
                   setEventDesctiption(text);
                 }}
               ></TextInput>
-              <View className=" w-3/4 bg-light-purple h-2 mt-4" />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-4" />
             </View>
             <View className=" mt-2">
               <TextInput
+                autoCapitalize="none"
                 className=" text-2xl ml-4 "
                 placeholder="Date"
                 multiline={true}
@@ -326,19 +338,30 @@ const events = () => {
                   setEventDate(text);
                 }}
               ></TextInput>
-              <View className=" w-3/4 bg-light-purple h-2 mt-2" />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
             <View className=" mt-2">
               <TextInput
+                autoCapitalize="none"
                 className=" text-2xl ml-4 "
-                placeholder="Location"
+                placeholder="Location Name"
                 multiline={true}
                 value={eventLocation}
                 onChangeText={(text) => {
                   setEventLocation(text);
                 }}
               ></TextInput>
-              <View className=" w-3/4 bg-light-purple h-2 mt-2" />
+              <View className=" mt-4 flex-row ">
+                <View className=" mt-1 ml-4">
+                  <InputMapInfo regionSetter={setEventRegion}></InputMapInfo>
+                </View>
+                {eventRegion !== "null" &&
+                  eventRegion !== null &&
+                  eventRegion !== "" && (
+                    <View className="bg-green-400 w-10 mt-1 h-10 rounded-full ml-4" />
+                  )}
+              </View>
+              <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
             <View className=" mt-2">
               <View className="ml-4  flex-row">
@@ -346,7 +369,7 @@ const events = () => {
                 <ProfilePictureCard width={"12"} />
                 <Text className=" text-2xl mt-2 ml-2">{hostName}</Text>
               </View>
-              <View className=" w-3/4 bg-light-purple h-2 mt-2" />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
             <View className=" mt-2">
               <View className=" flex-row">
@@ -375,7 +398,7 @@ const events = () => {
                   </TouchableOpacity>
                 </ScrollView>
               </View>
-              <View className=" w-3/4 bg-light-purple h-2 mt-2" />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
             <View className=" mt-2">
               <View className=" flex-row">
@@ -404,7 +427,7 @@ const events = () => {
                   </TouchableOpacity>
                 </ScrollView>
               </View>
-              <View className=" w-3/4 bg-light-purple h-2 mt-2" />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
             <View className=" mt-2 flex">
               <View className=" flex-row">
@@ -431,7 +454,7 @@ const events = () => {
                   </TouchableOpacity>
                 </ScrollView>
               </View>
-              <View className=" w-3/4 bg-light-purple h-2 mt-2" />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
             <View className=" mt-2 flex">
               <View className=" flex-row">
@@ -467,7 +490,7 @@ const events = () => {
                   </TouchableOpacity>
                 </ScrollView>
               </View>
-              <View className=" w-3/4 bg-light-purple h-2 mt-2" />
+              <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
           </View>
           {}

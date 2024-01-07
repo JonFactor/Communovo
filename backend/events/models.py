@@ -12,6 +12,7 @@ class Event(models.Model):
     eventType = models.CharField(max_length=225, null="misc")
     eventGroup = models.ForeignKey("groups.Group", on_delete=models.CASCADE, default=None)
     coverImg = models.CharField(max_length=225, default="test.png")
+    regionCords = models.CharField(max_length=1000, default="null")
 
 class User2Event(models.Model):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)

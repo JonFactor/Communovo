@@ -27,12 +27,15 @@ class EventCreationView(APIView):
         
         eventGroupName = request.data.get('eventGroup')
         eventGroup = Group.objects.filter(title = eventGroupName).first()
-        eventGroupId = eventGroup.id
+        if Group.objects.filter(title = eventGroupName).exists():
+            eventGroupId = eventGroup.id
+        else:
+            eventGroupId = 1
         
         request.data.pop("eventGroup")
         request.data.update({"eventGroup": eventGroupId})
         
-        print(request.data) #['id', 'title', 'location', 'owner', 'date', 'eventType', 'eventGroup', 'coverImg']
+        print(request.data) #['id', 'title', 'location', 'owner', 'date', 'eventType', 'eventGroup', 'coverImg', 'regionCords']
         
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid() == False:

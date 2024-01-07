@@ -37,6 +37,7 @@ import { UserAddPhoneModal } from "../../../components/modals/UserAddPhoneModal"
 import { Notification } from "../../../utils/PushNotifications";
 import { Calendar } from "../../../utils/Calendar";
 import { OutputMapInfo } from "../../../utils/Maps";
+import NotificationMethodPickerModal from "../../../components/modals/NotificationMethodPickerModal";
 
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
@@ -48,6 +49,9 @@ const eventDetailsPage = () => {
   const [eventStaff, setEventStaff] = useState<Array<IUser>>(null);
   const [eventWeather, setEventWeather] = useState(null);
   const [userAddPhoneModal, setUserAddPhoneModal] = useState(false);
+  const [userNotificationSelectionModal, setUserNotificationSelectionModal] =
+    useState(false);
+  const [userNotificationMethods, setUserNotfificationMethods] = useState([]);
 
   useEffect(() => {
     const eventDetails = async () => {
@@ -98,27 +102,69 @@ const eventDetailsPage = () => {
   };
 
   const handleAddReminder = async () => {
-    const userDetails: IUser = await UserGetDetails();
-    if (
-      userDetails.phoneNum !== undefined &&
-      userDetails.phoneNum !== null &&
-      userDetails.phoneNum !== ""
-    ) {
-      // UserPhoneNumberNotify(
-      //   userDetails.phoneNum,
-      //   eventData.title,
-      //   eventData.date
-      // );
-      // send message...
-    } else {
-      // ask user to sign up...
-      setUserAddPhoneModal(true);
-    }
-
-    // add reminder to calender
-    Calendar();
-    // const { expoPushToken } = Notification();
+    // get user input on notificaiton methods...
+    setUserNotificationSelectionModal(true);
   };
+
+  useEffect(() => {
+    const sendNotifications = async () => {
+      const userDetails: IUser = await UserGetDetails();
+
+      const sendPhone = () => {
+        if (
+          userDetails.phoneNum !== undefined &&
+          userDetails.phoneNum !== null &&
+          userDetails.phoneNum !== ""
+        ) {
+          UserPhoneNumberNotify(
+            userDetails.phoneNum,
+            eventData.title,
+            eventData.date
+          );
+          // send message...
+        } else {
+          // ask user to sign up...
+          setUserAddPhoneModal(true);
+        }
+      };
+
+      const sendEmail = () => {
+        // send user and email
+      };
+
+      const sendCalendar = () => {
+        // send a calendar reminder
+      };
+
+      // convert list of strings too booleans
+      let notficationBooleans = { email: false, calender: false, phone: false };
+      for (let i = 0; i < userNotificationMethods.length; i++) {
+        if (userNotificationMethods[i] === "email") {
+          notficationBooleans.email = true;
+        } else if (userNotificationMethods[i] === "calender") {
+          notficationBooleans.calender = true;
+        } else if (userNotificationMethods[i] === "phone") {
+          notficationBooleans.phone = true;
+        }
+      }
+
+      if (notficationBooleans.email) {
+        sendEmail();
+      }
+
+      if (notficationBooleans.calender) {
+        sendCalendar();
+      }
+
+      if (notficationBooleans.phone) {
+        sendPhone();
+      }
+    };
+
+    if (userNotificationMethods.length > 0) {
+      sendNotifications();
+    }
+  }, [userNotificationMethods]);
 
   return (
     <ScrollView>
@@ -142,6 +188,12 @@ const eventDetailsPage = () => {
               eventTitle={eventData.title}
               eventDate={eventData.date}
             ></UserAddPhoneModal>
+          </Modal>
+          <Modal visible={userNotificationSelectionModal}>
+            <NotificationMethodPickerModal
+              parrentSetter={setUserNotificationSelectionModal}
+              notificationMethodsSetter={setUserNotfificationMethods}
+            />
           </Modal>
           <View className=" flex-row w-full">
             <TouchableOpacity
@@ -188,13 +240,25 @@ const eventDetailsPage = () => {
               <Text className=" ml-1 text-2xl">{eventData.eventType}</Text>
             </View>
             <View className=" flex-row">
-              <Text className="text-2xl">Locaiton: </Text>
-              <Text className=" ml-1 text-2xl">{eventData.location}</Text>
-              <OutputMapInfo></OutputMapInfo>
-            </View>
-            <View className=" flex-row">
               <Text className="text-2xl">Date: </Text>
               <Text className=" ml-1 text-2xl">{eventData.date}</Text>
+            </View>
+            <View className=" flex-row">
+              <Text className="text-2xl">Locaiton: </Text>
+              <Text className=" ml-1 text-2xl">{eventData.location}</Text>
+            </View>
+            {eventData.regionCords !== "null" ? (
+              <OutputMapInfo
+                location={eventData.location}
+                eventRegion={eventData.regionCords}
+              ></OutputMapInfo>
+            ) : (
+              <Text>No map data provided</Text>
+            )}
+
+            <View>
+              <Text className=" mt-4 text-2xl">Current Weather Conditions</Text>
+              <Text className=" text-xl mt-2 ml-4">{eventWeather}</Text>
             </View>
           </View>
           <View className=" mt-4">
@@ -234,12 +298,6 @@ const eventDetailsPage = () => {
                   );
                 })}
             </ScrollView>
-          </View>
-          <View>
-            <Text className=" ml-6 mt-4 text-2xl">
-              Current Weather Conditions
-            </Text>
-            <Text className=" text-xl mt-4 ml-4">{eventWeather}</Text>
           </View>
           <TouchableOpacity
             className=" bg-green-500 w-screen mt-8 h-12 flex items-center"

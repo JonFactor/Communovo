@@ -11,6 +11,7 @@ export interface IEvent {
   eventType: string;
   location: string;
   coverImg: string;
+  regionCords: string;
 }
 
 export const EventCreate = async (
@@ -20,7 +21,8 @@ export const EventCreate = async (
   eventType: string,
   location: string,
   coverImg: string,
-  eventGroup: string
+  eventGroup: string,
+  regionCords: string
   // coverImg: string
 ) => {
   const response = api.post("eventCreate", {
@@ -31,6 +33,7 @@ export const EventCreate = async (
     location,
     coverImg,
     eventGroup,
+    regionCords,
   });
   return (await response).status === 200;
 };

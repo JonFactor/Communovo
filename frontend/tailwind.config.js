@@ -15,7 +15,8 @@ module.exports = {
   './app/(tabs)/discover/[name].tsx',
   "./app/(tabs)/accountRecovery/index.tsx",
   "./app/(tabs)/profile/[id].tsx",
-  "./app/(tabs)/profile/*.{tsx}"
+  "./app/(tabs)/profile/*.tsx",
+  "./components/modals/*.tsx"
 ],
   theme: {
     extend: {
