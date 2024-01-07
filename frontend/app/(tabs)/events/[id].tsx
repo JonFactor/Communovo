@@ -78,9 +78,11 @@ const eventDetailsPage = () => {
         setEventStaff(responseStaff);
       }
 
-      const responseWeather = await GetWeatherData(content.location);
+      const responseWeather = await GetWeatherData(
+        JSON.parse(content.regionCords)
+      );
       if (responseWeather !== null) {
-        setEventWeather(responseWeather.message);
+        setEventWeather(responseWeather);
       }
     };
 
