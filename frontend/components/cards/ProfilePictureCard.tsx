@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { AuthContext } from "../../context/AuthContext";
 import { UserViaId } from "../../functions/Auth";
-import { Storage } from "aws-amplify";
+import { Storage, StorageClass } from "aws-amplify";
 
 import useSWR from "swr";
 
@@ -20,9 +20,12 @@ const ProfilePictureCard = ({
     const profilePicSelf = async () => {
       if (passedPic !== null) {
         setUserProfilePic(passedPic);
+        return;
       }
-      const Profile = await getUserProfilePhoto();
-      setUserProfilePic(Profile);
+      const profile = await getUserProfilePhoto();
+      // const image = await Storage.get(Profile.)\
+
+      setUserProfilePic(profile);
     };
 
     const profilePicOther = async () => {

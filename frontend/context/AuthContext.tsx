@@ -133,17 +133,11 @@ export const AuthProvider = ({ children }) => {
     }
 
     userPhotoUri = userInfo.profilePic;
-
-    if (
-      userPhotoUri.includes("h") &&
-      userPhotoUri.includes("t") &&
-      userPhotoUri.includes("t") &&
-      userPhotoUri.includes("p")
-    ) {
+    if (userPhotoUri.includes("http:")) {
       setUserProfilePic(userPhotoUri);
       return userPhotoUri;
     }
-
+    userPhotoUri = "profile/" + userPhotoUri;
     const photo: string = await Storage.get(userPhotoUri);
 
     setIsLoading(false);
@@ -159,7 +153,7 @@ export const AuthProvider = ({ children }) => {
 
     const img = await fetchImageFromUri(image["assets"][0]["uri"]);
 
-    const imageStoreageResult = await Storage.put(imgPath, img, {
+    await Storage.put(imgPath, img, {
       level: "public",
       contentType: img.type,
     });
@@ -171,12 +165,14 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
         return false;
       }
+
       oldUser = userInfo.profilePic;
       userId = userInfo.id;
 
       const responseOk = await UserUpdateProfile(imageKey, userId.toString());
+      setIsLoading(false);
+      return responseOk;
     }
-
     const userIdConvert: string = userId.toString();
 
     const responseSuccess = await UserUpdateProfile(

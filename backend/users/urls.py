@@ -11,7 +11,7 @@ urlpatterns = [
     path("createRelationship",RelationshipCreateView.as_view() ),
     path("userViaId", UserViaIdView.as_view()),
     path("register", RegisterView.as_view()),
-    path("setProfile", RegisterView.as_view()),
+    path("setProfile", SetProfileView.as_view()),
     # password resset
     path("passwordReset", PasswordTokenValidateView.as_view(),
          name='passwordResetConfrim'),

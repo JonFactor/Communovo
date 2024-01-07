@@ -45,6 +45,7 @@ const home = () => {
     const setUser = async () => {
       const userD = await getUserInfo(); // .then((response) => {
       setUserData(userD);
+      console.log(userD);
       if (userD === null) {
         setGotoLogin(true);
       }
@@ -52,7 +53,6 @@ const home = () => {
     };
 
     setUser();
-    console.log(userData); // use the user data
   }, []);
 
   useEffect(() => {

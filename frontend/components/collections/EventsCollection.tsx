@@ -66,7 +66,6 @@ const EventsCollection = ({
       content = await EventsGetAll(...params);
 
       setEventData(content);
-      console.log(content);
     };
 
     getEventData();
@@ -109,7 +108,6 @@ const EventsCollection = ({
                 const day = date.split("-")[1];
                 const month = date.split("-")[2];
                 const isFiltered = handleIsFiltered(eventType);
-
                 if (isFiltered) {
                   return (
                     <View key={index} className=" mt-4 w-screen  flex">

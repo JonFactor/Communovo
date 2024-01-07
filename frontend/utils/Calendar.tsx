@@ -2,8 +2,6 @@ import * as calendar from "expo-calendar";
 
 export const Calendar = async () => {
   const { status } = await calendar.requestCalendarPermissionsAsync();
-
-  console.log(status);
 };
 
 async function getDefaultCalendarSource() {
@@ -20,7 +18,6 @@ const addEventToCalendar = async (
   try {
     const { status } = await calendar.requestCalendarPermissionsAsync();
     if (status === "granted") {
-      //console.log('Permissions granted. Fetching available calendars...')
       const calendars = await calendar.getCalendarsAsync(
         calendar.EntityTypes.EVENT
       );
@@ -35,12 +32,12 @@ const addEventToCalendar = async (
           allDay: false,
           location,
         };
-        //console.log('eventConfig:', eventConfig)
+
         const eventId = await calendar.createEventAsync(
           defaultCalendar.id,
           eventConfig
         );
-        //console.log(eventId)
+
         alert("Success");
       } else {
         console.warn("No available calendars found.");

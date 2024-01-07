@@ -16,6 +16,7 @@ import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import { Redirect } from "expo-router";
 import { Linker } from "../../../utils/Linker";
+import AppInfoModal from "../../../components/modals/AppInfoModal";
 
 const profile = () => {
   const { logout, getUserInfo, getUserProfilePhoto, setUserProfilePhoto } =
@@ -30,6 +31,7 @@ const profile = () => {
   const [userId, setUserId] = useState(null);
   const [menuModal, setMenuModal] = useState(false);
   const [redirectLogin, setRedirectLogin] = useState(false);
+  const [appInfoModalDisplay, setAppInfoModalDisplay] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -65,10 +67,10 @@ const profile = () => {
       allowsEditing: true,
       quality: 1,
     });
-
-    await fetchImageFromUri(result).then((result) => {
-      setUserProfilePic(result);
+    await fetchImageFromUri(result.assets[0].uri).then((response) => {
+      setUserProfilePic(response);
     });
+    setUserProfilePhoto(result);
   };
 
   const fetchImageFromUri = async (uri) => {
@@ -103,14 +105,17 @@ const profile = () => {
   };
   return (
     <ScrollView className=" mt-20">
+      <Modal visible={appInfoModalDisplay}>
+        <AppInfoModal parrentSetter={setAppInfoModalDisplay} />
+      </Modal>
       {redirectLogin && <Redirect href="/login"></Redirect>}
       {menuModal && (
-        <View className=" bg-transparent w-full h-16 flex-row ml-12">
+        <View className=" bg-transparent w-full h-16 flex-row ml-4">
           <TouchableOpacity
             className="p-1 px-3 bg-md-blue rounded-md"
-            onPress={() => Linker("/register")}
+            onPress={() => setAppInfoModalDisplay(true)}
           >
-            <Text className=" text-xl">Edit</Text>
+            <Text className=" text-xl">App Info</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="p-1 px-3 bg-md-blue rounded-md ml-12"

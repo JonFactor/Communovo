@@ -33,7 +33,6 @@ const EventCard = ({
   ];
 
   const [image, setImage] = useState(null);
-
   useEffect(() => {
     const getBackround = async () => {
       let signedUrl = await Storage.get(imagePath);

@@ -29,9 +29,6 @@ const uploadImage = async (useLibrary: Boolean) => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
       });
     }
-    if (!result.canceled) {
-      .log(result.assets[0].uri, "Test");
-    }
   };
 
   await ensureDirExists();

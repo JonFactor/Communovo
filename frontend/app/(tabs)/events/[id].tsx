@@ -77,7 +77,6 @@ const eventDetailsPage = () => {
       if (responseWeather !== null) {
         setEventWeather(responseWeather.message);
       }
-      console.log(responseWeather);
     };
 
     eventDetails();
@@ -119,7 +118,6 @@ const eventDetailsPage = () => {
     // add reminder to calender
     Calendar();
     // const { expoPushToken } = Notification();
-    // console.log(expoPushToken);
   };
 
   return (
