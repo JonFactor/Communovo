@@ -24,7 +24,7 @@ class Util:
         to="+1" + number.replace("-", "")
         )
 
-        if messages.status == "queued" :
+        if messages.status == "queued":
             return True
         
         # voice.send_sms(phoneNumber, text)

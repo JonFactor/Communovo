@@ -38,6 +38,7 @@ import { Notification } from "../../../utils/PushNotifications";
 import { Calendar } from "../../../utils/Calendar";
 import { OutputMapInfo } from "../../../utils/Maps";
 import NotificationMethodPickerModal from "../../../components/modals/NotificationMethodPickerModal";
+import { SendUserEmail } from "../../../functions/Misc";
 
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
@@ -130,6 +131,10 @@ const eventDetailsPage = () => {
 
       const sendEmail = () => {
         // send user and email
+        SendUserEmail(
+          `An event intitled: ${eventData.title}. Is coming up soon on the date: ${eventData.date}. This is an automatic reminder, if you do not wish for the reminders to continue reply with STOP.`,
+          "Reminder for an upcoming Event"
+        );
       };
 
       const sendCalendar = () => {

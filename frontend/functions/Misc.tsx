@@ -7,3 +7,8 @@ export const SearchAllDB = async (search) => {
   const response = api.post("searchAll", { search });
   return (await response).data;
 };
+
+export const SendUserEmail = async (emailBody, emailHeader) => {
+  const response = api.post("sendSelfEmail", { emailBody, emailHeader });
+  return (await response).status === 200;
+};

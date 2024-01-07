@@ -331,3 +331,13 @@ class UserNotifyPhoneView(APIView):
         
         User2Event.objects.filter(user=user.id, event=Event.objects.filter(title=request.data["eventTitle"]).first()).update({"hasBeenNotified":True})
         return Response(status=200)
+    
+class SendSelfEmailView(APIView):
+    def post(self, request):
+        user = getUser(request=request)
+        
+        emailSent = Util.SendEmail({"subject":request.data["emailHeader"], 'body':request.data["emailBody"], "to":user.email})
+        
+        if emailSent:
+            return Response({"message":"Email has been sent"}, status=200)
+        return Response({"message":"Email has not been sent, please try again"}, status=401)
