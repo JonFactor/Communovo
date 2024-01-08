@@ -27,7 +27,7 @@ const ProfileHorizontal = ({ profile, goToProfile }) => {
         className=" flex-row ml-2"
         onPress={() => {
           if (goToProfile) {
-            Linker(`profile/${profile.name}`);
+            Linker(`profile/${profile.id}`);
           }
         }}
       >

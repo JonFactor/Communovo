@@ -37,10 +37,7 @@ const OtherProfile = () => {
       if (content == null) {
         return <Redirect href={"/login"}></Redirect>;
       }
-      const profilePic = await getUserProfilePhoto(
-        (viaId = true),
-        (userId = content.id)
-      );
+      const profilePic = await getUserProfilePhoto(true, content.id.toString());
       setUserProfilePic(profilePic);
 
       setUserData(content);
@@ -51,7 +48,10 @@ const OtherProfile = () => {
     <ScrollView className=" flex w-full">
       <Stack.Screen options={{ headerShown: false }} />
       <View className=" flex w-full mt-12 ">
-        <TouchableOpacity className=" flex p-2" onPress={() => Linker("/home")}>
+        <TouchableOpacity
+          className=" flex p-2"
+          onPress={() => Linker("/profile")}
+        >
           <Text className=" text-2xl text-red-400 font-semibold">Exit</Text>
         </TouchableOpacity>
         <View className=" w-5/6 flex items-center ml-10">
@@ -59,9 +59,11 @@ const OtherProfile = () => {
             {userProfilePic !== null && <ProfilePictureCard width={"36"} />}
           </View>
           <View className=" mt-2 items-center w-full">
-            <Text className=" flex text-3xl font-bold ">{userData.name}</Text>
+            <Text className=" flex text-3xl font-bold ">
+              {userData !== undefined && userData.name}
+            </Text>
             <Text className=" text-md w-5/6 font-semibold text-gray-500 text-center">
-              {userData.description}
+              {userData !== undefined && userData.description}
             </Text>
           </View>
         </View>

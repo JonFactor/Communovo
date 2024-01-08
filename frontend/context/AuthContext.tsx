@@ -22,7 +22,7 @@ interface IAuthContextProps {
   logout: (sendToBackend: boolean) => Promise<boolean>;
   isLoading: boolean;
   getUserInfo: () => Promise<IUser>;
-  getUserProfilePhoto: () => Promise<String>;
+  getUserProfilePhoto: (viadId: boolean, userId: string) => Promise<String>;
   setUserProfilePhoto: (image, userId?: number) => Promise<boolean>;
   isLoggedIn: () => Promise<boolean>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;

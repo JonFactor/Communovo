@@ -13,6 +13,7 @@ interface params {
   baisedOnGroup: boolean;
   groupTitle: string;
   justSmallCards: boolean;
+  counterSetter?: (params) => void;
 }
 
 const EventsCollection = ({
@@ -24,6 +25,7 @@ const EventsCollection = ({
   baisedOnGroup,
   groupTitle,
   justSmallCards,
+  counterSetter = (params) => {},
 }: params) => {
   // pull events from db
   const [smallCards, setSmallCards] = useState(false);
@@ -59,12 +61,13 @@ const EventsCollection = ({
         ).then((response) => {
           return response;
         });
+        console.log(content, groupTitle);
       } else {
         params = [];
       }
 
       content = await EventsGetAll(...params);
-
+      counterSetter(content.length);
       setEventData(content);
     };
 

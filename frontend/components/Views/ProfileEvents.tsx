@@ -2,10 +2,14 @@ import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import EventsCollection from "../collections/EventsCollection";
+import { EventsGetAll, IEvent } from "../../functions/Events";
+import EventCard from "../cards/EventCard";
 
-const ProfileEvents = () => {
+const ProfileEvents = ({ groupName }) => {
   const [isSelectedDis, setIsSelectedDis] = useState(false);
   const [isSelectedLik, setIsSelectedLik] = useState(false);
+  const [eventData, setEventData] = useState(Array<IEvent> || undefined);
+
   const handleDislikeClick = () => {
     if (isSelectedDis) {
       setIsSelectedDis(false);
@@ -26,6 +30,22 @@ const ProfileEvents = () => {
     }
   };
 
+  useEffect(() => {
+    const getEvents = async () => {
+      const content = await EventsGetAll(
+        isSelectedDis,
+        isSelectedLik,
+        false,
+        false,
+        ""
+      ).then((response) => {
+        return response;
+      });
+
+      setEventData(content);
+    };
+    getEvents();
+  }, [isSelectedDis, isSelectedLik]);
   // useEffect(() => {
 
   // }, [isSelectedDis, isSelectedLik])
@@ -64,28 +84,28 @@ const ProfileEvents = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      {isSelectedDis ? (
-        <EventsCollection
-          filters={[]}
-          noFilter={true}
-          isOnlyLiked={false}
-          isOnlyDisliked={true}
-        />
-      ) : isSelectedLik ? (
-        <EventsCollection
-          filters={[]}
-          noFilter={true}
-          isOnlyLiked={true}
-          isOnlyDisliked={false}
-        />
-      ) : (
-        <EventsCollection
-          filters={[]}
-          noFilter={true}
-          isOnlyLiked={false}
-          isOnlyDisliked={false}
-        />
-      )}
+      {eventData !== undefined &&
+        eventData.length > 0 &&
+        eventData.map(
+          ({ date, eventType, location, title, id, coverImg }, index) => {
+            const day = date.split("-")[1];
+            const month = date.split("-")[2];
+            return (
+              <View key={index} className=" mt-4  flex">
+                <EventCard
+                  title={title}
+                  day={day}
+                  month={month}
+                  location={location}
+                  id={id}
+                  imagePath={coverImg}
+                  eventType={eventType}
+                  justSmallCards={false}
+                />
+              </View>
+            );
+          }
+        )}
     </View>
   );
 };

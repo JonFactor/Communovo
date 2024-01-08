@@ -26,7 +26,8 @@ import { Linker } from "../../../utils/Linker";
 
 const CatigoryDetailsPage = () => {
   const { name } = useLocalSearchParams();
-  const nameTyped: string = name.toString();
+  const nameString: string = name.toString().replace("%20", " ");
+  console.log(nameString);
 
   const { getUserInfo } = useContext(AuthContext);
 
@@ -39,7 +40,7 @@ const CatigoryDetailsPage = () => {
 
   useEffect(() => {
     const loadGroupData = async () => {
-      const response = await GetGroupDetails(nameTyped);
+      const response = await GetGroupDetails(nameString);
 
       if (response != null) {
         setGroupData(response);
@@ -47,14 +48,14 @@ const CatigoryDetailsPage = () => {
     };
 
     const loadGroupMembers = async () => {
-      const responseAll = await GetGroupMembers(nameTyped, false);
+      const responseAll = await GetGroupMembers(nameString, false);
 
       if (responseAll != null) {
         setGroupPeople(responseAll);
         setMemberCount(responseAll.length + memberCount);
       }
 
-      const responseStaff = await GetGroupMembers(nameTyped, true);
+      const responseStaff = await GetGroupMembers(nameString, true);
       if (responseStaff != null) {
         setGroupStaff(responseStaff);
         setMemberCount(responseStaff.length + memberCount);
@@ -80,14 +81,14 @@ const CatigoryDetailsPage = () => {
 
     const responseOk = await AddUserToGroupView(
       user.email,
-      nameTyped,
+      nameString,
       false,
       false,
       true,
       false
     );
     if (responseOk) {
-      Linker("/home");
+      Linker("/discover");
     }
   };
 
@@ -101,17 +102,19 @@ const CatigoryDetailsPage = () => {
             <TouchableOpacity
               className=""
               onPress={() => {
-                Linker("/home");
+                Linker("/discover");
               }}
             >
               <Text className=" text-red-400 text-xl">exit</Text>
             </TouchableOpacity>
             <Text
               className={` ${
-                name !== undefined && name.length > 12 ? "text-2xl" : "text-3xl"
+                nameString !== undefined && nameString.length > 12
+                  ? "text-2xl"
+                  : "text-3xl"
               }`}
             >
-              {name}
+              {nameString}
             </Text>
           </View>
           <View className=" absolute inset-y-0 right-12">
@@ -188,11 +191,18 @@ const CatigoryDetailsPage = () => {
           <Text className=" text-white text-2xl">Become A Member Today!</Text>
         </TouchableOpacity>
       </View>
-      <View className=" mt-4">
+      <View className=" mt-4 ml-2">
         <Text className=" text-4xl ml-8 mt-4">Events</Text>
         <EventsCollection
           baisedOnGroup={true}
-          groupTitle={name.toString()}
+          groupTitle={nameString}
+          filters={[]}
+          noFilter={true}
+          isOnlyDisliked={false}
+          excludeDisliked={false}
+          isOnlyLiked={false}
+          justSmallCards={false}
+          counterSetter={setEventCount}
         ></EventsCollection>
       </View>
     </ScrollView>
