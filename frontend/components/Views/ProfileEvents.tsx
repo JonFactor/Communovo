@@ -5,7 +5,7 @@ import EventsCollection from "../collections/EventsCollection";
 import { EventsGetAll, IEvent } from "../../functions/Events";
 import EventCard from "../cards/EventCard";
 
-const ProfileEvents = ({ groupName }) => {
+const ProfileEvents = () => {
   const [isSelectedDis, setIsSelectedDis] = useState(false);
   const [isSelectedLik, setIsSelectedLik] = useState(false);
   const [eventData, setEventData] = useState(Array<IEvent> || undefined);

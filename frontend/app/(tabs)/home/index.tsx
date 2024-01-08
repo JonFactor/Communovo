@@ -16,6 +16,7 @@ import router from "../../../common/routerHook";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
 import EventOrGroupCreation from "../../../components/modals/EventOrGroupCreation";
 import { Linker } from "../../../utils/Linker";
+import FilteredEvents from "../../../components/Views/FilteredEvents";
 
 export const FilterContext = createContext(null);
 
@@ -62,6 +63,7 @@ const home = () => {
   }, [gotoLogin]);
 
   const handleFilterBtnPress = (index: number) => {
+    console.log(index);
     if (!currentFilter.includes(groupTypes[index])) {
       setCurrentFilter((currentFilter) => [
         ...currentFilter,
@@ -102,39 +104,7 @@ const home = () => {
             <ProfilePictureCard width={"20"} />
           </View>
         </View>
-        <ScrollView
-          horizontal
-          indicatorStyle="white"
-          className=" flex-row mx-2 space-x-4 mt-24 absolute"
-        >
-          <TouchableOpacity
-            className={` w-10 aspect-square rounded-full items-center ${
-              currentFilter.length < 1
-                ? "bg-md-purple"
-                : "border-2 border-solid border-black"
-            }`}
-            onPress={() => setCurrentFilter([])}
-          >
-            <Text className=" text-lg p-1 font-semibold"> All </Text>
-          </TouchableOpacity>
-          {groupTypes.map((value: string, index: number, array: string[]) => (
-            <TouchableOpacity
-              className={` px-3 rounded-full
-              items-center ${
-                currentFilter.includes(groupTypes[index])
-                  ? "bg-md-blue"
-                  : "border-gray-500 border-solid border-2"
-              }`}
-              key={index}
-              onPress={() => {
-                handleFilterBtnPress(index);
-              }}
-            >
-              <Text className=" mt-1 text-lg">{value}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <View className=" mt-16 ml-4 flex-row">
+        <View className=" mt-4 ml-4 flex-row">
           <TouchableOpacity
             className=" w-14 aspect-square rounded-full bg-md-purple flex"
             onPress={() => {
@@ -145,18 +115,7 @@ const home = () => {
           </TouchableOpacity>
           <Text className=" text-2xl mt-2 ml-4">{randomizedPostMessage}</Text>
         </View>
-        <View className=" w-full h-full">
-          <EventsCollection
-            filters={currentFilter}
-            noFilter={false}
-            excludeDisliked={true}
-            isOnlyLiked={false}
-            isOnlyDisliked={false}
-            baisedOnGroup={false}
-            justSmallCards={false}
-            groupTitle=""
-          />
-        </View>
+        <FilteredEvents />
       </ScrollView>
     </View>
   );

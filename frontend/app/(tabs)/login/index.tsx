@@ -62,7 +62,7 @@ const LoginPage = () => {
       );
       const responseOk = await getUserInfo();
       if (responseOk) {
-        Linker("/home");
+        router.replace("/home");
         return;
       }
     }
@@ -81,7 +81,7 @@ const LoginPage = () => {
 
     loginViaCookies(cookie);
 
-    Linker("/home");
+    router.replace("/home");
   };
 
   const handleSignUpClick = () => {

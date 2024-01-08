@@ -44,7 +44,7 @@ const profile = () => {
       setUserName(content.name);
       setUserId(content.id);
 
-      const profilePic = await getUserProfilePhoto();
+      const profilePic = await getUserProfilePhoto(false, "");
       setUserProfilePic(profilePic);
 
       const follows = await FindFollowing(content.email);
