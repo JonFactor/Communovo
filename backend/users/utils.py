@@ -14,8 +14,8 @@ class Util:
     
     @staticmethod
     def SendSMS(number, message):
-        account_sid = 'AC5d2dc28208340b3c01746af367ad5101'
-        auth_token = '1a561bc58fc7b0d6ac5670fdfbcc0500'
+        account_sid = 'AC7419928e770d2a5045a91656e403fa36'
+        auth_token = '3921c91e53be452867fa92e43c968005'
         client = Client(account_sid, auth_token)
 
         messages = client.messages.create(

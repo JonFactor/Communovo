@@ -336,8 +336,6 @@ class SendSelfEmailView(APIView):
     def post(self, request):
         user = getUser(request=request)
         
-        emailSent = Util.SendEmail({"subject":request.data["emailHeader"], 'body':request.data["emailBody"], "to":user.email})
+        emailSent = Util.SendEmail({"emailSubject":request.data["emailHeader"], 'emailBody':request.data["emailBody"], "emailTo":[user.email]})
         
-        if emailSent:
-            return Response({"message":"Email has been sent"}, status=200)
-        return Response({"message":"Email has not been sent, please try again"}, status=401)
+        return Response({"message":"Email has been sent"}, status=200)

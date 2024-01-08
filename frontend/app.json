@@ -6,25 +6,27 @@
     },
     "plugins": [
       [
+        "expo-calendar",
+        {
+          "calendarPermission": "Allow Communovo To Access Your Calendar",
+          "NSCalendarsFullaccessUsageDescription": "Allow Communovo to Acces Your Calendar"
+        }
+      ],
+      [
         "expo-image-picker",
         {
           "photosPermission": "Select and Upload Images",
           "cameraPermission": "Allow Communivo to Access your camera"
         }
       ],
-      "expo-router",
-      [
-        "expo-calendar",
-        {
-          "calendarPermission": "Allow Communovo To Access Your Calendar"
-        }
-      ]
+      "expo-router"
     ],
     "name": "frontend",
     "slug": "frontend",
     "ios": {
       "bundleIdentifier": "com.anonymous.frontend",
-      "config": {"googleMapsApiKey": "AIzaSyCS_zdjnBorQw1PsbhVtsPdTSV1ia9o-_Y"}
+      "config": {"googleMapsApiKey": "AIzaSyCS_zdjnBorQw1PsbhVtsPdTSV1ia9o-_Y"},
+      "infoPlist": {"NSCalendarsFullaccessUsageDescription": "Allow Communovo To Access Your Calendar"}
     },
     "extra": {
       "router": {

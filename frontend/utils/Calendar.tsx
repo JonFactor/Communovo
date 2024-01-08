@@ -9,10 +9,10 @@ async function getDefaultCalendarSource() {
   return defaultCalendar.source;
 }
 
-const addEventToCalendar = async (
+export const AddEventToCalendar = async (
   title: string,
-  startDate: Date,
-  endDate: Date,
+  startDate,
+  endDate,
   location: string
 ) => {
   try {

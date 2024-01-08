@@ -35,7 +35,7 @@ import { Linker } from "../../../utils/Linker";
 import { GetWeatherData } from "../../../utils/Weather";
 import { UserAddPhoneModal } from "../../../components/modals/UserAddPhoneModal";
 import { Notification } from "../../../utils/PushNotifications";
-import { Calendar } from "../../../utils/Calendar";
+import { AddEventToCalendar, Calendar } from "../../../utils/Calendar";
 import { OutputMapInfo } from "../../../utils/Maps";
 import NotificationMethodPickerModal from "../../../components/modals/NotificationMethodPickerModal";
 import { SendUserEmail } from "../../../functions/Misc";
@@ -109,6 +109,7 @@ const eventDetailsPage = () => {
     setUserNotificationSelectionModal(true);
   };
 
+  // baiscally under handle add reminder
   useEffect(() => {
     const sendNotifications = async () => {
       const userDetails: IUser = await UserGetDetails();
@@ -140,20 +141,24 @@ const eventDetailsPage = () => {
       };
 
       const sendCalendar = () => {
-        // send a calendar reminder
+        // send a calendar reminder TODO fix the expo perm error
+        // AddEventToCalendar("test", Date.now, Date.now, "my place");
       };
 
       // convert list of strings too booleans
       let notficationBooleans = { email: false, calender: false, phone: false };
       for (let i = 0; i < userNotificationMethods.length; i++) {
-        if (userNotificationMethods[i] === "email") {
+        if (userNotificationMethods[i] === "Email") {
           notficationBooleans.email = true;
-        } else if (userNotificationMethods[i] === "calender") {
+        } else if (userNotificationMethods[i] === "Calender Event") {
           notficationBooleans.calender = true;
-        } else if (userNotificationMethods[i] === "phone") {
-          notficationBooleans.phone = true;
         }
+        // } else if (userNotificationMethods[i] === "Text") {
+        //   notficationBooleans.phone = true;
+        // }
       }
+
+      console.log(notficationBooleans);
 
       if (notficationBooleans.email) {
         sendEmail();
@@ -168,10 +173,14 @@ const eventDetailsPage = () => {
       }
     };
 
-    if (userNotificationMethods.length > 0) {
+    if (
+      userNotificationMethods.length > 0 &&
+      userNotificationSelectionModal === false
+    ) {
+      console.log(userNotificationMethods);
       sendNotifications();
     }
-  }, [userNotificationMethods]);
+  }, [userNotificationSelectionModal]);
 
   return (
     <ScrollView>
