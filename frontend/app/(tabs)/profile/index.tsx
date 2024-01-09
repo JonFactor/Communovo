@@ -48,6 +48,7 @@ const profile = () => {
       setUserProfilePic(profilePic);
 
       const follows = await FindFollowing(content.email);
+      console.log(follows);
       if (follows === null) {
       } else {
         for (let i = 0; i < follows.length; i++) {
@@ -236,9 +237,9 @@ const profile = () => {
             <GroupCollection />
           ) : (
             <View className=" mt-4">
-              {following === null || following.map === undefined ? (
-                <View>
-                  <Text>Nothing to see here</Text>
+              {following === null || following.length < 1 ? (
+                <View className=" w-full items-center flex">
+                  <Text className=" text-xl">Nothing to see here</Text>
                 </View>
               ) : (
                 <View>
@@ -247,6 +248,7 @@ const profile = () => {
                       <TouchableOpacity
                         className=" bg-gray-200 w-full h-20 rounded-full p-2 mt-4"
                         key={index}
+                        onPress={() => Linker(`/profile/${value.id}`)}
                       >
                         <View className=" flex-row space-x-8 ">
                           <View className=" mt-2 ml-2">

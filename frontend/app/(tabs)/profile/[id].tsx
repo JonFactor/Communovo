@@ -18,7 +18,11 @@ import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
 import useSWR from "swr";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
-import { IUser, UserViaId } from "../../../functions/Auth";
+import {
+  IUser,
+  User2UserStatusChange,
+  UserViaId,
+} from "../../../functions/Auth";
 import { AuthContext } from "../../../context/AuthContext";
 
 const OtherProfile = () => {
@@ -44,6 +48,14 @@ const OtherProfile = () => {
     };
     GetUserProfile();
   }, []);
+
+  const handleUnfollow = async () => {
+    const response = await User2UserStatusChange(userData.id, false);
+  };
+
+  const handleFollow = async () => {
+    const response = await User2UserStatusChange(userData.id, true);
+  };
   return (
     <ScrollView className=" flex w-full">
       <Stack.Screen options={{ headerShown: false }} />
@@ -70,20 +82,20 @@ const OtherProfile = () => {
         {
           // messageing and following is not yet finished, set to true when feature functional
         }
-        {false && (
+        {true && (
           <View className=" flex-col mt-4 w-full items-center  flex">
             <View className=" flex-row mt-4">
               <TouchableOpacity
                 className=" rounded-full border-[3px] border-light-blue py-2 px-10"
-                // onPress={handleMessageUser}
+                onPress={handleUnfollow}
               >
                 <Text className=" text-xl font-semibold text-light-blue">
-                  Message
+                  remove
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 className=" rounded-full bg-light-blue py-3 px-14 ml-3"
-                // onPress={handleFollowUser}
+                onPress={handleFollow}
               >
                 <Text className=" text-xl text-white font-semibold">
                   Follow
@@ -137,7 +149,7 @@ const OtherProfile = () => {
         <View className=" w-5/6 h-1 bg-md-purple rounded-lg ml-8 mt-1" />
         <View className=" mx-4">
           {navSelected === 0 ? (
-            <ProfileEvents />
+            <ProfileEvents showLikedDisliked={false} />
           ) : navSelected === 1 ? (
             <GroupCollection />
           ) : (

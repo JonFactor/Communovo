@@ -26,7 +26,7 @@ const ProfileHorizontal = ({ profile, goToProfile }) => {
       <TouchableOpacity
         className=" flex-row ml-2"
         onPress={() => {
-          if (goToProfile) {
+          if (goToProfile && profile.id !== undefined) {
             Linker(`profile/${profile.id}`);
           }
         }}

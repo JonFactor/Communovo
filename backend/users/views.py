@@ -191,8 +191,9 @@ class RelationshipViewView(APIView):
             listOfFollowing = UserRelationships.objects.filter(firstUser=user.id, isBlocked=True)
         else:
             listOfFollowing = UserRelationships.objects.all()
-            
+        print(listOfFollowing, "1235")
         serializer = UserRelationshipSerializer(listOfFollowing, many=True)
+        print(serializer.data)
         return(Response(data=serializer.data))
     # return a list of all the ids of who the user is following | take in user cookies (defualt)
 
@@ -339,3 +340,22 @@ class SendSelfEmailView(APIView):
         emailSent = Util.SendEmail({"emailSubject":request.data["emailHeader"], 'emailBody':request.data["emailBody"], "emailTo":[user.email]})
         
         return Response({"message":"Email has been sent"}, status=200)
+    
+class User2userStatusChangeView(APIView):
+    def post(self, request):
+        user = getUser(request=request)
+        
+        isFollow = request.data['isFollow']
+        userId = request.data['userId']
+        
+        hasRecord = UserRelationships.objects.filter(firstUser=user.id, secondUser=userId).exists()
+        if hasRecord:
+            # update relationship
+            UserRelationships.objects.filter(firstUser=user.id, secondUser=userId).update(isFollow=isFollow)
+        else:
+            # create relationship
+            data = {"firstUser":user.id,"secondUser":userId, "isBlocked":False, "isFollowed":isFollow}
+            seralizer = UserRelationshipSerializer(data=data)
+            seralizer.is_valid(raise_exception=True)
+            seralizer.save()
+        return Response(status=200)

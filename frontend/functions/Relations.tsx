@@ -23,8 +23,3 @@ export const FindFollowing = async (
   });
   return (await response).data;
 };
-
-export const CreateFollowing = async () => {
-  const response = api.post("/", {});
-  return (await response).status === 200;
-};

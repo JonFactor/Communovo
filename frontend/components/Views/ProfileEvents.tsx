@@ -5,7 +5,7 @@ import EventsCollection from "../collections/EventsCollection";
 import { EventsGetAll, IEvent } from "../../functions/Events";
 import EventCard from "../cards/EventCard";
 
-const ProfileEvents = () => {
+const ProfileEvents = ({ showLikedDisliked = true }) => {
   const [isSelectedDis, setIsSelectedDis] = useState(false);
   const [isSelectedLik, setIsSelectedLik] = useState(false);
   const [eventData, setEventData] = useState(Array<IEvent> || undefined);
@@ -53,36 +53,42 @@ const ProfileEvents = () => {
   return (
     <View>
       <View className=" w-screen flex items-center space-x-4 flex-row mt-6 ml-2">
-        <TouchableOpacity
-          className={` w-40 h-12 ${
-            !isSelectedLik ? "bg-md-blue" : "bg-white border-4 border-md-blue"
-          } rounded-full flex items-center`}
-          onPress={handleLikeClick}
-        >
-          <Text
-            className={` ${
-              !isSelectedLik ? "text-white mt-2" : "text-md-blue mt-1"
-            } text-2xl `}
-          >
-            Liked
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className={` w-40 h-12 ${
-            !isSelectedDis
-              ? "bg-md-purple"
-              : "bg-white border-4 border-md-purple"
-          } rounded-full flex items-center`}
-          onPress={handleDislikeClick}
-        >
-          <Text
-            className={` ${
-              !isSelectedDis ? "text-white mt-2" : "text-md-purple mt-1"
-            } text-2xl `}
-          >
-            Disliked
-          </Text>
-        </TouchableOpacity>
+        {showLikedDisliked && (
+          <>
+            <TouchableOpacity
+              className={` w-40 h-12 ${
+                !isSelectedLik
+                  ? "bg-md-blue"
+                  : "bg-white border-4 border-md-blue"
+              } rounded-full flex items-center`}
+              onPress={handleLikeClick}
+            >
+              <Text
+                className={` ${
+                  !isSelectedLik ? "text-white mt-2" : "text-md-blue mt-1"
+                } text-2xl `}
+              >
+                Liked
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className={` w-40 h-12 ${
+                !isSelectedDis
+                  ? "bg-md-purple"
+                  : "bg-white border-4 border-md-purple"
+              } rounded-full flex items-center`}
+              onPress={handleDislikeClick}
+            >
+              <Text
+                className={` ${
+                  !isSelectedDis ? "text-white mt-2" : "text-md-purple mt-1"
+                } text-2xl `}
+              >
+                Disliked
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
       {eventData !== undefined &&
         eventData.length > 0 &&
