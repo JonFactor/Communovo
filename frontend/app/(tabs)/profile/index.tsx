@@ -17,6 +17,8 @@ import GroupCollection from "../../../components/collections/GroupCollection";
 import { Redirect } from "expo-router";
 import { Linker } from "../../../utils/Linker";
 import AppInfoModal from "../../../components/modals/AppInfoModal";
+import ExitPage from "../../../components/common/ExitPage";
+import { LinearGradient } from "expo-linear-gradient";
 
 const profile = () => {
   const { logout, getUserInfo, getUserProfilePhoto, setUserProfilePhoto } =
@@ -32,6 +34,7 @@ const profile = () => {
   const [menuModal, setMenuModal] = useState(false);
   const [redirectLogin, setRedirectLogin] = useState(false);
   const [appInfoModalDisplay, setAppInfoModalDisplay] = useState(false);
+  const [deleteAccountTxt, setDeleteAccountTxt] = useState("Delete Account");
 
   useEffect(() => {
     const loadUser = async () => {
@@ -81,14 +84,6 @@ const profile = () => {
     return blob;
   };
 
-  const handleMessageUser = () => {
-    // goto message page with this user as recipiant
-  };
-
-  const handleFollowUser = () => {
-    // add this user to following page
-  };
-
   const handleLoadEvents = () => {
     setNavSelected(0);
   };
@@ -104,13 +99,21 @@ const profile = () => {
   const handleDisplayProfileActions = () => {
     setMenuModal(true);
   };
+
+  const handleDeleteAccount = () => {
+    if (deleteAccountTxt === "Delete Account") {
+      setDeleteAccountTxt("Are you Sure?");
+      return;
+    }
+  };
+
   return (
     <ScrollView className=" mt-20">
       <Modal visible={appInfoModalDisplay}>
         <AppInfoModal parrentSetter={setAppInfoModalDisplay} />
       </Modal>
       {redirectLogin && <Redirect href="/login"></Redirect>}
-      {menuModal && (
+      {/* {menuModal && (
         <View className=" bg-transparent w-full h-16 flex-row ml-4">
           <TouchableOpacity
             className="p-1 px-3 bg-md-blue rounded-md"
@@ -134,48 +137,118 @@ const profile = () => {
             <Text className="text-xl">Close</Text>
           </TouchableOpacity>
         </View>
-      )}
-      <View className=" flex-row ml-8 ">
-        <TouchableOpacity className=" flex  " onPress={() => Linker("/home")}>
-          <View className=" flex w-5 h-7">
-            <Image
-              contentFit="cover"
-              className=" flex-1"
-              source={require("../../../assets/icons/backArrow.svg")}
-            />
+      )} */}
+      {!menuModal ? (
+        <View className=" flex-row ml-16 ">
+          <View className=" w-5/6 flex items-center mt-2">
+            <TouchableOpacity
+              onPress={handleAddPhotos}
+              className={`flex w-40 rounded-full  aspect-square ${
+                userProfilePic === null && " bg-gray-400 items-center flex"
+              }`}
+            >
+              {userProfilePic !== null && <ProfilePictureCard width={"24"} />}
+            </TouchableOpacity>
+            <View className=" mt-2 items-center w-full">
+              <Text className=" flex text-3xl font-bold ">{userName}</Text>
+              <Text className=" text-md w-5/6 font-semibold text-gray-500 text-center">
+                {userDescription}
+              </Text>
+            </View>
           </View>
-        </TouchableOpacity>
-        <View className=" w-5/6 flex items-center mt-2">
           <TouchableOpacity
-            onPress={handleAddPhotos}
-            className={`flex w-40 rounded-full  aspect-square ${
-              userProfilePic === null && " bg-gray-400 items-center flex"
-            }`}
+            className=" ml-4 w-1/6"
+            onPress={() => {
+              handleDisplayProfileActions();
+            }}
           >
-            {userProfilePic !== null && <ProfilePictureCard width={"24"} />}
+            <View className=" flex w-2 h-10">
+              <Image
+                source={require("../../../assets/icons/Menu.svg")}
+                contentFit="fill"
+                className=" flex-1 "
+              />
+            </View>
           </TouchableOpacity>
-          <View className=" mt-2 items-center w-full">
-            <Text className=" flex text-3xl font-bold ">{userName}</Text>
-            <Text className=" text-md w-5/6 font-semibold text-gray-500 text-center">
-              {userDescription}
-            </Text>
+        </View>
+      ) : (
+        <View className=" flex w-full items-center">
+          <View className=" flex h-60 flex-row space-x-4">
+            <View className=" flex space-y-3">
+              <TouchableOpacity
+                className="  w-36 h-32 rounded-2xl flex items-center"
+                onPress={() => {
+                  logout(true);
+                  setRedirectLogin(true);
+                }}
+              >
+                <LinearGradient
+                  className=" w-full h-full rounded-2xl flex items-center"
+                  colors={["rgba(86,218,99,1)", "rgba(189,234,194,1)"]}
+                  start={[0, 1]}
+                  end={[1, 0]}
+                >
+                  <Text className=" text-white text-2xl mt-4 ">Logout</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="  w-36 h-28 rounded-2xl flex items-center"
+                onPress={() => {
+                  handleDeleteAccount;
+                }}
+              >
+                <LinearGradient
+                  className=" w-full h-full rounded-2xl flex items-center"
+                  colors={["rgba(210,95,229,1)", "rgba(244,177,255,1)"]}
+                  start={[1, 0]}
+                  end={[0, 1]}
+                >
+                  <Text className=" text-white text-2xl mt-4  text-center">
+                    {deleteAccountTxt}
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            <View className=" flex space-y-3">
+              <TouchableOpacity
+                className="  w-36 h-20 rounded-2xl flex items-center"
+                onPress={() => {
+                  setMenuModal(false);
+                  setDeleteAccountTxt("Delete Account");
+                }}
+              >
+                <LinearGradient
+                  className=" w-full h-full rounded-2xl flex items-center"
+                  colors={["rgba(238,51,51,1)", "rgba(246,204,204,1)"]}
+                  start={[1, 0]}
+                  end={[0, 1]}
+                >
+                  <Text className=" text-white text-2xl mt-4  text-center">
+                    Close
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="  w-36 h-40 rounded-2xl flex items-center"
+                onPress={() => {
+                  setAppInfoModalDisplay(true);
+                }}
+              >
+                <LinearGradient
+                  className=" w-full h-full rounded-2xl flex items-center"
+                  colors={["rgba(187,189,242,1)", "rgba(44,53,232,1)"]}
+                  start={[1, 0]}
+                  end={[0, 1]}
+                >
+                  <Text className=" text-white text-2xl mt-4  text-center">
+                    App Info
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        <TouchableOpacity
-          className=" ml-2 w-1/6"
-          onPress={() => {
-            handleDisplayProfileActions();
-          }}
-        >
-          <View className=" flex w-2 h-10">
-            <Image
-              source={require("../../../assets/icons/Menu.svg")}
-              contentFit="fill"
-              className=" flex-1 "
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
+      )}
       {
         // messageing and following is not yet finished, set to true when feature functional
       }

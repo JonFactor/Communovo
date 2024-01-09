@@ -41,7 +41,7 @@ const MapModal = ({
         <Text className=" text-2xl">{selectedLocation}</Text>
       </View>
       <View className=" w-full h-screen flex items-center mt-4">
-        <View className={` w-11/12 h-${input ? "4" : "5"}/6`}>
+        <View className={` w-11/12 h-[${input ? "200px" : "400px"}]`}>
           <MapView
             className={`w-full h-full`}
             onRegionChange={(region) => {

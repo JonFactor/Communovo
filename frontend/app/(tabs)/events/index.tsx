@@ -22,6 +22,19 @@ import { Linker } from "../../../utils/Linker";
 import { InputMapInfo } from "../../../utils/Maps";
 
 const events = () => {
+  interface IEventInputData {
+    title: string;
+    description: string;
+    imgs: string;
+    groupId: string;
+    location: string;
+    type: Array<any>;
+    coHosts: Array<IUser>;
+    guests: Array<IUser>;
+    date: string;
+    region: string;
+  }
+
   const { getUserInfo } = useContext(AuthContext);
   // absolutelty disscusting state declarations
   const [warning, setWarning] = useState("");
@@ -37,6 +50,8 @@ const events = () => {
   const [eventGuests, setEventGuests] = useState(Array<IUser>);
   const [eventDate, setEventDate] = useState("");
   const [eventRegion, setEventRegion] = useState(null);
+
+  const [eventData, setEventData] = useState<IEventInputData | undefined>();
 
   const [addUserModal, setAddUserModal] = useState(false);
   const [selectGroupModal, setSelectGroupModal] = useState(false);
@@ -183,6 +198,9 @@ const events = () => {
         setIsLoading(false);
         return;
       }
+
+      setEventTitle("");
+      set;
     }
 
     setIsLoading(false);

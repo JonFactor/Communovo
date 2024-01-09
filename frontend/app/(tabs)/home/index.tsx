@@ -46,7 +46,6 @@ const home = () => {
     const setUser = async () => {
       const userD = await getUserInfo(); // .then((response) => {
       setUserData(userD);
-      console.log(userD);
       if (userD === null) {
         setGotoLogin(true);
       }
