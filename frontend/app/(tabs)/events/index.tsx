@@ -40,6 +40,7 @@ const events = () => {
   const [eventDate, setEventDate] = useState("");
   const [eventRegion, setEventRegion] = useState(null);
   const [eventTime, setEventTime] = useState("");
+  const [timePm, setTimePm] = useState(false);
 
   const [addUserModal, setAddUserModal] = useState(false);
   const [selectGroupModal, setSelectGroupModal] = useState(false);
@@ -90,6 +91,13 @@ const events = () => {
       setWarning("date must be formated as: mm/dd/yyyy");
       return false;
     } else if (
+      !(eventTime.includes(":") && eventTime.length > 2) &&
+      !isNaN(parseFloat(eventTime[0])) &&
+      !isNaN(parseFloat(eventTime[1]))
+    ) {
+      setWarning("time must be formated as: hh:mm");
+      return false;
+    } else if (
       parseInt(dateList[0]) > 12 ||
       parseInt(dateList[1]) > 31 ||
       parseInt(dateList[2]) > 2024
@@ -130,6 +138,13 @@ const events = () => {
     const catigory = eventType.length > 0 ? eventType.join(", ") : "misc";
     const group = eventGroupId !== null ? eventGroupId.toString() : "1";
     const cords = JSON.stringify(eventRegion);
+
+    const splittedtime = eventTime.split(":");
+    if (timePm) {
+      parseInt(splittedtime[0]) + 12;
+    }
+    const formatedTime = splittedtime.join(":");
+    console.log(formatedTime);
     const responseOk = await EventCreate(
       eventTitle,
       eventDescription,
@@ -138,7 +153,8 @@ const events = () => {
       eventLocation,
       imgPath,
       group,
-      cords
+      cords,
+      formatedTime
     );
     if (!responseOk) {
       setIsLoading(false);
@@ -356,6 +372,39 @@ const events = () => {
               ></TextInput>
               <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             </View>
+            <View className=" mt-2 flex-row">
+              <TextInput
+                autoCapitalize="none"
+                className=" text-2xl ml-4 w-1/2 "
+                placeholder="Time (hh:mm)"
+                multiline={true}
+                value={eventTime}
+                onChangeText={(text) => {
+                  setEventTime(text);
+                }}
+              ></TextInput>
+              <TouchableOpacity
+                className={` w-16 h-10 bg-${
+                  timePm ? "md-blue" : "green-400"
+                } ml-2 rounded-xl flex items-center`}
+                onPress={() => {
+                  setTimePm(false);
+                }}
+              >
+                <Text className=" text-lg mt-1">AM</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setTimePm(true);
+                }}
+                className={` w-16 h-10 bg-${
+                  !timePm ? "md-blue" : "green-400"
+                } ml-4 rounded-xl flex items-center`}
+              >
+                <Text className=" text-lg mt-1">PM</Text>
+              </TouchableOpacity>
+            </View>
+            <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
             <View className=" mt-2">
               <TextInput
                 autoCapitalize="none"

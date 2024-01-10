@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-import jwt
+import jwt, datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
@@ -34,6 +34,12 @@ class EventCreationView(APIView):
         
         request.data.pop("eventGroup")
         request.data.update({"eventGroup": eventGroupId})
+        
+        splitTime = request.data['time'].split(":")
+        formatedTime = datetime.time(splitTime[0], splitTime[1])
+        
+        request.data.pop("time")
+        request.data.update({"time":formatedTime})
         
         print(request.data) #['id', 'title', 'location', 'owner', 'date', 'eventType', 'eventGroup', 'coverImg', 'regionCords']
         
