@@ -135,6 +135,7 @@ const register = () => {
           <View className="flex-row space-x-6">
             <View className=" w-36">
               <TextInput
+                autoCapitalize="none"
                 value={firstName}
                 onChangeText={(text) => {
                   setFirstName(text);
@@ -146,6 +147,7 @@ const register = () => {
             </View>
             <View className=" w-36">
               <TextInput
+                autoCapitalize="none"
                 value={lastName}
                 onChangeText={(text) => {
                   setLastName(text);
@@ -168,6 +170,7 @@ const register = () => {
               />
             </View>
             <TextInput
+              autoCapitalize="none"
               value={userName}
               onChangeText={(text) => {
                 setUserName(text);
@@ -190,6 +193,7 @@ const register = () => {
                 />
               </View>
               <TextInput
+                autoCapitalize="none"
                 value={email}
                 onChangeText={(text) => {
                   setEmail(text);
@@ -212,6 +216,7 @@ const register = () => {
               />
             </View>
             <TextInput
+              autoCapitalize="none"
               secureTextEntry={true}
               className=" text-2xl ml-4"
               value={password}
@@ -234,6 +239,7 @@ const register = () => {
               />
             </View>
             <TextInput
+              autoCapitalize="none"
               secureTextEntry={true}
               className=" text-2xl ml-4"
               value={passConfrim}

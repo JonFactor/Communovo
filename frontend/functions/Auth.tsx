@@ -118,3 +118,8 @@ export const User2UserStatusChange = async (
   const response = api.post("user2userStatusChange", { userId, isFollow });
   return (await response).status === 200;
 };
+
+export const DeleteAccount = async () => {
+  const response = api.post("userDeleteAccount");
+  return (await response).status === 200;
+};

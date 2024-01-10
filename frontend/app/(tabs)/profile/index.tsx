@@ -10,7 +10,7 @@ import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
 import { ScrollView } from "react-native";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
-import { IUser, UserViaId } from "../../../functions/Auth";
+import { DeleteAccount, IUser, UserViaId } from "../../../functions/Auth";
 import { FindFollowing, IUserToUser } from "../../../functions/Relations";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
@@ -105,6 +105,9 @@ const profile = () => {
       setDeleteAccountTxt("Are you Sure?");
       return;
     }
+
+    DeleteAccount();
+    Linker("/login");
   };
 
   return (
@@ -193,9 +196,7 @@ const profile = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 className="  w-36 h-28 rounded-2xl flex items-center"
-                onPress={() => {
-                  handleDeleteAccount;
-                }}
+                onPress={handleDeleteAccount}
               >
                 <LinearGradient
                   className=" w-full h-full rounded-2xl flex items-center"
@@ -203,7 +204,7 @@ const profile = () => {
                   start={[1, 0]}
                   end={[0, 1]}
                 >
-                  <Text className=" text-white text-2xl mt-4  text-center">
+                  <Text className=" text-white text-2xl mt-4  text-center w-10/12">
                     {deleteAccountTxt}
                   </Text>
                 </LinearGradient>
@@ -246,29 +247,6 @@ const profile = () => {
                 </LinearGradient>
               </TouchableOpacity>
             </View>
-          </View>
-        </View>
-      )}
-      {
-        // messageing and following is not yet finished, set to true when feature functional
-      }
-      {false && (
-        <View className=" flex-col mt-4 w-full items-center  flex">
-          <View className=" flex-row mt-4">
-            <TouchableOpacity
-              className=" rounded-full border-[3px] border-light-blue py-2 px-10"
-              onPress={handleMessageUser}
-            >
-              <Text className=" text-xl font-semibold text-light-blue">
-                Message
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className=" rounded-full bg-light-blue py-3 px-14 ml-3"
-              onPress={handleFollowUser}
-            >
-              <Text className=" text-xl text-white font-semibold">Follow</Text>
-            </TouchableOpacity>
           </View>
         </View>
       )}

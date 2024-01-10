@@ -359,3 +359,10 @@ class User2userStatusChangeView(APIView):
             seralizer.is_valid(raise_exception=True)
             seralizer.save()
         return Response(status=200)
+    
+class UserDeleteAccountView(APIView):
+    def post(self, request):
+        user = getUser(request=request)
+        user.delete()
+        
+        return Response(status=200)
