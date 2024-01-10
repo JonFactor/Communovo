@@ -37,11 +37,24 @@ const MapModal = ({
       <View className=" ml-4">
         <ExitPage modalSetter={parrentSetter}></ExitPage>
       </View>
+      {input && (
+        <View className=" w-full mt-4 flex items-center">
+          <TouchableOpacity
+            className=" w-full  text-center py-2 items-center flex  bg-md-blue"
+            onPress={() => {
+              setNewLocation();
+              parrentSetter(false);
+            }}
+          >
+            <Text className=" text-3xl">Set New Location</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <View className=" w-full flex items-center">
         <Text className=" text-2xl">{selectedLocation}</Text>
       </View>
       <View className=" w-full h-screen flex items-center mt-4">
-        <View className={` w-11/12 h-[${input ? "200px" : "400px"}]`}>
+        <View className={` w-11/12 h-screen`}>
           <MapView
             className={`w-full h-full`}
             onRegionChange={(region) => {
@@ -53,19 +66,6 @@ const MapModal = ({
             initialRegion={passedRegion !== null && JSON.parse(passedRegion)}
           ></MapView>
         </View>
-        {input && (
-          <View className=" w-full mt-4 flex items-center">
-            <TouchableOpacity
-              className=" px-4 py-2 rounded-xl bg-md-blue"
-              onPress={() => {
-                setNewLocation();
-                parrentSetter(false);
-              }}
-            >
-              <Text className=" text-3xl">Set New Location</Text>
-            </TouchableOpacity>
-          </View>
-        )}
       </View>
     </ScrollView>
   );
