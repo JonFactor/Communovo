@@ -21,27 +21,16 @@ import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
 import { Linker } from "../../../utils/Linker";
 import { InputMapInfo } from "../../../utils/Maps";
 
-const events = () => {
-  interface IEventInputData {
-    title: string;
-    description: string;
-    imgs: string;
-    groupId: string;
-    location: string;
-    type: Array<any>;
-    coHosts: Array<IUser>;
-    guests: Array<IUser>;
-    date: string;
-    region: string;
-  }
+const eventStateDefaults = [[], ["", ""]];
 
+const events = () => {
   const { getUserInfo } = useContext(AuthContext);
-  // absolutelty disscusting state declarations
+
   const [warning, setWarning] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const [eventTitle, setEventTitle] = useState("");
-  const [eventDescription, setEventDesctiption] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
   const [eventImgs, setEventImgs] = useState(null);
   const [eventGroupId, setEventGroupId] = useState(null);
   const [eventLocation, setEventLocation] = useState("");
@@ -50,8 +39,7 @@ const events = () => {
   const [eventGuests, setEventGuests] = useState(Array<IUser>);
   const [eventDate, setEventDate] = useState("");
   const [eventRegion, setEventRegion] = useState(null);
-
-  const [eventData, setEventData] = useState<IEventInputData | undefined>();
+  const [eventTime, setEventTime] = useState("");
 
   const [addUserModal, setAddUserModal] = useState(false);
   const [selectGroupModal, setSelectGroupModal] = useState(false);
@@ -194,14 +182,24 @@ const events = () => {
         false,
         true
       );
-      if (!resultOk) {
-        setIsLoading(false);
-        return;
-      }
-
-      setEventTitle("");
-      set;
+      // if (!resultOk) {
+      //   setIsLoading(false);
+      //   return;
+      // }
     }
+
+    setEventTitle("");
+    setEventDescription("");
+    setEventImgs(null);
+    setEventGroupId(null);
+    setEventLocation("");
+    setEventType([]);
+    setEventCoHosts([]);
+    setEventGuests([]);
+    setEventDate("");
+    setEventRegion(null);
+    setEventTime("");
+    setIsLoading(false);
 
     setIsLoading(false);
     Linker("/home");
@@ -340,7 +338,7 @@ const events = () => {
                 multiline={true}
                 value={eventDescription}
                 onChangeText={(text) => {
-                  setEventDesctiption(text);
+                  setEventDescription(text);
                 }}
               ></TextInput>
               <View className=" w-4/4 bg-gray-300 h-2 mt-4" />
@@ -398,7 +396,10 @@ const events = () => {
                   {eventCoHosts.map((value: IUser, index: number) => {
                     return (
                       <View key={index}>
-                        <ProfileHorizontal profile={value}></ProfileHorizontal>
+                        <ProfileHorizontal
+                          profile={value}
+                          goToProfile={false}
+                        ></ProfileHorizontal>
                       </View>
                     );
                   })}
@@ -427,7 +428,10 @@ const events = () => {
                   {eventGuests.map((value: IUser, index: number) => {
                     return (
                       <View key={index}>
-                        <ProfileHorizontal profile={value}></ProfileHorizontal>
+                        <ProfileHorizontal
+                          profile={value}
+                          goToProfile={false}
+                        ></ProfileHorizontal>
                       </View>
                     );
                   })}
