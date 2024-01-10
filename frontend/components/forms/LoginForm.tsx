@@ -27,7 +27,7 @@ const LoginForm = (displayBackBtn) => {
     <View className="p-12 mt-8">
       <View className="flex items-center w-full mt-8">
         <Text className=" text-bright-blue text-4xl font-semibold ">
-          Communivo
+          Communovo
         </Text>
       </View>
       <View className=" mt-20 flex items-center">

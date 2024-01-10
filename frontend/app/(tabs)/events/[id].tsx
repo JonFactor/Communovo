@@ -17,8 +17,10 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import router from "../../../common/routerHook";
 import {
+  DeleteEvent,
   EventsGetDetails,
   GetEventMembers,
+  GetIsOwnerEvent,
   IEvent,
   User2Event,
 } from "../../../functions/Events";
@@ -39,6 +41,7 @@ import { AddEventToCalendar, Calendar } from "../../../utils/Calendar";
 import { OutputMapInfo } from "../../../utils/Maps";
 import NotificationMethodPickerModal from "../../../components/modals/NotificationMethodPickerModal";
 import { SendUserEmail } from "../../../functions/Misc";
+import ExitPage from "../../../components/common/ExitPage";
 
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
@@ -53,6 +56,8 @@ const eventDetailsPage = () => {
   const [userNotificationSelectionModal, setUserNotificationSelectionModal] =
     useState(false);
   const [userNotificationMethods, setUserNotfificationMethods] = useState([]);
+  const [eventIsOwner, setEventIsOwner] = useState(false);
+  const [delEventText, setDelEventText] = useState("Delete Event");
 
   useEffect(() => {
     const eventDetails = async () => {
@@ -84,6 +89,9 @@ const eventDetailsPage = () => {
       if (responseWeather !== null) {
         setEventWeather(responseWeather);
       }
+
+      const responseIsOwner = await GetIsOwnerEvent(content.id);
+      setEventIsOwner(responseIsOwner);
     };
 
     eventDetails();
@@ -182,6 +190,17 @@ const eventDetailsPage = () => {
     }
   }, [userNotificationSelectionModal]);
 
+  const handleRemoveEvent = async () => {
+    if (delEventText === "Delete Event") {
+      setDelEventText("Are you sure?");
+      return;
+    }
+
+    const response = await DeleteEvent(eventData.id);
+    setDelEventText("Delete Event");
+    Linker("/home");
+  };
+
   return (
     <ScrollView>
       <Stack.Screen options={{ headerShown: false }} />
@@ -211,19 +230,11 @@ const eventDetailsPage = () => {
               notificationMethodsSetter={setUserNotfificationMethods}
             />
           </Modal>
-          <View className=" flex-row w-full">
-            <TouchableOpacity
-              className=" ml-8 mt-1 w-12 h-6  relative"
-              onPress={() => {
-                Linker("/home");
-              }}
-            >
-              <Text className=" text-red-400 text-2xl">exit</Text>
-            </TouchableOpacity>
-            <View className=" w-3 h-1 " />
-            <Text className=" text-3xl font-semibold mt-2">
-              {eventData.title}
-            </Text>
+          <View className=" ml-6 mt-2">
+            <ExitPage redirectLink="/home" />
+          </View>
+          <View className=" w-full items-center flex">
+            <Text className=" text-3xl font-semibold ">{eventData.title}</Text>
           </View>
           <View className=" w-screen items-center flex mt-6">
             <View className="flex  w-11/12 h-64 bg-gray-300 rounded-2xl">
@@ -258,6 +269,14 @@ const eventDetailsPage = () => {
             <View className=" flex-row">
               <Text className="text-2xl">Date: </Text>
               <Text className=" ml-1 text-2xl">{eventData.date}</Text>
+            </View>
+            <View className=" flex-row">
+              <Text className="text-2xl">Time: </Text>
+              <Text className=" ml-1 text-2xl">
+                {eventData.time.split(":")[0] +
+                  ":" +
+                  eventData.time.split(":")[1]}
+              </Text>
             </View>
             <View className=" flex-row">
               <Text className="text-2xl">Locaiton: </Text>
@@ -331,6 +350,16 @@ const eventDetailsPage = () => {
               Add Reminder
             </Text>
           </TouchableOpacity>
+          {eventIsOwner && (
+            <TouchableOpacity
+              className=" bg-red-500 w-screen mt-2 h-12 flex items-center"
+              onPress={handleRemoveEvent}
+            >
+              <Text className=" text-3xl text-white mt-1 font-semibold">
+                {delEventText}
+              </Text>
+            </TouchableOpacity>
+          )}
           <View className=" h-12 w-1"></View>
         </View>
       )}

@@ -100,7 +100,7 @@ const LoginPage = () => {
       <View className=" p-4 ">
         <View className="flex items-center w-full mt-10">
           <Text className=" text-light-blue text-4xl font-semibold ">
-            Communivo
+            Communovo
           </Text>
         </View>
         <View className=" mt-16 flex items-center">

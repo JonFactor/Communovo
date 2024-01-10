@@ -103,3 +103,13 @@ export const GetEventMembers = async (
   const response = api.post("getMembersFromEvent", { id, isStaffOnly });
   return (await response).data;
 };
+
+export const GetIsOwnerEvent = async (eventId) => {
+  const response = api.post("memberIsOwner", { eventId });
+  return (await response).data;
+};
+
+export const DeleteEvent = async (eventId) => {
+  const response = api.post("removeEvent", { eventId });
+  return (await response).status === 200;
+};

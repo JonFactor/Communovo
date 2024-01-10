@@ -98,6 +98,11 @@ const events = () => {
       setWarning("time must be formated as: hh:mm");
       return false;
     } else if (
+      parseInt(eventTime.split(":")[0]) > 12 ||
+      parseInt(eventTime.split(":")[1]) > 60
+    ) {
+      setWarning("Time must be a real time.");
+    } else if (
       parseInt(dateList[0]) > 12 ||
       parseInt(dateList[1]) > 31 ||
       parseInt(dateList[2]) > 2024

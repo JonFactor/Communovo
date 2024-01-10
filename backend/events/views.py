@@ -36,7 +36,7 @@ class EventCreationView(APIView):
         request.data.update({"eventGroup": eventGroupId})
         
         splitTime = request.data['time'].split(":")
-        formatedTime = datetime.time(splitTime[0], splitTime[1])
+        formatedTime = datetime.time(int(splitTime[0]), int(splitTime[1]))
         
         request.data.pop("time")
         request.data.update({"time":formatedTime})
@@ -163,7 +163,7 @@ class UserPreferenceSetView(APIView): # credentails, isLiked, isDisliked, eventT
         
         return Response()#serializer.data)
     
-class GetMembersFromEvent(APIView):
+class GetMembersFromEventView(APIView):
     def post(self, request):
         eventId = request.data.get('id')
         
@@ -181,3 +181,23 @@ class GetMembersFromEvent(APIView):
         rawMembers = User.objects.filter(id__in=peopleIds)
         serializer = UserSerializer(rawMembers, many=True)
         return Response(serializer.data)
+    
+class GetMemberIsOwnerView(APIView):
+    def post(self, request):
+        user = getUser(request)
+        event = request.data['eventId']
+        
+        isOwner = User2Event.objects.filter(event=event, user=user,isOwner=True ).exists()
+        return Response(isOwner, status=200)
+    
+class DeleteEventView(APIView):
+    def post(self, request):
+        user = getUser(request)
+        event = request.data['eventId']
+        
+        isOwner = User2Event.objects.filter(event=event, user=user,isOwner=True ).exists()
+        if not isOwner:
+            return Response({"message":"you are not autorized to delete this event."}, status=200)
+    
+        Event.objects.filter(id=event).delete()
+        return Response(status=200)

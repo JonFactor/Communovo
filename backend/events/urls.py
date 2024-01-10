@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import EventCreationView, EventCollectionView, GetMembersFromEvent, EventSingularGetViaIdView, EventSingularGetViaTitleView, EventUserAssignmentView, UserPreferenceSetView
+from .views import EventCreationView, EventCollectionView, DeleteEventView, GetMemberIsOwnerView,GetMembersFromEventView, EventSingularGetViaIdView, EventSingularGetViaTitleView, EventUserAssignmentView, UserPreferenceSetView
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
@@ -9,5 +9,7 @@ urlpatterns = [
     path("eventDataViaName", EventSingularGetViaTitleView.as_view()),
     path("event2userCreate", EventUserAssignmentView.as_view()),
     path("eventUserPreferencesSet", UserPreferenceSetView.as_view()),
-    path("getMembersFromEvent", GetMembersFromEvent.as_view())
+    path("getMembersFromEvent", GetMembersFromEventView.as_view()),
+    path("memberIsOwner", GetMemberIsOwnerView.as_view()),
+    path("removeEvent", DeleteEventView.as_view()),
 ] 

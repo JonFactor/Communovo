@@ -16,7 +16,7 @@
         "expo-image-picker",
         {
           "photosPermission": "Select and Upload Images",
-          "cameraPermission": "Allow Communivo to Access your camera"
+          "cameraPermission": "Allow Communovo to Access your camera"
         }
       ],
       "expo-router"
