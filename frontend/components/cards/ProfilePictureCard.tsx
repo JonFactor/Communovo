@@ -7,12 +7,19 @@ import { Storage, StorageClass } from "aws-amplify";
 
 import useSWR from "swr";
 
+interface IProfilePictureCardParams {
+  width: number;
+  userid?: string;
+  passedPic?: string;
+  passBackSetter?: (param) => {} | null;
+}
+
 const ProfilePictureCard = ({
   width,
   userid = null,
   passedPic = null,
   passBackSetter = null,
-}) => {
+}: IProfilePictureCardParams) => {
   const { getUserProfilePhoto, isLoading } = useContext(AuthContext);
   const [userProfilePic, setUserProfilePic] = useState(null);
 
@@ -22,7 +29,7 @@ const ProfilePictureCard = ({
         setUserProfilePic(passedPic);
         return;
       }
-      const profile = await getUserProfilePhoto();
+      const profile = await getUserProfilePhoto(false, "1");
       // const image = await Storage.get(Profile.)\
 
       setUserProfilePic(profile);

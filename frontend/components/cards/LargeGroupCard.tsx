@@ -7,7 +7,17 @@ import { Storage } from "aws-amplify";
 import { router } from "expo-router";
 import { Linker } from "../../utils/Linker";
 
-const LargeGroupCard = ({ group, cardWidth = 96, cardSquare = false }) => {
+interface ILargeGroupCardParams {
+  group: IGroup;
+  cardWidth?: number;
+  cardSquare?: boolean;
+}
+
+const LargeGroupCard = ({
+  group,
+  cardWidth = 96,
+  cardSquare = false,
+}: ILargeGroupCardParams) => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {

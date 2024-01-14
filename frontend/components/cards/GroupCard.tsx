@@ -6,8 +6,14 @@ import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import { LinearGradient } from "expo-linear-gradient";
 import { Linker } from "../../utils/Linker";
+import { IGroup } from "../../functions/Groups";
 
-const GroupCard = ({ item, routingIgnore }) => {
+interface IGroupCardParams {
+  item: IGroup;
+  routingIgnore: string;
+}
+
+const GroupCard = ({ item, routingIgnore }: IGroupCardParams) => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {

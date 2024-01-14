@@ -7,6 +7,19 @@ import { router } from "expo-router";
 import { CreateUser2EventPreferenceApi } from "../../functions/Events";
 import { Linker } from "../../utils/Linker";
 
+interface IEventCardParams {
+  location: string;
+  month: number;
+  day: number;
+  title: string;
+  imagePath: string;
+  eventType: string;
+  id: number;
+  justSmallCards: boolean;
+  showIsExpired?: boolean;
+  isExpired?: boolean;
+}
+
 const EventCard = ({
   location,
   month,
@@ -18,7 +31,7 @@ const EventCard = ({
   justSmallCards,
   showIsExpired = false,
   isExpired = false,
-}) => {
+}: IEventCardParams) => {
   const monthsToStrings = [
     "jan",
     "feb",

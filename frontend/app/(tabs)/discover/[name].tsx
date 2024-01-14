@@ -17,7 +17,7 @@ import {
   IGroup,
 } from "../../../functions/Groups";
 import GroupCard from "../../../components/cards/GroupCard";
-import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
+import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCard";
 import { IUser } from "../../../functions/Auth";
 import { AuthContext } from "../../../context/AuthContext";
 import EventsCollection from "../../../components/collections/EventsCollection";
@@ -169,7 +169,7 @@ const CatigoryDetailsPage = () => {
                   key={index}
                   className=" rounded-full px-4 py-1 border-4 border-md-blue"
                 >
-                  <ProfileHorizontal profile={member} goToProfile={true} />
+                  <ProfileHorizontalCard profile={member} goToProfile={true} />
                 </View>
               );
             })}
@@ -183,7 +183,7 @@ const CatigoryDetailsPage = () => {
                   key={index}
                   className=" rounded-full px-4 py-1 border-4 border-md-blue"
                 >
-                  <ProfileHorizontal profile={member} goToProfile={true} />
+                  <ProfileHorizontalCard profile={member} goToProfile={true} />
                 </View>
               );
             })}
