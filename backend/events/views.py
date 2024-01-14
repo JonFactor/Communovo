@@ -16,12 +16,13 @@ from functions.getUser import getUser
 
 
 # Create your views here.
-
-class EventCreationView(APIView):
-    def post(self, request):
+class EventView(APIView):
+    
+    # make a new event
+    def post(self, request): #time, 'title', 'location', 'date', 'eventType', 'eventGroup', 'coverImg', 'regionCords']
         user = getUser(request)
         if user == None:
-            return Response(status=400)
+            return Response({"message":"user not found."},status=400)
         userId = user.id
         request.data.update({"owner":userId})   
         
@@ -41,7 +42,7 @@ class EventCreationView(APIView):
         request.data.pop("time")
         request.data.update({"time":formatedTime})
         
-        print(request.data) #['id', 'title', 'location', 'owner', 'date', 'eventType', 'eventGroup', 'coverImg', 'regionCords']
+        print(request.data) 
         
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid() == False:
@@ -49,68 +50,81 @@ class EventCreationView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    
-class EventSingularGetViaIdView(APIView):
-    def post(self, request):
-        requId = request.data['id']
-        event = Event.objects.filter(id = requId).first()
-        serializer = EventSerializer(event, many=False)
-        return Response(data=serializer.data)
 
-class EventCollectionView(APIView):
-    def post(self, request): # credentails
-        user = getUser(request)
-        if user == None:
-            return Response(status=400)
-        filterEvents = None
+    # get requests / request data
+    def get(self, request): # requType
+        if request.query_params.get('requType') == "ID": # id
+            requId = request.query_params.get('id')
+            event = Event.objects.filter(id = requId).first()
+            serializer = EventSerializer(event, many=False)
+            return Response(data=serializer.data)
         
-        if request.data.get('isBaisedOnGroup'):
-            groupTitle = request.data.get('groupTitle')
-            group = Group.objects.filter(title=groupTitle).first()
-            print(group)
+        elif request.query_params['requType'] == "COLLECTION": # isBaisedOnGroup, groupTitle, exculdeDisliked, isOnlyDisliked, isOnlyLiked, excludeDisliked
+            user = getUser(request)
             
-            event2Groups = Event2Group.objects.filter(group=group.id)
+            if user == None:
+                return Response(status=400)
+            filterEvents = None
             
-            ids = []
-            for e in event2Groups:
-                ids.append(e.event.id)
-        else:
-            if request.data.get('excludeDisliked'):
-                filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
-                filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
-                print(filterEvents)
-            elif request.data.get('isOnlyDisliked'):
-                filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
-            elif request.data.get('isOnlyLiked'):
-                filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isLiked=True)
-            else:
-                events = Event.objects.all()
-                serializer = EventSerializer(events, many=True)
-                return Response(data=serializer.data)
-            ids = []
-            if filterEvents != None:
-                for e in filterEvents:
+            if int(request.query_params.get('isBaisedOnGroup')):
+                groupTitle = request.query_params.get('groupTitle')
+                group = Group.objects.filter(title=groupTitle).first()
+                if group == None:
+                    return Response({"message":"group could not be found."}, status=401)
+                
+                event2Groups = Event2Group.objects.filter(group=group.id)
+                
+                ids = []
+                for e in event2Groups:
                     ids.append(e.event.id)
+            else:
+                if int(request.query_params.get('excludeDisliked')):
+                    filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
+                    filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
+                    print(filterEvents)
+                elif int(request.query_params.get('isOnlyDisliked')):
+                    filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
+                elif int(request.query_params.get('isOnlyLiked')):
+                    filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isLiked=True)
+                else:
+                    events = Event.objects.all()
+                    serializer = EventSerializer(events, many=True)
+                    return Response(data=serializer.data)
+                ids = []
+                if filterEvents != None:
+                    for e in filterEvents:
+                        ids.append(e.event.id)
+            events = None
+            
+            if int(request.query_params.get('excludeDisliked')):
+                events = Event.objects.exclude(id__in=ids)
+            else:
+                events = Event.objects.filter(id__in=ids)
+            serializer = EventSerializer(events, many=True)
+            return Response(data=serializer.data)
         
-        events = None
+        elif request.query_params['requType'] == "TITLE": # title
+            title = request.query_params['title']
+            event = Event.objects.filter(title = title).first()
+            serializer = EventSerializer(event)
+            return Response(data=serializer.data)
+        return Response({"message":"Did not specify any correct enum of requType"}, status=401)
+    # delete made event
+    def delete(self, request): #eventId
+        user = getUser(request)
+        event = request.data['eventId']
         
-        if request.data.get('excludeDisliked'):
-            events = Event.objects.exclude(id__in=ids)
-        else:
-            events = Event.objects.filter(id__in=ids)
-        serializer = EventSerializer(events, many=True)
-        return Response(data=serializer.data)
+        isOwner = User2Event.objects.filter(event=event, user=user,isOwner=True ).exists()
+        if not isOwner:
+            return Response({"message":"you are not autorized to delete this event."}, status=200)
     
-class EventSingularGetViaTitleView(APIView):
-    def post(self, request):
-        title = request.data['title']
-        event = Event.objects.filter(title = title).first()
-        serializer = EventSerializer(event)
-        return Response(data=serializer.data)
+        Event.objects.filter(id=event).delete()
+        return Response({"message": "success"}, status=200)
     
-class EventUserAssignmentView(APIView):
-    # eventTitle, viaEmail, email, isOwner, isCoOwner, isGuest
-    def post(self, request):
+class Event2UserView(APIView):
+
+    # mk a new relationship
+    def post(self, request): # eventTitle, viaEmail, email, isOwner, isCoOwner, isGuest
         
         userId = None
         if request.data['viaEmail'] == True:
@@ -138,9 +152,39 @@ class EventUserAssignmentView(APIView):
         seralizer.is_valid(raise_exception=True)
         seralizer.save()
         return Response(seralizer.data)
+    
+    # get users from event / get self is owner
+    def get(self, request): #requType
+        
+        if request.data['requType'] == 'SELFOWNER': # eventId
+            user = getUser(request)
+            event = request.data['eventId']
             
-class UserPreferenceSetView(APIView): # credentails, isLiked, isDisliked, eventTitle
-    def post(self, request):
+            isOwner = User2Event.objects.filter(event=event, user=user,isOwner=True ).exists()
+            return Response(isOwner, status=200)
+        
+        elif request.data['requType'] == 'EVENTUSERS': # id, isStaffOnly, 
+            eventId = request.data.get('id')
+            
+            rawGroupsRelations = None
+            if request.data.get('isStaffOnly'):
+                rawGroupsRelations = User2Event.objects.filter(event=eventId)
+            else:
+                rawGroupsRelations = User2Event.objects.filter(event=eventId).filter(Q(isOwner=True) | Q(isCoOwner=True))
+            
+            
+            peopleIds = []
+            for relation in rawGroupsRelations:
+                peopleIds.append(relation.user.id)
+            
+            rawMembers = User.objects.filter(id__in=peopleIds)
+            serializer = UserSerializer(rawMembers, many=True)
+            return Response(serializer.data)
+    
+class UserPreferenceView(APIView):
+    
+    # make a new userPreference
+    def post(self, request): # credentails, isLiked, isDisliked, eventTitle
         user = getUser(request)
         if user == None:
             return Response(status=400)
@@ -161,43 +205,5 @@ class UserPreferenceSetView(APIView): # credentails, isLiked, isDisliked, eventT
         token = request.COOKIES.get('jwt')
         print(token)
         
-        return Response()#serializer.data)
+        return Response(serializer.data, status=200)
     
-class GetMembersFromEventView(APIView):
-    def post(self, request):
-        eventId = request.data.get('id')
-        
-        rawGroupsRelations = None
-        if request.data.get('isStaffOnly'):
-            rawGroupsRelations = User2Event.objects.filter(event=eventId)
-        else:
-            rawGroupsRelations = User2Event.objects.filter(event=eventId).filter(Q(isOwner=True) | Q(isCoOwner=True))
-        
-        
-        peopleIds = []
-        for relation in rawGroupsRelations:
-            peopleIds.append(relation.user.id)
-        
-        rawMembers = User.objects.filter(id__in=peopleIds)
-        serializer = UserSerializer(rawMembers, many=True)
-        return Response(serializer.data)
-    
-class GetMemberIsOwnerView(APIView):
-    def post(self, request):
-        user = getUser(request)
-        event = request.data['eventId']
-        
-        isOwner = User2Event.objects.filter(event=event, user=user,isOwner=True ).exists()
-        return Response(isOwner, status=200)
-    
-class DeleteEventView(APIView):
-    def post(self, request):
-        user = getUser(request)
-        event = request.data['eventId']
-        
-        isOwner = User2Event.objects.filter(event=event, user=user,isOwner=True ).exists()
-        if not isOwner:
-            return Response({"message":"you are not autorized to delete this event."}, status=200)
-    
-        Event.objects.filter(id=event).delete()
-        return Response(status=200)
