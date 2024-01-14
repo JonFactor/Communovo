@@ -1,20 +1,11 @@
 import { View, Text, TouchableOpacity, Modal } from "react-native";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
-import { Image } from "expo-image";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import EventsCollection from "../../../components/collections/EventsCollection";
 import { AuthContext } from "../../../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import groupTypes from "../../../constants/GroupTypes";
-import router from "../../../common/routerHook";
+
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
-import EventOrGroupCreation from "../../../components/modals/EventOrGroupCreation";
+import EventOrGroupCreationModal from "../../../components/modals/EventOrGroupCreationModal";
 import { Linker } from "../../../utils/Linker";
 import FilteredEvents from "../../../components/Views/FilteredEvents";
 
@@ -77,9 +68,9 @@ const home = () => {
   return (
     <View className="w-screen flex">
       <Modal visible={displayCreationModal}>
-        <EventOrGroupCreation
-          thisDisplaySetter={setDisplayCreationModal}
-        ></EventOrGroupCreation>
+        <EventOrGroupCreationModal
+          parentSetter={setDisplayCreationModal}
+        ></EventOrGroupCreationModal>
       </Modal>
       <ScrollView
         className=" mt-12 mx-4 flex"

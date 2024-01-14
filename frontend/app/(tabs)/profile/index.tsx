@@ -1,13 +1,10 @@
-import { View, Text, RefreshControl, Modal, BackHandler } from "react-native";
+import { View, Text, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import router from "../../../common/routerHook";
+
 import { Image } from "expo-image";
-import EventsCollection from "../../../components/collections/EventsCollection";
 import * as ImagePicker from "expo-image-picker";
-import { Storage } from "aws-amplify";
-import { v4 as uuidv4 } from "uuid";
 import { ScrollView } from "react-native";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
 import {
@@ -15,13 +12,12 @@ import {
   IUser,
   GetUserViaIdApi,
 } from "../../../functions/Auth";
-import { GetSelfFollowingApi, IUserToUser } from "../../../functions/Auth";
+import { GetSelfFollowingApi } from "../../../functions/Auth";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import { Redirect } from "expo-router";
 import { Linker } from "../../../utils/Linker";
 import AppInfoModal from "../../../components/modals/AppInfoModal";
-import ExitPage from "../../../components/common/ExitPage";
 import { LinearGradient } from "expo-linear-gradient";
 
 const profile = () => {

@@ -9,76 +9,70 @@ export interface IPushNotification {
   notification?: Notifications.Notification;
 }
 
-export const Notification = () => {
-  if (true) {
-    // turn off when paid for push notificaitons
-    return null;
-  }
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldPlaySound: true,
-      shouldShowAlert: true,
-      shouldSetBadge: false,
-    }),
-  });
+// SAME AS CALENDAR (NEED PAID ACCOUNT)
 
-  const [expoPushToken, setExpoPushToken] = useState<
-    Notifications.ExpoPushToken | undefined
-  >();
-  const [notification, setNotification] = useState<
-    Notifications.Notification | undefined
-  >();
+// export const Notification = () => {
 
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
+//   Notifications.setNotificationHandler({
+//     handleNotification: async () => ({
+//       shouldPlaySound: true,
+//       shouldShowAlert: true,
+//       shouldSetBadge: false,
+//     }),
+//   });
 
-  const RegisterForPushNotifications = async () => {
-    if (true) {
-      // turn off when paid for push notificaitons
-      return null;
-    }
-    let token;
+//   const [expoPushToken, setExpoPushToken] = useState<
+//     Notifications.ExpoPushToken | undefined
+//   >();
+//   const [notification, setNotification] = useState<
+//     Notifications.Notification | undefined
+//   >();
 
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+//   const notificationListener = useRef<Notifications.Subscription>();
+//   const responseListener = useRef<Notifications.Subscription>();
 
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== "granted") {
-      alert("push notifications not granted permissions.");
-      return;
-    }
+//   const RegisterForPushNotifications = async () => {
 
-    token = await Notifications.getExpoPushTokenAsync({
-      projectId: Constants.expoConfig?.extra?.eas.projectId,
-    });
-    alert("must be using a physical device for push notifications.");
+//     const { status: existingStatus } =
+//       await Notifications.getPermissionsAsync();
+//     let finalStatus = existingStatus;
 
-    return token;
-  };
+//     if (existingStatus !== "granted") {
+//       const { status } = await Notifications.requestPermissionsAsync();
+//       finalStatus = status;
+//     }
+//     if (finalStatus !== "granted") {
+//       alert("push notifications not granted permissions.");
+//       return;
+//     }
 
-  useEffect(() => {
-    if (true) {
-      // turn off when paid for push notificaitons
-      return null;
-    }
-    RegisterForPushNotifications().then((token) => {
-      setExpoPushToken(token);
-    });
+//     token = await Notifications.getExpoPushTokenAsync({
+//       projectId: Constants.expoConfig?.extra?.eas.projectId,
+//     });
+//     alert("must be using a physical device for push notifications.");
 
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
+//     return token;
+//   };
 
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current!
-      );
-      Notifications.removeNotificationSubscription(responseListener.current!);
-    };
-  }, []);
-};
+//   useEffect(() => {
+//     if (true) {
+//       // turn off when paid for push notificaitons
+//       return null;
+//     }
+//     RegisterForPushNotifications().then((token) => {
+//       setExpoPushToken(token);
+//     });
+
+//     notificationListener.current =
+//       Notifications.addNotificationReceivedListener((notification) => {
+//         setNotification(notification);
+//       });
+
+//     return () => {
+//       Notifications.removeNotificationSubscription(
+//         notificationListener.current!
+//       );
+//       Notifications.removeNotificationSubscription(responseListener.current!);
+//     };
+//   }, []);
+// };

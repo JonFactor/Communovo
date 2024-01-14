@@ -1,9 +1,7 @@
 import { View, Text, TextInput, ActivityIndicator, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, Redirect, router } from "expo-router";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-import register from "../register";
 import * as ImagePicker from "expo-image-picker";
 import { CreateEventApi, CreateUser2EventApi } from "../../../functions/Events";
 import { Storage } from "aws-amplify";
@@ -15,13 +13,10 @@ import { IUser } from "../../../functions/Auth";
 import GroupSelectionModal from "../../../components/modals/GroupSelectionModal";
 import EventTypeModal from "../../../components/modals/EventTypeModal";
 import AddUserModal from "../../../components/modals/AddUserModal";
-import { IGroup } from "../../../functions/Groups";
 import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCard";
 import { Linker } from "../../../utils/Linker";
 import { InputMapInfo } from "../../../utils/Maps";
 import ExitPage from "../../../components/common/ExitPage";
-
-const eventStateDefaults = [[], ["", ""]];
 
 const events = () => {
   const { getUserInfo } = useContext(AuthContext);

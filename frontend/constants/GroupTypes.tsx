@@ -1,4 +1,4 @@
-const GroupTypes = [
+const GroupTypes: Array<String> = [
   "Athletics",
   "Gaming",
   "Party",

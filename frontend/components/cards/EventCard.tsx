@@ -9,12 +9,12 @@ import { Linker } from "../../utils/Linker";
 
 interface IEventCardParams {
   location: string;
-  month: number;
-  day: number;
+  month: string;
+  day: string;
   title: string;
   imagePath: string;
   eventType: string;
-  id: number;
+  id: number | string;
   justSmallCards: boolean;
   showIsExpired?: boolean;
   isExpired?: boolean;
@@ -91,9 +91,9 @@ const EventCard = ({
 
   let monthIndex;
   if (month[0] === "0") {
-    monthIndex = month[1] - 1;
+    monthIndex = parseInt(month)[1] - 1;
   } else {
-    monthIndex = month - 1;
+    monthIndex = parseInt(month) - 1;
   }
 
   return (

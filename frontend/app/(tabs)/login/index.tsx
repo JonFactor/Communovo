@@ -1,12 +1,10 @@
-import { View, Text, TextInput, StyleSheet, Modal } from "react-native";
+import { View, Text, TextInput, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { Input } from "react-native-elements";
-import LoginForm from "../../../components/forms/LoginForm";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 import { Image } from "expo-image";
 import { AuthContext } from "../../../context/AuthContext";
-import router from "../../../common/routerHook";
+
 import AccountRecovery from "../../../components/modals/AccountRecovery";
 import { Linker } from "../../../utils/Linker";
 

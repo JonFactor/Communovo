@@ -5,17 +5,10 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import React, { useContext, useDebugValue, useEffect, useState } from "react";
-import {
-  Redirect,
-  Stack,
-  useGlobalSearchParams,
-  useSearchParams,
-} from "expo-router";
+import React, { useContext, useEffect, useState } from "react";
+import { Redirect, Stack, useGlobalSearchParams } from "expo-router";
 import { Linker } from "../../../utils/Linker";
-import { Image } from "expo-image";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
-import useSWR from "swr";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import {

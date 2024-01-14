@@ -1,6 +1,6 @@
 export const WEATHER_API_KEY = "f3a161624fb94728818fd63ea212aee0";
 
-export const GetWeatherData = async (location) => {
+export const GetWeatherData = async (location): Promise<string> => {
   if (location === "null" || location === null) {
     return "no location data provided for weather";
   }

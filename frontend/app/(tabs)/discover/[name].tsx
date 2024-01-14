@@ -1,13 +1,8 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Redirect,
-  Stack,
-  useLocalSearchParams,
-  useSearchParams,
-} from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import router from "../../../common/routerHook";
+
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
 import { Image } from "expo-image";
 import {
@@ -16,7 +11,6 @@ import {
   GetGroupMemberArrayViaTitleApi,
   IGroup,
 } from "../../../functions/Groups";
-import GroupCard from "../../../components/cards/GroupCard";
 import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCard";
 import { IUser } from "../../../functions/Auth";
 import { AuthContext } from "../../../context/AuthContext";
@@ -27,7 +21,6 @@ import { Linker } from "../../../utils/Linker";
 const CatigoryDetailsPage = () => {
   const { name } = useLocalSearchParams();
   const nameString: string = name.toString().replace("%20", " ");
-  console.log(nameString);
 
   const { getUserInfo } = useContext(AuthContext);
 

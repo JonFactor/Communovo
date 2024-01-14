@@ -1,12 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Link, router } from "expo-router";
 import GroupTypes from "../../../constants/GroupTypes";
 import { TextInput } from "react-native-gesture-handler";
 import { Image } from "expo-image";

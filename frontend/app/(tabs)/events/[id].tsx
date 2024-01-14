@@ -1,21 +1,8 @@
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  ScrollView,
-  Touchable,
-  TouchableHighlight,
-  Modal,
-} from "react-native";
+import { View, Text, ActivityIndicator, ScrollView, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
-import {
-  Stack,
-  useSearchParams,
-  useGlobalSearchParams,
-  useLocalSearchParams,
-} from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import router from "../../../common/routerHook";
+
 import {
   DeleteEventApi,
   GetEventDetailsApi,
@@ -36,8 +23,6 @@ import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCa
 import { Linker } from "../../../utils/Linker";
 import { GetWeatherData } from "../../../utils/Weather";
 import { UserAddPhoneModal } from "../../../components/modals/UserAddPhoneModal";
-import { Notification } from "../../../utils/PushNotifications";
-import { AddEventToCalendar, Calendar } from "../../../utils/Calendar";
 import { OutputMapInfo } from "../../../utils/Maps";
 import NotificationMethodPickerModal from "../../../components/modals/NotificationMethodPickerModal";
 import { SendUserEmailApi } from "../../../functions/Misc";

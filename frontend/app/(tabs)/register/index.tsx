@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { RegisterUserApi } from "../../../functions/Auth";
 import { Image } from "expo-image";
-import router from "../../../common/routerHook";
+
 import { Linker } from "../../../utils/Linker";
 
 const register = () => {

@@ -1,6 +1,6 @@
-import { Redirect, Stack } from "expo-router";
+import { Redirect } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 //import "../app.js";
 import { AuthContext } from "../context/AuthContext";
 

@@ -1,12 +1,7 @@
 import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
-import { useAssets } from "expo-asset";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import ProfilePictureCard from "../../components/cards/ProfilePictureCard";
-import * as calendar from "expo-calendar";
-import { Tab } from "react-native-elements";
+
 export default () => {
   const logoSetting = (imgSrc: string, focused) => {
     let imageSource;

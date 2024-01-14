@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
-import { AuthContext, AuthProvider } from "../context/AuthContext";
-import { View } from "react-native";
+import { AuthProvider } from "../context/AuthContext";
 
 const StackLayout = () => {
   return (

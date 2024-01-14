@@ -6,13 +6,11 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-import router from "../../../common/routerHook";
 import { AuthContext } from "../../../context/AuthContext";
 import * as ImagePicker from "expo-image-picker";
 import {
   CreateGroupUserRelationshipApi,
   CreateGroupApi,
-  IGroup,
 } from "../../../functions/Groups";
 import GroupTypeSelectionModal from "../../../components/modals/GroupTypeSelectionModal";
 import { v4 as uuidv4 } from "uuid";
