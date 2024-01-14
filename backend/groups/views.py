@@ -16,105 +16,69 @@ from events.serializers import EventSerializer
 from django.db.models import Q
 from functions.getUser import getUser
 
-# Create your views here.
+# Create your views here. TODO PUT THESE IN POSTMAN
 
 class GroupView(APIView):
-    pass 
-
-class Group2UserView(APIView):
-    pass
-
-class Group2EventView(APIView):
-    pass 
-
-class AddEventToGroupView(APIView):
-    def post(self, request):
-        
-        group = request.data["groupName"]
-        event = request.data["eventName"]
-        isPromo = request.data["isPromoted"]
-        
-        eventData = Event.objects.filter(title = event).first()
-        eventSerializer = EventSerializer(eventData)
-        
-        groupData = Group.objects.filter(title = group).first()
-        groupSerializer = GroupSerializer(groupData)
-        
-        requestData = {
-            "group": groupSerializer.data.id,
-            "event": eventSerializer.data.id,
-            "isPromo": isPromo
-        }
-        
-        serializer = Event2GroupSerializer(requestData)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer)
-
-class CreateGroupView(APIView):
-    def post(self, request):
-        # title, description, image, owner, groupType
+    def post(self, request): # title, description, image, owner, groupType
         userId = getUser(request).id
-        
-        # requestData = {
-        #     "title": request.data.get("title"),#['title'],
-        #     "description": request.data.get("description"),#['description'],
-        #     "image": request.data.get("image"),#["image"],
-        #     "owner":userId,
-        #     "groupType": request.data.get("groupType")#['groupType']
-        # }
-        
-        print(request.data)
         request.data.update({'owner':userId})
         
         serializer = GroupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-        
-        
-class DeleteGroupView(APIView):
-    def post(self,request):
-        user = getUser(request)
-        # todo
-    
-class GetAllGroupsByTypeView(APIView):
-    def post(self, request):
-        requType = request.data['groupType']
-        groups = Group.objects.filter(groupType = requType)
-        serializer = GroupSerializer(groups, many=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer)
-        
-        
-class GetGroupDataView(APIView):
-    def post(self, request):
-        requTitle = request.data.get('title')
-        group = Group.objects.filter(title=requTitle).first()
-        serialzier = GroupSerializer(group)
-        print(serialzier.data)
-        #serialzier.is_valid(raise_exception=True)
-        return Response(serialzier.data)
-    
-class GetGroupViaUserView(APIView):
-    @csrf_exempt
-    def post(self, request):
-        user = getUser(request).id
 
-        groups = User2Group.objects.filter(user=user)   
-        ids = []
-        for g in groups:
-            ids.append(g.id)
+    def get(self, request): # requType
+        if request.query_params['requType'] == "VIATYPE": # groupType
+            groupType = request.query_params['groupType']
+            groups = Group.objects.filter(groupType = groupType)
+            serializer = GroupSerializer(groups, many=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer)
+        
+        elif request.query_params['requType'] == "TITLE": # title
+            requTitle = request.query_params.get('title')
+            group = Group.objects.filter(title=requTitle).first()
+            serialzier = GroupSerializer(group)
+            print(serialzier.data)
+            #serialzier.is_valid(raise_exception=True)
+            return Response(serialzier.data)
+        
+        elif request.query_params['requType'] == "USER":
+            user = getUser(request).id
+
+            groups = User2Group.objects.filter(user=user)   
+            ids = []
+            for g in groups:
+                ids.append(g.id)
+                
+            print(ids)
+            groupsfilter = Group.objects.filter(id__in=ids)
+            serializer = GroupSerializer(groupsfilter, many=True)
             
-        print(ids)
-        groupsfilter = Group.objects.filter(id__in=ids)
-        serializer = GroupSerializer(groupsfilter, many=True)
+            return Response(serializer.data)
         
-        return Response(serializer.data)
-
-class AddUserToGroupView(APIView):
-    def post(self, request):
+        elif request.query_params['requType'] == "ALL":
+            groups = Group.objects.all()
+            serializer = GroupSerializer(groups, many=True)
+            return Response(serializer.data)
+        
+        elif request.query_params['requType'] == "ID": # id
+            groupId = request.query_params.get("id")
+            group = Group.objects.filter(id=groupId).first()
+            serializer = GroupSerializer(group)
+            #serializer.is_valid(raise_exception=True)
+            return Response(serializer.data)
+        
+        return Response({"message":"incorrect enum requType"}, staus=401)
+    def delete(self, request): # groupId
+        user = getUser(request)
+        groupId = request.data['groupId']
+        # TODO 
+        
+class Group2UserView(APIView):
+    def post(self, request): # email, title
         user = request.data.get('email')
         group = request.data.get('title')
         
@@ -136,15 +100,27 @@ class AddUserToGroupView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+    def get(self, request): # title, isStaffOnly
+        title = request.query_params.get('title')
+        groupId = Group.objects.filter(title=title).first().id
         
-class GetAllGroupsView(APIView):
-    def get(self, request):
-        groups = Group.objects.all()
-        serializer = GroupSerializer(groups, many=True)
+        rawGroupsRelations = None
+        if request.query_params.get('isStaffOnly'):
+            rawGroupsRelations = User2Group.objects.filter(group=groupId)
+        else:
+            rawGroupsRelations = User2Group.objects.filter(group=groupId).filter(Q(isOwner=True) | Q(isCoOwner=True))
+        
+        
+        peopleIds = []
+        for relation in rawGroupsRelations:
+            peopleIds.append(relation.user.id)
+        
+        rawMembers = User.objects.filter(id__in=peopleIds)
+        serializer = UserSerializer(rawMembers, many=True)
         return Response(serializer.data)
-    
-class RemoveUserFromGroupView(APIView):
-    def post(self, request):
+
+    def delete(self, request):
         email = request.data['email']
         title = request.data['title']
         
@@ -159,32 +135,33 @@ class RemoveUserFromGroupView(APIView):
         userToGroupSerializer.is_valid(raise_exception=True)
         userToGroupSerializer.save()
         
+        User2Group.objects.filter(user=userId, group=groupId).delete()
+        
         return Response(userToGroupSerializer.data)
+        # TODO THIS IN FRONTEND
+        
+class Group2EventView(APIView):
     
-class GetMembersFromGroupView(APIView):
-    def post(self, request):
-        title = request.data.get('title')
-        groupId = Group.objects.filter(title=title).first().id
+    # make a new group 2 user relationship, mostly used when creating events with groups
+    def post(self, request): # groupName, eventName, isPromoted
         
-        rawGroupsRelations = None
-        if request.data.get('isStaffOnly'):
-            rawGroupsRelations = User2Group.objects.filter(group=groupId)
-        else:
-            rawGroupsRelations = User2Group.objects.filter(group=groupId).filter(Q(isOwner=True) | Q(isCoOwner=True))
+        group = request.data["groupName"]
+        event = request.data["eventName"]
+        isPromo = request.data["isPromoted"]
         
+        eventData = Event.objects.filter(title = event).first()
+        eventSerializer = EventSerializer(eventData)
         
-        peopleIds = []
-        for relation in rawGroupsRelations:
-            peopleIds.append(relation.user.id)
+        groupData = Group.objects.filter(title = group).first()
+        groupSerializer = GroupSerializer(groupData)
         
-        rawMembers = User.objects.filter(id__in=peopleIds)
-        serializer = UserSerializer(rawMembers, many=True)
-        return Response(serializer.data)
+        requestData = {
+            "group": groupSerializer.data.id,
+            "event": eventSerializer.data.id,
+            "isPromo": isPromo
+        }
         
-class GetGroupViaIdView(APIView):
-    def post(self, request):
-        groupId = request.data.get("id")
-        group = Group.objects.filter(id=groupId).first()
-        serializer = GroupSerializer(group)
-        #serializer.is_valid(raise_exception=True)
-        return Response(serializer.data)
+        serializer = Event2GroupSerializer(requestData)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer)     
