@@ -156,18 +156,18 @@ class Event2UserView(APIView):
     # get users from event / get self is owner
     def get(self, request): #requType
         
-        if request.data['requType'] == 'SELFOWNER': # eventId
+        if request.query_params['requType'] == 'SELFOWNER': # eventId
             user = getUser(request)
-            event = request.data['eventId']
+            event = request.query_params['eventId']
             
             isOwner = User2Event.objects.filter(event=event, user=user,isOwner=True ).exists()
             return Response(isOwner, status=200)
         
-        elif request.data['requType'] == 'EVENTUSERS': # id, isStaffOnly, 
-            eventId = request.data.get('id')
+        elif request.query_params['requType'] == 'EVENTUSERS': # id, isStaffOnly, 
+            eventId = request.query_params.get('id')
             
             rawGroupsRelations = None
-            if request.data.get('isStaffOnly'):
+            if int(request.query_params.get('isStaffOnly', 0)):
                 rawGroupsRelations = User2Event.objects.filter(event=eventId)
             else:
                 rawGroupsRelations = User2Event.objects.filter(event=eventId).filter(Q(isOwner=True) | Q(isCoOwner=True))

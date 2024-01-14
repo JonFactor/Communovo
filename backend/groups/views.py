@@ -18,6 +18,15 @@ from functions.getUser import getUser
 
 # Create your views here.
 
+class GroupView(APIView):
+    pass 
+
+class Group2UserView(APIView):
+    pass
+
+class Group2EventView(APIView):
+    pass 
+
 class AddEventToGroupView(APIView):
     def post(self, request):
         
