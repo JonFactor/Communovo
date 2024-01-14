@@ -3,7 +3,11 @@ import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Linker } from "../../utils/Linker";
 
-const ExitPage = ({ redirectLink = "", modalSetter = (param) => {} }) => {
+const ExitPage = ({
+  redirectLink = "",
+  modalSetter = (param) => {},
+  largeText,
+}) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -14,7 +18,11 @@ const ExitPage = ({ redirectLink = "", modalSetter = (param) => {} }) => {
         }
       }}
     >
-      <Text className=" text-2xl text-red-400">Exit</Text>
+      {largeText ? (
+        <Text className=" text-3xl text-red-400">Exit</Text>
+      ) : (
+        <Text className=" text-2xl text-red-400">Exit</Text>
+      )}
     </TouchableOpacity>
   );
 };

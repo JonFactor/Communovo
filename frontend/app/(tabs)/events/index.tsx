@@ -1,6 +1,6 @@
 import { View, Text, TextInput, ActivityIndicator, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, Redirect } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import register from "../register";
@@ -8,7 +8,6 @@ import * as ImagePicker from "expo-image-picker";
 import { EventCreate, User2Event } from "../../../functions/Events";
 import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
-import router from "../../../common/routerHook";
 import { LinearGradient } from "expo-linear-gradient";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
 import { AuthContext } from "../../../context/AuthContext";
@@ -20,6 +19,7 @@ import { IGroup } from "../../../functions/Groups";
 import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
 import { Linker } from "../../../utils/Linker";
 import { InputMapInfo } from "../../../utils/Maps";
+import ExitPage from "../../../components/common/ExitPage";
 
 const eventStateDefaults = [[], ["", ""]];
 
@@ -570,30 +570,16 @@ const events = () => {
             </View>
           </View>
           {}
-          <View className=" flex-row mt-4 mx-10 ">
+          <View className=" flex-row mt-4 mx-10 w-screen ">
+            <View className=" mt-2">
+              <ExitPage redirectLink="/home" largeText={true} />
+            </View>
+
             <TouchableOpacity
-              className=" rounded-full bg-red-300 w-20 aspect-square"
-              onPress={handleEventBack}
-            >
-              <View className=" w-10 aspect-square flex ml-5 mt-4">
-                <Image
-                  className=" flex-1"
-                  source={require("../../../assets/icons/white-cross.svg")}
-                  contentFit="fill"
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className=" rounded-full bg-green-300 w-20 aspect-square ml-44"
+              className=" rounded-xl bg-green-300 w-52 h-14 ml-20 flex items-center"
               onPress={handleEventSubmit}
             >
-              <View className=" w-10 aspect-square flex ml-5 mt-4">
-                <Image
-                  className=" flex-1"
-                  source={require("../../../assets/icons/white-check.svg")}
-                  contentFit="fill"
-                />
-              </View>
+              <Text className=" text-white text-3xl mt-2">Submit</Text>
             </TouchableOpacity>
           </View>
           <View className=" h-20 w-2" />

@@ -18,6 +18,7 @@ import GroupTypeSelectionModal from "../../../components/modals/GroupTypeSelecti
 import { v4 as uuidv4 } from "uuid";
 import { Storage } from "aws-amplify";
 import { Linker } from "../../../utils/Linker";
+import ExitPage from "../../../components/common/ExitPage";
 
 const createGroup = () => {
   const [groupTitle, setGroupTitle] = useState("");
@@ -152,21 +153,10 @@ const createGroup = () => {
               textValue={groupType}
             ></GroupTypeSelectionModal>
           </Modal>
-          <View className=" ml-8 flex-row mt-16">
-            <TouchableOpacity
-              className=" flex w-5 h-7   "
-              onPress={() => Linker("/home")}
-            >
-              <View className=" flex w-5 h-7">
-                <Image
-                  contentFit="cover"
-                  className=" flex-1"
-                  source={require("../../../assets/icons/backArrow.svg")}
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
           <ScrollView className=" mt-10 h-full p-4">
+            <View className=" ml-4 mb-4">
+              <ExitPage redirectLink="/home" />
+            </View>
             <View className=" w-full items-center space-y-6 flex">
               <View className=" w-72 rounded-2xl h-60 flex">
                 <Image
