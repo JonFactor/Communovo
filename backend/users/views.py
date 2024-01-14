@@ -1,30 +1,20 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
 import datetime
 
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
-
 from .serializers import UserSerializer, UserRelationshipSerializer, SetNewPasswordSeralizer, EmailVerificationCodeSeralizer
 from .models import User, UserRelationships, EmailVerificationCode
 from functions.getUser import getUser
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+from django.utils.encoding import  DjangoUnicodeDecodeError
 from .utils import Util
 
-
 from events.models import Event, User2Event
-from events.serializers import EventSerializer
-from groups.serializers import GroupSerializer
 from groups.models import Group
+
 # this view is for all the apps but has no other place to be put but the main app
 class SearchDatabaseView(APIView): # search | returns a list of ids for the given models
     def post(self, request):
@@ -59,87 +49,95 @@ class SearchDatabaseView(APIView): # search | returns a list of ids for the give
         print({"user":userList, "event":eventList, "group":groupList})
         return Response(data={"user":userList, "event":eventList, "group":groupList})
 
-class RegisterView(APIView):
-    def post(self, request):
+class UserView(APIView):
+    def post(self, request): # 'name', 'firstName', 'lastName', 'email', 'password', 'profilePic', 'description', 'phoneNum']
         request.data.update({"description":"nothing to see here"})
         request.data.update({"profilePic":"http://www.gravatar.com/avatar"})
-        print(request.data)
+    
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
     
-class SetProfileView(APIView):
-    def post(self, request):
+    def get(self, request): # requType
+        
+        if request.query_params["requType"] == "SELF":
+            user = getUser(request)
+            if user == None:
+                return Response(status=400)
+            serializer = UserSerializer(user)
+
+            return Response(serializer.data)
+        
+        elif request.query_params["requType"] == "ID":
+            id = request.query_params["id"] # id
+            
+            user = User.objects.filter(id=id).first()
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        
+        return Response({"message":"incorrect enum requType"}, staus=401)
+    def patch(self, request): # id profilePicUrl
         reqId = request.data['id']
         profileUriKey = request.data['profilePicUrl']
         User.objects.filter(id = reqId).update(profilePic=profileUriKey)
         
         response = Response()
         return response
-
-class LoginViaCookiesView(APIView):
-    def post(self, request):
-        
-        token = request.data['jwt']
-        response = Response()
-        response.set_cookie(key="jwt", value=token, httponly=True)
-
-        response.data = {
-            "jwt": token
-        }
-        
-        return response
     
-class UserViaIdView(APIView):
-    def post(self, request):
-        id = request.data["id"]
-        
-        user = User.objects.filter(id=id).first()
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-
-class LoginView(APIView): 
-    def post(self, request):
-        email = request.data['email']
-        password = request.data['password']
-
-        user = User.objects.filter(email=email).first()
-        if user is None:
-            raise AuthenticationFailed('User not found')
-
-        if not user.check_password(password):
-            raise AuthenticationFailed('Incorrect password')
-
-        payload = {
-            'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.utcnow()
-        }
-
-        token = jwt.encode(payload, 'secret',
-                           algorithm='HS256')
-
-        response = Response()
-
-        response.set_cookie(key="jwt", value=token, httponly=True)
-
-        response.data = {
-            "jwt": token
-        }
-
-        return response
-
-
-
-class UserView(APIView):
-    def get(self, request):
-        user = getUser(request)
+    def delete(self, request):
+        user = getUser(request=request)
         if user == None:
-            return Response(status=400)
-        serializer = UserSerializer(user)
+            return Response({"message":"user not found"}, status=401)
+        user.delete()
+        
+        return Response(status=200)        
+class LoginView(APIView):
+    def post(self, request): # requType
+        
+        if request.data['requType'] == "COOKIES": #JWT
+            token = request.data['jwt']
+            response = Response()
+            response.set_cookie(key="jwt", value=token, httponly=True)
 
-        return Response(serializer.data)
+            response.data = {
+                "jwt": token
+            }
+            
+            return response
+        
+        elif request.data['requType'] == 'CREDENTIALS':
+            email = request.data['email']
+            password = request.data['password']
+
+            user = User.objects.filter(email=email).first()
+            if user is None:
+                raise AuthenticationFailed('User not found')
+
+            if not user.check_password(password):
+                raise AuthenticationFailed('Incorrect password')
+
+            payload = {
+                'id': user.id,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+                'iat': datetime.datetime.utcnow()
+            }
+
+            token = jwt.encode(payload, 'secret',
+                            algorithm='HS256')
+
+            response = Response()
+
+            response.set_cookie(key="jwt", value=token, httponly=True)
+
+            response.data = {
+                "jwt": token
+            }
+
+            return response
+        
+        return Response({"message":"incorrect enum requType"}, staus=401)
+
 
 class LogoutView(APIView):
     def post(self, request):
@@ -151,9 +149,9 @@ class LogoutView(APIView):
 
         return response
 
-class RelationshipCreateView(APIView):
-    def post(self, request):
-        # secondUserEmail, isBlocked, isFollowed
+class RelationshipView(APIView):
+    def post(self, request): # secondUserEmail, isBlocked, isFollowed
+        
         token = request.COOKIES.get('jwt')
         
         try:
@@ -169,11 +167,8 @@ class RelationshipCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    # return nothing | take in user cookies (default), relationship-Type, secondUserId
-
-class RelationshipViewView(APIView):
-    def post(self, request):
-        # userEmail, checkFollow, checkBlocked
+    
+    def get(self, request): # userEmail, checkFollow, checkBlocked
         token = request.COOKIES.get('jwt')
         
         try:
@@ -181,51 +176,34 @@ class RelationshipViewView(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('jwt expired signature')
 
-        user = User.objects.filter(email=request.data['userEmail']).first()
+        user = User.objects.filter(email=request.query_params['userEmail']).first()
         
-        if request.data['checkFollow'] == True and request.data['checkBlocked'] == True:
+        if request.query_params['checkFollow'] == True and request.query_params['checkBlocked'] == True:
             listOfFollowing = UserRelationships.objects.filter(firstUser=user.id, isBlocked=True, isFollowed=True)
-        elif request.data['checkFollow'] == True:
+        elif request.query_params['checkFollow'] == True:
             listOfFollowing = UserRelationships.objects.filter(firstUser=user.id, isFollowed=True)
-        elif request.data['checkBlocked'] == True:
+        elif request.query_params['checkBlocked'] == True:
             listOfFollowing = UserRelationships.objects.filter(firstUser=user.id, isBlocked=True)
         else:
             listOfFollowing = UserRelationships.objects.all()
-        print(listOfFollowing, "1235")
+
         serializer = UserRelationshipSerializer(listOfFollowing, many=True)
-        print(serializer.data)
+        
         return(Response(data=serializer.data))
-    # return a list of all the ids of who the user is following | take in user cookies (defualt)
 
-# email password reset
-
-
+# password reset section
 class RequestPasswordResetEmailView(APIView):
             
     # seralizerClass = PasswordResetSerializer
     #method_decorator(csrf_exempt)
     def post(self, request):
-        # data = {'data':request.data, 'request':request}
-        # seralizer = self.seralizerClass(data=data)
-        # seralizer.is_valid(raise_exception=True)
-        # return Response({'success':'An email has been sent with a link to reset your password'}
-        #                  , status=200)
         email = request.data['email']
         
-        # not making a else condition so the end user cannot abuse the service to find
-        # which emails have an account. 
-        print(email, User.objects.filter(email=email).exists())
         if User.objects.filter(email=email).exists():
             user = User.objects.filter(email=email).first()
             uidb64 = user.id
             token = PasswordResetTokenGenerator().make_token(user)
             
-            # currentSite = "exp://127.0.0.1:8081"#get_current_site(request=request ).domain # due to dev invornment redirect needs to goto apps localhost
-            # relativeLink = reverse('passwordResetConfrim', kwargs={'uidb64':uidb64, 'token':token})
-            # absUrl = f'{currentSite}{relativeLink}' 
-
-            # create token model
-            # random number for code not in db
             ranNum = User.objects.make_random_password(length=6, allowed_chars='123456789')
             while EmailVerificationCode.objects.filter(code=ranNum).exists():
                 print(ranNum)
@@ -243,6 +221,7 @@ class RequestPasswordResetEmailView(APIView):
                 
         return Response({'success':'An email has been sent with a code to reset your password'}
                     , status=200)
+        
 class PasswordTokenValidateView(APIView):
     def post(self, request):
         
@@ -360,9 +339,3 @@ class User2userStatusChangeView(APIView):
             seralizer.save()
         return Response(status=200)
     
-class UserDeleteAccountView(APIView):
-    def post(self, request):
-        user = getUser(request=request)
-        user.delete()
-        
-        return Response(status=200)
