@@ -6,13 +6,14 @@ import {
   IGroup,
 } from "../../functions/Groups";
 import LargeGroupCard from "../cards/LargeGroupCard";
+import { IUser } from "../../functions/Auth";
 
 interface IGroupCollectionParams {
   groupsViaUser?: boolean;
   cardWidth?: number;
   cardSquare?: boolean;
   horizontal?: boolean;
-  groupIds?: Array<number> | null;
+  groupIds?: any | null;
 }
 
 const GroupCollection = ({

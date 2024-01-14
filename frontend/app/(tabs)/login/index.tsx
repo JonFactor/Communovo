@@ -1,10 +1,9 @@
 import { View, Text, TextInput, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useFonts } from "expo-font";
 import { Image } from "expo-image";
 import { AuthContext } from "../../../context/AuthContext";
-
+import router from "../../../common/routerHook";
 import AccountRecovery from "../../../components/modals/AccountRecovery";
 import { Linker } from "../../../utils/Linker";
 
@@ -75,7 +74,7 @@ const LoginPage = () => {
       return;
     }
 
-    const cookie = response["data"]["jwt"];
+    const cookie = response["jwt"];
 
     loginViaCookies(cookie);
 

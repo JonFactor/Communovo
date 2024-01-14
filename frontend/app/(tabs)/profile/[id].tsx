@@ -61,7 +61,7 @@ const OtherProfile = () => {
         </TouchableOpacity>
         <View className=" w-5/6 flex items-center ml-10">
           <View className="flex w-40 rounded-full  aspect-square items-center">
-            {userProfilePic !== null && <ProfilePictureCard width={"36"} />}
+            {userProfilePic !== null && <ProfilePictureCard width={36} />}
           </View>
           <View className=" mt-2 items-center w-full">
             <Text className=" flex text-3xl font-bold ">
@@ -162,7 +162,7 @@ const OtherProfile = () => {
                         <View className=" flex-row space-x-8 ">
                           <View className=" mt-2 ml-2">
                             <ProfilePictureCard
-                              width={"12"}
+                              width={12}
                               userid={value.id}
                               passedPic={userProfilePic}
                             />

@@ -29,7 +29,8 @@ export const LoginUserApi = async (
   email: string = "",
   password: string = "",
   useToken: boolean = false,
-  jwt: string = "123"
+  jwt: string = "123",
+  getJwt: boolean = false
 ) => {
   const requType = useToken ? "COOKIES" : "CREDENTIALS";
   const responseBody = useToken
@@ -39,7 +40,8 @@ export const LoginUserApi = async (
     return null;
   });
 
-  const returnVal = useToken ? await response : (await response).data;
+  const returnVal =
+    useToken && !getJwt ? await response : (await response).data;
   return returnVal;
 };
 

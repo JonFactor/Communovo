@@ -40,10 +40,6 @@ const DiscoverPage = () => {
     getGroupData();
   }, []);
 
-  const getBackroundImg = async (group: IGroup): Promise<string> => {
-    return await Storage.get(group.image);
-  };
-
   const searchResultsLoad = async (text: string) => {
     const searchRes = await SearchAllDBApi(text);
     setSearchResult(searchRes);
@@ -93,7 +89,7 @@ const DiscoverPage = () => {
                         <GroupCard
                           key={index}
                           item={subItem}
-                          routingIgnore={false}
+                          routingIgnore={"false"}
                         ></GroupCard>
                       );
                     }

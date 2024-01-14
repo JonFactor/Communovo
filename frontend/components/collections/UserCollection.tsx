@@ -6,7 +6,7 @@ import ProfilePictureCard from "../cards/ProfilePictureCard";
 import { Linker } from "../../utils/Linker";
 
 interface IUserCollecitionParams {
-  userList: Array<number>;
+  userList: any;
 }
 const UserCollection = ({ userList }: IUserCollecitionParams) => {
   const [currentUserDetails, setCurrentUserDetails] = useState({});

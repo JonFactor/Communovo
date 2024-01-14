@@ -40,8 +40,9 @@ export const AuthProvider = ({ children }) => {
   const loginViaCredentials = async (
     email: string,
     pass: string
-  ): Promise<Response> => {
-    return await LoginUserApi(email, pass, false, "");
+  ): Promise<any> => {
+    console.log(await LoginUserApi(email, pass, false, "", true));
+    return await LoginUserApi(email, pass, false, "", true);
   };
 
   const loginViaCookies = async (

@@ -116,31 +116,6 @@ const profile = () => {
         <AppInfoModal parentSetter={setAppInfoModalDisplay} />
       </Modal>
       {redirectLogin && <Redirect href="/login"></Redirect>}
-      {/* {menuModal && (
-        <View className=" bg-transparent w-full h-16 flex-row ml-4">
-          <TouchableOpacity
-            className="p-1 px-3 bg-md-blue rounded-md"
-            onPress={() => setAppInfoModalDisplay(true)}
-          >
-            <Text className=" text-xl">App Info</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="p-1 px-3 bg-md-blue rounded-md ml-12"
-            onPress={() => {
-              logout(true);
-              setRedirectLogin(true);
-            }}
-          >
-            <Text className=" text-xl">Logout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="p-1 px-3 bg-md-blue rounded-md  ml-12"
-            onPress={() => setMenuModal(false)}
-          >
-            <Text className="text-xl">Close</Text>
-          </TouchableOpacity>
-        </View>
-      )} */}
       {!menuModal ? (
         <View className=" flex-row ml-16 ">
           <View className=" w-5/6 flex items-center mt-2">
@@ -150,7 +125,7 @@ const profile = () => {
                 userProfilePic === null && " bg-gray-400 items-center flex"
               }`}
             >
-              {userProfilePic !== null && <ProfilePictureCard width={"24"} />}
+              {userProfilePic !== null && <ProfilePictureCard width={24} />}
             </TouchableOpacity>
             <View className=" mt-2 items-center w-full">
               <Text className=" flex text-3xl font-bold ">{userName}</Text>
@@ -304,7 +279,7 @@ const profile = () => {
                         <View className=" flex-row space-x-8 ">
                           <View className=" mt-2 ml-2">
                             <ProfilePictureCard
-                              width={"12"}
+                              width={12}
                               userid={value.id}
                               passedPic={userProfilePic}
                             />

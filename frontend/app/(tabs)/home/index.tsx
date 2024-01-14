@@ -31,7 +31,7 @@ const home = () => {
   const [currentFilter, setCurrentFilter] = useState([]);
   const [gotoLogin, setGotoLogin] = useState(false);
 
-  const { login, getUserInfo, setStopLoading } = useContext(AuthContext);
+  const { getUserInfo, setStopLoading } = useContext(AuthContext);
 
   useEffect(() => {
     const setUser = async () => {
@@ -91,7 +91,7 @@ const home = () => {
             </View>
           </View>
           <View className="flex w-20 aspect-square ml-[14%] mt-2 ">
-            <ProfilePictureCard width={"20"} />
+            <ProfilePictureCard width={20} />
           </View>
         </View>
         <View className=" mt-4 ml-4 flex-row">

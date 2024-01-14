@@ -431,7 +431,7 @@ const events = () => {
             <View className=" mt-2">
               <View className="ml-4  flex-row">
                 <Text className=" text-2xl text-gray-400 mt-2 mr-4">Host</Text>
-                <ProfilePictureCard width={"12"} />
+                <ProfilePictureCard width={12} />
                 <Text className=" text-2xl mt-2 ml-2">{hostName}</Text>
               </View>
               <View className=" w-4/4 bg-gray-300 h-2 mt-2" />
