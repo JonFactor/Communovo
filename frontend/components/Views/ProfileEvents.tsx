@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import EventsCollection from "../collections/EventsCollection";
-import { EventsGetAll, IEvent } from "../../functions/Events";
+import { GetEventArrayApi, IEvent } from "../../functions/Events";
 import EventCard from "../cards/EventCard";
 
 const ProfileEvents = ({ showLikedDisliked = true }) => {
@@ -32,7 +32,7 @@ const ProfileEvents = ({ showLikedDisliked = true }) => {
 
   useEffect(() => {
     const getEvents = async () => {
-      const content = await EventsGetAll(
+      const content = await GetEventArrayApi(
         isSelectedDis,
         isSelectedLik,
         false,

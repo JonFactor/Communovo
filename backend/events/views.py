@@ -42,11 +42,9 @@ class EventView(APIView):
         request.data.pop("time")
         request.data.update({"time":formatedTime})
         
-        print(request.data) 
-        
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid() == False:
-            print(serializer.errors)
+            return Response(status=401)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -66,7 +64,7 @@ class EventView(APIView):
                 return Response(status=400)
             filterEvents = None
             
-            if int(request.query_params.get('isBaisedOnGroup')):
+            if (request.query_params.get('isBaisedOnGroup') == 'true'):
                 groupTitle = request.query_params.get('groupTitle')
                 group = Group.objects.filter(title=groupTitle).first()
                 if group == None:
@@ -78,13 +76,12 @@ class EventView(APIView):
                 for e in event2Groups:
                     ids.append(e.event.id)
             else:
-                if int(request.query_params.get('excludeDisliked')):
+                if (request.query_params.get('excludeDisliked' == 'true')):
                     filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
                     filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
-                    print(filterEvents)
-                elif int(request.query_params.get('isOnlyDisliked')):
+                elif (request.query_params.get('isOnlyDisliked') == 'true'):
                     filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isDisliked=True)
-                elif int(request.query_params.get('isOnlyLiked')):
+                elif (request.query_params.get('isOnlyLiked') == 'true'):
                     filterEvents = UserEventPreferences.objects.filter(user=user.id).filter(isLiked=True)
                 else:
                     events = Event.objects.all()
@@ -96,7 +93,7 @@ class EventView(APIView):
                         ids.append(e.event.id)
             events = None
             
-            if int(request.query_params.get('excludeDisliked')):
+            if (request.query_params.get('excludeDisliked') == 'true'):
                 events = Event.objects.exclude(id__in=ids)
             else:
                 events = Event.objects.filter(id__in=ids)
@@ -167,7 +164,7 @@ class Event2UserView(APIView):
             eventId = request.query_params.get('id')
             
             rawGroupsRelations = None
-            if int(request.query_params.get('isStaffOnly', 0)):
+            if (request.query_params.get('isStaffOnly', 'false') == 'true'):
                 rawGroupsRelations = User2Event.objects.filter(event=eventId)
             else:
                 rawGroupsRelations = User2Event.objects.filter(event=eventId).filter(Q(isOwner=True) | Q(isCoOwner=True))
@@ -201,9 +198,6 @@ class UserPreferenceView(APIView):
         serializer = UserEventPreferencesSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        
-        token = request.COOKIES.get('jwt')
-        print(token)
         
         return Response(serializer.data, status=200)
     

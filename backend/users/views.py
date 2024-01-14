@@ -17,8 +17,8 @@ from groups.models import Group
 
 # this view is for all the apps but has no other place to be put but the main app
 class SearchDatabaseView(APIView): # search | returns a list of ids for the given models
-    def post(self, request):
-        keywords = str(request.data["search"])
+    def get(self, request):
+        keywords = str(request.query_params["search"])
 
         groups = Group.objects.filter(title__contains=keywords)
         events = Event.objects.filter(title__contains=keywords)
@@ -46,7 +46,7 @@ class SearchDatabaseView(APIView): # search | returns a list of ids for the give
             if len(i) < 1:
                 i = "None"
         
-        print({"user":userList, "event":eventList, "group":groupList})
+        
         return Response(data={"user":userList, "event":eventList, "group":groupList})
 
 class UserView(APIView):
@@ -206,7 +206,7 @@ class RequestPasswordResetEmailView(APIView):
             
             ranNum = User.objects.make_random_password(length=6, allowed_chars='123456789')
             while EmailVerificationCode.objects.filter(code=ranNum).exists():
-                print(ranNum)
+                
                 ranNum = User.objects.make_random_password(length=6, allowed_chars='123456789')
 
             seralizer = EmailVerificationCodeSeralizer(data={'code':ranNum, 'uidb64':uidb64, 'token':token})
@@ -222,7 +222,7 @@ class RequestPasswordResetEmailView(APIView):
         return Response({'success':'An email has been sent with a code to reset your password'}
                     , status=200)
         
-class PasswordTokenValidateView(APIView):
+class PasswordTokenValidateView(APIView): # code
     def post(self, request):
         
         code = request.data['code']
@@ -268,7 +268,7 @@ class SetNewPasswordView(APIView): # code, password
             # make sure link has not already been used
             raise AuthenticationFailed('The reset code is invalid', 401)
         
-        print(user)
+        
         user.set_password(password)
         user.save()
         # serializer = SetNewPasswordSeralizer(data={'uidb64':uidb64, 'token':token, 'password':request.data['password']})

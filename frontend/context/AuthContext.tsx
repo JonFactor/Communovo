@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  UserGetDetails,
-  UserUpdateProfile,
-  UserLoginViaCookies,
+  GetUserDetailsApi,
+  UpdateUserProfilePicApi,
+  LoginUserApi,
   IUser,
-  UserLogin,
-  UserViaId,
+  GetUserViaIdApi,
 } from "../functions/Auth";
 import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
@@ -42,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     email: string,
     pass: string
   ): Promise<Response> => {
-    return await UserLogin(email, pass);
+    return await LoginUserApi(email, pass, false, "");
   };
 
   const loginViaCookies = async (
@@ -58,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     AsyncStorage.setItem("userToken", userTok);
 
     if (sendToBackend) {
-      const cookieResponse = await UserLoginViaCookies(userToken);
+      const cookieResponse = await LoginUserApi("", "", true, userToken);
       const cookieIsValid = await isLoggedIn();
 
       if (!cookieResponse && !cookieIsValid) {
@@ -75,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     setUserToken(null);
     AsyncStorage.removeItem("userToken");
     if (sendToBackend) {
-      const responseOk: boolean = await UserLoginViaCookies("");
+      const responseOk: boolean = await LoginUserApi("", "", true, "");
       if (!responseOk) {
         setIsLoading(false);
         return false;
@@ -89,7 +88,7 @@ export const AuthProvider = ({ children }) => {
   const isLoggedIn = async () => {
     setIsLoading(true);
     let userToken = await AsyncStorage.getItem("userToken");
-    const loginOk = await UserLoginViaCookies(userToken);
+    const loginOk = await LoginUserApi("", "", true, userToken);
 
     let success = false;
     if (loginOk) {
@@ -123,7 +122,7 @@ export const AuthProvider = ({ children }) => {
     // check from db
     let userInfo;
     if (viaId) {
-      userInfo = await UserViaId(userId);
+      userInfo = await GetUserViaIdApi(userId);
     } else {
       userInfo = await getUserInfo();
     }
@@ -169,13 +168,16 @@ export const AuthProvider = ({ children }) => {
       oldUser = userInfo.profilePic;
       userId = userInfo.id;
 
-      const responseOk = await UserUpdateProfile(imageKey, userId.toString());
+      const responseOk = await UpdateUserProfilePicApi(
+        imageKey,
+        userId.toString()
+      );
       setIsLoading(false);
       return responseOk;
     }
     const userIdConvert: string = userId.toString();
 
-    const responseSuccess = await UserUpdateProfile(
+    const responseSuccess = await UpdateUserProfilePicApi(
       imgPath,
       userIdConvert
     ).then((response) => {
@@ -193,7 +195,7 @@ export const AuthProvider = ({ children }) => {
 
   const getUserInfo = async (): Promise<IUser> => {
     setIsLoading(true);
-    const response = await UserGetDetails();
+    const response = await GetUserDetailsApi();
     setIsLoading(false);
     return response;
   };

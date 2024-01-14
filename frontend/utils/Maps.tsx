@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-elements";
-import MapView from "react-native-maps";
 import MapModal from "../components/modals/MapModal";
-import { EventsGetDetails } from "../functions/Events";
 
 export const MAP_API_KEY = "AIzaSyCS_zdjnBorQw1PsbhVtsPdTSV1ia9o-_Y";
 

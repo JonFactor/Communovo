@@ -20,8 +20,8 @@ import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import {
   IUser,
-  User2UserStatusChange,
-  UserViaId,
+  User2UserStatusChangeApi,
+  GetUserViaIdApi,
 } from "../../../functions/Auth";
 import { AuthContext } from "../../../context/AuthContext";
 
@@ -35,7 +35,7 @@ const OtherProfile = () => {
   useEffect(() => {
     const GetUserProfile = async () => {
       const id2 = id[0];
-      const content: IUser = await UserViaId(id2);
+      const content: IUser = await GetUserViaIdApi(id2);
 
       // set user desc
       if (content == null) {
@@ -50,11 +50,11 @@ const OtherProfile = () => {
   }, []);
 
   const handleUnfollow = async () => {
-    const response = await User2UserStatusChange(userData.id, false);
+    const response = await User2UserStatusChangeApi(userData.id, false);
   };
 
   const handleFollow = async () => {
-    const response = await User2UserStatusChange(userData.id, true);
+    const response = await User2UserStatusChangeApi(userData.id, true);
   };
   return (
     <ScrollView className=" flex w-full">

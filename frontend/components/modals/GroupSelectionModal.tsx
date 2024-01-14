@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import EventTypeList, { IEventType } from "../../constants/EventTypeList";
 import router from "../../common/routerHook";
-import { GetGroupsViaUser } from "../../functions/Groups";
+import { GetGroupArrayViaUserApi } from "../../functions/Groups";
 import { Image } from "expo-image";
 import GroupCard from "../cards/GroupCard";
 
@@ -25,7 +25,7 @@ const GroupSelectionModal = ({ setter, parentSetter, parentValue }) => {
 
   useEffect(() => {
     const loadGroups = async () => {
-      const groups = await GetGroupsViaUser();
+      const groups = await GetGroupArrayViaUserApi();
 
       setUserGroups(groups);
     };

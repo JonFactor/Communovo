@@ -41,23 +41,9 @@ class GroupView(APIView):
             requTitle = request.query_params.get('title')
             group = Group.objects.filter(title=requTitle).first()
             serialzier = GroupSerializer(group)
-            print(serialzier.data)
+            
             #serialzier.is_valid(raise_exception=True)
             return Response(serialzier.data)
-        
-        elif request.query_params['requType'] == "USER":
-            user = getUser(request).id
-
-            groups = User2Group.objects.filter(user=user)   
-            ids = []
-            for g in groups:
-                ids.append(g.id)
-                
-            print(ids)
-            groupsfilter = Group.objects.filter(id__in=ids)
-            serializer = GroupSerializer(groupsfilter, many=True)
-            
-            return Response(serializer.data)
         
         elif request.query_params['requType'] == "ALL":
             groups = Group.objects.all()
@@ -101,25 +87,41 @@ class Group2UserView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-    def get(self, request): # title, isStaffOnly
-        title = request.query_params.get('title')
-        groupId = Group.objects.filter(title=title).first().id
+    def get(self, request): # requType
+        if request.query_params['requType'] == "TITLE": # title, isStaffOnly
+            title = request.query_params.get('title')
+            groupId = Group.objects.filter(title=title).first().id
+            
+            rawGroupsRelations = None
+            if request.query_params.get('isStaffOnly'):
+                rawGroupsRelations = User2Group.objects.filter(group=groupId)
+            else:
+                rawGroupsRelations = User2Group.objects.filter(group=groupId).filter(Q(isOwner=True) | Q(isCoOwner=True))
+            
+            
+            peopleIds = []
+            for relation in rawGroupsRelations:
+                peopleIds.append(relation.user.id)
+            
+            rawMembers = User.objects.filter(id__in=peopleIds)
+            serializer = UserSerializer(rawMembers, many=True)
+            return Response(serializer.data)
         
-        rawGroupsRelations = None
-        if request.query_params.get('isStaffOnly'):
-            rawGroupsRelations = User2Group.objects.filter(group=groupId)
-        else:
-            rawGroupsRelations = User2Group.objects.filter(group=groupId).filter(Q(isOwner=True) | Q(isCoOwner=True))
-        
-        
-        peopleIds = []
-        for relation in rawGroupsRelations:
-            peopleIds.append(relation.user.id)
-        
-        rawMembers = User.objects.filter(id__in=peopleIds)
-        serializer = UserSerializer(rawMembers, many=True)
-        return Response(serializer.data)
+        elif request.query_params['requType'] == "USER": 
+            user = getUser(request).id
 
+            groups = User2Group.objects.filter(user=user)   
+            ids = []
+            for g in groups:
+                ids.append(g.id)
+                
+            
+            groupsfilter = Group.objects.filter(id__in=ids)
+            serializer = GroupSerializer(groupsfilter, many=True)
+            
+            return Response(serializer.data)
+        
+        return Response({"message":"incorrect enum requType"}, staus=401)
     def delete(self, request):
         email = request.data['email']
         title = request.data['title']

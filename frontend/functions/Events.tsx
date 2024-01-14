@@ -3,6 +3,7 @@ import { IUser } from "./Auth";
 import api from "./api";
 
 export interface IEvent {
+  id: string;
   title: string;
   description: string;
   ownerId: number;
@@ -15,7 +16,7 @@ export interface IEvent {
   time?: string;
 }
 
-export const EventCreate = async (
+export const CreateEventApi = async (
   title: string,
   description: string,
   date: string,
@@ -26,7 +27,7 @@ export const EventCreate = async (
   regionCords: string,
   time: string
 ) => {
-  const response = api.post("eventCreate", {
+  const response = api.post("event/", {
     title,
     description,
     date,
@@ -41,30 +42,33 @@ export const EventCreate = async (
 };
 
 // might err
-export const EventsGetAll = async (
+export const GetEventArrayApi = async (
   isOnlyDisliked: boolean = false,
   isOnlyLiked: boolean = false,
   excludeDisliked: boolean = false,
   isBaisedOnGroup: boolean = false,
   groupTitle: string = ""
 ): Promise<Array<IEvent>> => {
-  const response = api.post("eventCollection", {
-    isOnlyDisliked,
-    isOnlyLiked,
-    excludeDisliked,
-    isBaisedOnGroup,
-    groupTitle,
+  const response = api.get("event/", {
+    params: {
+      requType: "COLLECTION",
+      isOnlyDisliked,
+      isOnlyLiked,
+      excludeDisliked,
+      isBaisedOnGroup,
+      groupTitle,
+    },
   });
 
   return (await response).data;
 };
 
-export const EventsGetDetails = async (id: string): Promise<IEvent> => {
-  const response = api.post("eventData", { id });
+export const GetEventDetailsApi = async (id: string): Promise<IEvent> => {
+  const response = api.get("event/", { params: { id, requType: "ID" } });
   return (await response).data;
 };
 
-export const User2Event = async (
+export const CreateUser2EventApi = async (
   viaEmail: boolean,
   email: string,
   eventTitle: string,
@@ -72,7 +76,7 @@ export const User2Event = async (
   isCoOwner: boolean,
   isGuest: boolean
 ) => {
-  const response = api.post("event2userCreate", {
+  const response = api.post("event2user/", {
     viaEmail,
     email,
     eventTitle,
@@ -83,12 +87,12 @@ export const User2Event = async (
   return (await response).status === 200;
 };
 
-export const setEventUserPref = async (
+export const CreateUser2EventPreferenceApi = async (
   eventTitle: string,
   isLiked: boolean,
   isDisliked: boolean
 ) => {
-  const response = api.post("eventUserPreferencesSet", {
+  const response = api.post("userEventPreference/", {
     eventTitle,
     isLiked,
     isDisliked,
@@ -96,20 +100,24 @@ export const setEventUserPref = async (
   return (await response).status === 200;
 };
 
-export const GetEventMembers = async (
+export const GetEventMembersApi = async (
   id: string,
   isStaffOnly: boolean = false
 ): Promise<Array<IUser>> => {
-  const response = api.post("getMembersFromEvent", { id, isStaffOnly });
+  const response = api.get("event2user/", {
+    params: { id, isStaffOnly, requType: "EVENTUSERS" },
+  });
   return (await response).data;
 };
 
-export const GetIsOwnerEvent = async (eventId) => {
-  const response = api.post("memberIsOwner", { eventId });
+export const GetEventSelfIsOwnerApi = async (eventId) => {
+  const response = api.get("event2user/", {
+    params: { eventId, requType: "SELFOWNER" },
+  });
   return (await response).data;
 };
 
-export const DeleteEvent = async (eventId) => {
-  const response = api.post("removeEvent", { eventId });
+export const DeleteEventApi = async (eventId) => {
+  const response = api.delete("event/", { data: { eventId } });
   return (await response).status === 200;
 };

@@ -10,8 +10,12 @@ import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
 import { ScrollView } from "react-native";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
-import { DeleteAccount, IUser, UserViaId } from "../../../functions/Auth";
-import { FindFollowing, IUserToUser } from "../../../functions/Relations";
+import {
+  DeleteSelfUserApi,
+  IUser,
+  GetUserViaIdApi,
+} from "../../../functions/Auth";
+import { GetSelfFollowingApi, IUserToUser } from "../../../functions/Auth";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import { Redirect } from "expo-router";
@@ -50,12 +54,12 @@ const profile = () => {
       const profilePic = await getUserProfilePhoto(false, "");
       setUserProfilePic(profilePic);
 
-      const follows = await FindFollowing(content.email);
+      const follows = await GetSelfFollowingApi(content.email);
       console.log(follows);
       if (follows === null) {
       } else {
         for (let i = 0; i < follows.length; i++) {
-          const user = await UserViaId(follows[i].secondUser.toString());
+          const user = await GetUserViaIdApi(follows[i].secondUser.toString());
           setFollowing((list) => [...list, user]);
         }
       }
@@ -106,7 +110,7 @@ const profile = () => {
       return;
     }
 
-    DeleteAccount();
+    DeleteSelfUserApi();
     Linker("/login");
   };
 

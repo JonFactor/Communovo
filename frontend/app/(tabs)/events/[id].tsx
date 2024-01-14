@@ -17,20 +17,20 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import router from "../../../common/routerHook";
 import {
-  DeleteEvent,
-  EventsGetDetails,
-  GetEventMembers,
-  GetIsOwnerEvent,
+  DeleteEventApi,
+  GetEventDetailsApi,
+  GetEventMembersApi,
+  GetEventSelfIsOwnerApi,
   IEvent,
-  User2Event,
+  CreateUser2EventApi,
 } from "../../../functions/Events";
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
-import { GetGroupViaId, IGroup } from "../../../functions/Groups";
+import { GetGroupViaIdApi, IGroup } from "../../../functions/Groups";
 import {
   IUser,
-  UserGetDetails,
-  UserPhoneNumberNotify,
+  GetUserDetailsApi,
+  PhoneNotifyUserApi,
 } from "../../../functions/Auth";
 import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
 import { Linker } from "../../../utils/Linker";
@@ -61,7 +61,7 @@ const eventDetailsPage = () => {
 
   useEffect(() => {
     const eventDetails = async () => {
-      const content: IEvent = await EventsGetDetails(readId);
+      const content: IEvent = await GetEventDetailsApi(readId);
       if (content === undefined) {
         return;
       }
@@ -70,15 +70,15 @@ const eventDetailsPage = () => {
       const image = await Storage.get(content.coverImg);
       setEventImage(image);
 
-      const groupName = await GetGroupViaId(content.eventGroup);
+      const groupName = await GetGroupViaIdApi(content.eventGroup);
       setGroupDetails(groupName);
 
-      const responseAll = await GetEventMembers(readId, false);
+      const responseAll = await GetEventMembersApi(readId, false);
       if (responseAll != null) {
         setEventMembers(responseAll);
       }
 
-      const responseStaff = await GetEventMembers(readId, true);
+      const responseStaff = await GetEventMembersApi(readId, true);
       if (responseStaff != null) {
         setEventStaff(responseStaff);
       }
@@ -90,7 +90,7 @@ const eventDetailsPage = () => {
         setEventWeather(responseWeather);
       }
 
-      const responseIsOwner = await GetIsOwnerEvent(content.id);
+      const responseIsOwner = await GetEventSelfIsOwnerApi(content.id);
       setEventIsOwner(responseIsOwner);
     };
 
@@ -98,7 +98,7 @@ const eventDetailsPage = () => {
   }, []);
 
   const handleEventJoinClick = async () => {
-    const joinEvent = await User2Event(
+    const joinEvent = await CreateUser2EventApi(
       false,
       "",
       eventData.title,
@@ -120,7 +120,7 @@ const eventDetailsPage = () => {
   // baiscally under handle add reminder
   useEffect(() => {
     const sendNotifications = async () => {
-      const userDetails: IUser = await UserGetDetails();
+      const userDetails: IUser = await GetUserDetailsApi();
 
       const sendPhone = () => {
         if (
@@ -128,7 +128,7 @@ const eventDetailsPage = () => {
           userDetails.phoneNum !== null &&
           userDetails.phoneNum !== ""
         ) {
-          UserPhoneNumberNotify(
+          PhoneNotifyUserApi(
             userDetails.phoneNum,
             eventData.title,
             eventData.date
@@ -140,7 +140,7 @@ const eventDetailsPage = () => {
         }
       };
 
-      const sendEmail = () => {
+      const SendEmail = () => {
         // send user and email
         SendUserEmail(
           `An event intitled: ${eventData.title}. Is coming up soon on the date: ${eventData.date}. This is an automatic reminder, if you do not wish for the reminders to continue reply with STOP.`,
@@ -169,7 +169,7 @@ const eventDetailsPage = () => {
       console.log(notficationBooleans);
 
       if (notficationBooleans.email) {
-        sendEmail();
+        SendEmail();
       }
 
       if (notficationBooleans.calender) {
@@ -196,7 +196,7 @@ const eventDetailsPage = () => {
       return;
     }
 
-    const response = await DeleteEvent(eventData.id);
+    const response = await DeleteEventApi(eventData.id);
     setDelEventText("Delete Event");
     Linker("/home");
   };
@@ -231,7 +231,7 @@ const eventDetailsPage = () => {
             />
           </Modal>
           <View className=" ml-6 mt-2">
-            <ExitPage redirectLink="/home" />
+            <ExitPage redirectLink="/home" largeText={false} />
           </View>
           <View className=" w-full items-center flex">
             <Text className=" text-3xl font-semibold ">{eventData.title}</Text>

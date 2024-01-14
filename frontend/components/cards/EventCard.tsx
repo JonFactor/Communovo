@@ -4,7 +4,7 @@ import { Image, ImageBackground } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Storage } from "aws-amplify";
 import { router } from "expo-router";
-import { setEventUserPref } from "../../functions/Events";
+import { CreateUser2EventPreferenceApi } from "../../functions/Events";
 import { Linker } from "../../utils/Linker";
 
 const EventCard = ({
@@ -45,17 +45,15 @@ const EventCard = ({
     eventType = "misc";
   }
 
-  const [cardOpacity, setCardOpacity] = useState(100);
-
   const handleNavToEvent = async () => {
-    const responseOk = await setEventUserPref(title, true, false);
+    const responseOk = await CreateUser2EventPreferenceApi(title, true, false);
     if (responseOk) {
       Linker(`/events/${id}`);
     }
   };
 
   const handleDislikeEvent = async () => {
-    const responseOk = await setEventUserPref(title, false, true);
+    const responseOk = await CreateUser2EventPreferenceApi(title, false, true);
     if (responseOk) {
       Linker("/home");
     }

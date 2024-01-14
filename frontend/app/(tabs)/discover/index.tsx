@@ -10,7 +10,7 @@ import { Link, router } from "expo-router";
 import GroupTypes from "../../../constants/GroupTypes";
 import { TextInput } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-import { GetAllGroups, IGroup } from "../../../functions/Groups";
+import { GetAllGroupsApi, IGroup } from "../../../functions/Groups";
 import { Storage } from "aws-amplify";
 import GroupCard from "../../../components/cards/GroupCard";
 import { IEvent } from "../../../functions/Events";
@@ -37,7 +37,7 @@ const DiscoverPage = () => {
 
   useEffect(() => {
     const getGroupData = async () => {
-      const groups = await GetAllGroups();
+      const groups = await GetAllGroupsApi();
       if (groups === null) {
         return;
       }

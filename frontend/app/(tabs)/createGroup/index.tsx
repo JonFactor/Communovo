@@ -10,8 +10,8 @@ import router from "../../../common/routerHook";
 import { AuthContext } from "../../../context/AuthContext";
 import * as ImagePicker from "expo-image-picker";
 import {
-  AddUserToGroupView,
-  CreateGroup,
+  CreateGroupUserRelationshipApi,
+  CreateGroupApi,
   IGroup,
 } from "../../../functions/Groups";
 import GroupTypeSelectionModal from "../../../components/modals/GroupTypeSelectionModal";
@@ -67,13 +67,13 @@ const createGroup = () => {
     const description = groupDescription;
     const image = groupImageKey;
 
-    const groupData = await CreateGroup(
+    const groupData = await CreateGroupApi(
       title,
       description,
       image,
       groupType
     ).then(async () => {
-      const setAsOwner = await AddUserToGroupView(
+      const setAsOwner = await CreateGroupUserRelationshipApi(
         groupOwner,
         groupTitle,
         true,
@@ -155,7 +155,7 @@ const createGroup = () => {
           </Modal>
           <ScrollView className=" mt-10 h-full p-4">
             <View className=" ml-4 mb-4">
-              <ExitPage redirectLink="/home" />
+              <ExitPage redirectLink="/home" largeText={false} />
             </View>
             <View className=" w-full items-center space-y-6 flex">
               <View className=" w-72 rounded-2xl h-60 flex">

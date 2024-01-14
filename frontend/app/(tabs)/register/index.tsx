@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { UserRegister } from "../../../functions/Auth";
+import { RegisterUserApi } from "../../../functions/Auth";
 import { Image } from "expo-image";
 import router from "../../../common/routerHook";
 import { Linker } from "../../../utils/Linker";
@@ -94,7 +94,7 @@ const register = () => {
     const first = firstName;
     const last = lastName;
 
-    const responseOk: boolean = await UserRegister(
+    const responseOk: boolean = await RegisterUserApi(
       name,
       email,
       password,
@@ -126,7 +126,7 @@ const register = () => {
           </View>
         </TouchableOpacity>
         <Text className=" ml-10 text-4xl text-md-blue font-semibold">
-          Communivo
+          Communovo
         </Text>
       </View>
       <View className=" mt-8 space-y-10">

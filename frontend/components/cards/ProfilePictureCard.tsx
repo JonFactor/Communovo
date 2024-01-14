@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { AuthContext } from "../../context/AuthContext";
-import { UserViaId } from "../../functions/Auth";
+import { GetUserViaIdApi } from "../../functions/Auth";
 import { Storage, StorageClass } from "aws-amplify";
 
 import useSWR from "swr";
@@ -29,7 +29,7 @@ const ProfilePictureCard = ({
     };
 
     const profilePicOther = async () => {
-      const Profile = await UserViaId(userid);
+      const Profile = await GetUserViaIdApi(userid);
 
       if (passBackSetter !== null) {
         passBackSetter(Profile);

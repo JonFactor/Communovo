@@ -5,7 +5,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import register from "../register";
 import * as ImagePicker from "expo-image-picker";
-import { EventCreate, User2Event } from "../../../functions/Events";
+import { CreateEventApi, CreateUser2EventApi } from "../../../functions/Events";
 import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
 import { LinearGradient } from "expo-linear-gradient";
@@ -150,7 +150,7 @@ const events = () => {
     }
     const formatedTime = splittedtime.join(":");
     console.log(formatedTime);
-    const responseOk = await EventCreate(
+    const responseOk = await CreateEventApi(
       eventTitle,
       eventDescription,
       date,
@@ -167,7 +167,7 @@ const events = () => {
       return;
     }
 
-    const ownerEventOk = await User2Event(
+    const ownerEventOk = await CreateUser2EventApi(
       false,
       "",
       eventTitle,
@@ -181,7 +181,7 @@ const events = () => {
     }
 
     for (let i = 0; i < eventCoHosts.length; i++) {
-      const resultOk = User2Event(
+      const resultOk = CreateUser2EventApi(
         true,
         eventCoHosts[i].email,
         eventTitle,
@@ -195,7 +195,7 @@ const events = () => {
       }
     }
     for (let i = 0; i < eventGuests.length; i++) {
-      const resultOk = User2Event(
+      const resultOk = CreateUser2EventApi(
         true,
         eventGuests[i].email,
         eventTitle,

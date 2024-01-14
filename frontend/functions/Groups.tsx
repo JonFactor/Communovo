@@ -9,13 +9,13 @@ export interface IGroup {
   owner: number;
 }
 
-export const CreateGroup = async (
+export const CreateGroupApi = async (
   title: string,
   description: string,
   image: string,
   groupType: string
 ): Promise<IGroup> => {
-  const response = api.post("createGroup", {
+  const response = api.post("group/", {
     title,
     description,
     image,
@@ -24,12 +24,12 @@ export const CreateGroup = async (
   return (await response).data;
 };
 
-export const GetAllGroups = async (): Promise<Array<IGroup>> => {
-  const response = api.get("getAllGroups");
+export const GetAllGroupsApi = async (): Promise<Array<IGroup>> => {
+  const response = api.get("group/", { params: { requType: "ALL" } });
   return (await response).data;
 };
 
-export const AddUserToGroupView = async (
+export const CreateGroupUserRelationshipApi = async (
   email: string,
   title: string,
   isOwner: boolean,
@@ -37,7 +37,7 @@ export const AddUserToGroupView = async (
   isMember: boolean,
   isBanned: boolean
 ) => {
-  const response = api.post("addUserToGroup", {
+  const response = api.post("group2User/", {
     email,
     title,
     isOwner,
@@ -48,25 +48,29 @@ export const AddUserToGroupView = async (
   return (await response).status === 200;
 };
 
-export const GetGroupsViaUser = async (): Promise<Array<IGroup>> => {
-  const response = api.post("getGroupViaUser");
+export const GetGroupArrayViaUserApi = async (): Promise<Array<IGroup>> => {
+  const response = api.get("group2User/", { params: { requType: "USER" } });
   return (await response).data;
 };
 
-export const GetGroupDetails = async (title: string): Promise<IGroup> => {
-  const response = api.post("getGroupData");
+export const GetGroupDetailsViaTitleApi = async (
+  title: string
+): Promise<IGroup> => {
+  const response = api.get("group/", { params: { requType: "TITLE", title } });
   return (await response).data;
 };
 
-export const GetGroupMembers = async (
+export const GetGroupMemberArrayViaTitleApi = async (
   title: string,
   isStaffOnly: boolean = false
 ): Promise<Array<IUser>> => {
-  const response = api.post("getMembersFromGroup", { title, isStaffOnly });
+  const response = api.post("user2Event/", {
+    params: { title, isStaffOnly, requType: "TITLE" },
+  });
   return (await response).data;
 };
 
-export const GetGroupViaId = async (id: number): Promise<IGroup> => {
-  const response = api.post("getGroupViaId", { id });
+export const GetGroupViaIdApi = async (id: number): Promise<IGroup> => {
+  const response = api.get("group/", { params: { id, requType: "ID" } });
   return (await response).data;
 };

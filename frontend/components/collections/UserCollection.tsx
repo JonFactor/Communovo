@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { IUser, UserViaId } from "../../functions/Auth";
+import { IUser, GetUserViaIdApi } from "../../functions/Auth";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
@@ -11,7 +11,7 @@ import { Linker } from "../../utils/Linker";
 const UserCollection = ({ userList }) => {
   const [currentUserDetails, setCurrentUserDetails] = useState({});
   const GetUserDetails = async (id: number) => {
-    const userDetails = await UserViaId(id.toString());
+    const userDetails = await GetUserViaIdApi(id.toString());
     setCurrentUserDetails(userDetails);
   };
 

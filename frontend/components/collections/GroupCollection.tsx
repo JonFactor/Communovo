@@ -1,8 +1,8 @@
 import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
-  GetGroupViaId,
-  GetGroupsViaUser,
+  GetGroupViaIdApi,
+  GetGroupArrayViaUserApi,
   IGroup,
 } from "../../functions/Groups";
 import { IUser } from "../../functions/Auth";
@@ -12,15 +12,15 @@ import LargeGroupCard from "../cards/LargeGroupCard";
 
 const GroupCollection = ({
   groupsViaUser = true,
-  groupIds = [null],
   cardWidth = 96,
   cardSquare = false,
   horizontal = false,
+  groupIds,
 }) => {
   const [groupUser, setGroupUser] = useState<Array<IGroup>>(null);
   useEffect(() => {
     const getGroups = async () => {
-      const response = await GetGroupsViaUser();
+      const response = await GetGroupArrayViaUserApi();
 
       if (response !== null) {
         setGroupUser(response);
@@ -31,7 +31,7 @@ const GroupCollection = ({
       const groupData: Array<IGroup> = [];
 
       for (let i = 0; i < groupIds.length; i++) {
-        const currentGroupData = await GetGroupViaId(groupIds[i]);
+        const currentGroupData = await GetGroupViaIdApi(groupIds[i]);
         if (currentGroupData !== null) groupData.push(currentGroupData);
       }
 

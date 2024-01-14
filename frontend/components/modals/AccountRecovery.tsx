@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-import { PasswordResetCode, SendEmail } from "../../functions/Auth";
+import { GetPasswordResetCodeApi, SendEmailApi } from "../../functions/Auth";
 
 const AccountRecovery = ({ parentSetter }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,7 +32,7 @@ const AccountRecovery = ({ parentSetter }) => {
     const validated = validateEntry();
     if (validated) {
       setEmailSent(true);
-      SendEmail(email);
+      SendEmailApi(email);
       let prevEmail = email;
       setEmailBtnEnabled(false);
       setCodeVerificationSectionVisible(true);
@@ -60,19 +60,21 @@ const AccountRecovery = ({ parentSetter }) => {
     }
 
     setCodesectionMessage("");
-    const success = await PasswordResetCode(code, pass).then((success) => {
-      if (!success) {
-        setCodeSectionError(true);
-        setCodesectionMessage(
-          "Password has not been reset, make sure you have correctly typed in the code above and retry."
-        );
-      } else {
-        setCodeSectionError(false);
-        setCodesectionMessage(
-          "Password has Successfully been updated. Return to the login screen to jump back into Communovo!"
-        );
+    const success = await GetPasswordResetCodeApi(code, pass).then(
+      (success) => {
+        if (!success) {
+          setCodeSectionError(true);
+          setCodesectionMessage(
+            "Password has not been reset, make sure you have correctly typed in the code above and retry."
+          );
+        } else {
+          setCodeSectionError(false);
+          setCodesectionMessage(
+            "Password has Successfully been updated. Return to the login screen to jump back into Communovo!"
+          );
+        }
       }
-    });
+    );
   };
   return (
     <View>

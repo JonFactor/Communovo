@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from "react-native";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import EventCard from "../cards/EventCard";
 import { FilterContext } from "../../app/(tabs)/home";
-import { EventsGetAll, IEvent } from "../../functions/Events";
+import { GetEventArrayApi, IEvent } from "../../functions/Events";
 
 interface params {
   filters: string[];
@@ -52,7 +52,7 @@ const EventsCollection = ({
       } else if (excludeDisliked) {
         params = [false, false, true, false];
       } else if (baisedOnGroup) {
-        content = await EventsGetAll(
+        content = await GetEventArrayApi(
           false,
           false,
           false,
@@ -66,7 +66,7 @@ const EventsCollection = ({
         params = [];
       }
 
-      content = await EventsGetAll(...params);
+      content = await GetEventArrayApi(...params);
       counterSetter(content.length);
       setEventData(content);
     };

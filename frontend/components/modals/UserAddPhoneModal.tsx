@@ -3,8 +3,8 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Linker } from "../../utils/Linker";
 import { useState } from "react";
 import {
-  UserPhoneNumberAdd,
-  UserPhoneNumberNotify,
+  AddPhoneNumberUserApi,
+  PhoneNotifyUserApi,
 } from "../../functions/Auth";
 
 export const UserAddPhoneModal = ({
@@ -18,13 +18,13 @@ export const UserAddPhoneModal = ({
     if (number === "" || number === undefined) {
       return;
     }
-    const responseSuccess = await UserPhoneNumberAdd(
+    const responseSuccess = await AddPhoneNumberUserApi(
       number,
       eventTitle,
       eventDate
     );
     if (responseSuccess) {
-      UserPhoneNumberNotify(number, eventTitle, eventDate);
+      PhoneNotifyUserApi(number, eventTitle, eventDate);
       Linker(`/events/${eventId}`);
     }
   };

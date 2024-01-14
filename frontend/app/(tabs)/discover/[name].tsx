@@ -11,9 +11,9 @@ import router from "../../../common/routerHook";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
 import { Image } from "expo-image";
 import {
-  AddUserToGroupView,
-  GetGroupDetails,
-  GetGroupMembers,
+  CreateGroupUserRelationshipApi,
+  GetGroupDetailsViaTitleApi,
+  GetGroupMemberArrayViaTitleApi,
   IGroup,
 } from "../../../functions/Groups";
 import GroupCard from "../../../components/cards/GroupCard";
@@ -40,7 +40,7 @@ const CatigoryDetailsPage = () => {
 
   useEffect(() => {
     const loadGroupData = async () => {
-      const response = await GetGroupDetails(nameString);
+      const response = await GetGroupDetailsViaTitleApi(nameString);
 
       if (response != null) {
         setGroupData(response);
@@ -48,14 +48,20 @@ const CatigoryDetailsPage = () => {
     };
 
     const loadGroupMembers = async () => {
-      const responseAll = await GetGroupMembers(nameString, false);
+      const responseAll = await GetGroupMemberArrayViaTitleApi(
+        nameString,
+        false
+      );
 
       if (responseAll != null) {
         setGroupPeople(responseAll);
         setMemberCount(responseAll.length + memberCount);
       }
 
-      const responseStaff = await GetGroupMembers(nameString, true);
+      const responseStaff = await GetGroupMemberArrayViaTitleApi(
+        nameString,
+        true
+      );
       if (responseStaff != null) {
         setGroupStaff(responseStaff);
         setMemberCount(responseStaff.length + memberCount);
@@ -79,7 +85,7 @@ const CatigoryDetailsPage = () => {
   const handleUserJoin = async () => {
     const user = await getUserInfo();
 
-    const responseOk = await AddUserToGroupView(
+    const responseOk = await CreateGroupUserRelationshipApi(
       user.email,
       nameString,
       false,

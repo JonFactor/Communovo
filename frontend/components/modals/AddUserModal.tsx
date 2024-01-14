@@ -1,9 +1,9 @@
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import EventRegisterModalTemplate from "./EventRegisterModalTemplate";
-import { IUser, UserViaId } from "../../functions/Auth";
+import { IUser, GetUserViaIdApi } from "../../functions/Auth";
 import { AuthContext } from "../../context/AuthContext";
-import { FindFollowing } from "../../functions/Relations";
+import { GetSelfFollowingApi } from "../../functions/Auth";
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 
@@ -17,11 +17,11 @@ const AddUserModal = ({ setter, parentSetter, parentValue, isGuests }) => {
   useEffect(() => {
     const getFriends = async () => {
       const userData = await getUserInfo();
-      const follows = await FindFollowing(userData.email);
+      const follows = await GetSelfFollowingApi(userData.email);
       if (follows === null) {
       } else {
         for (let i = 0; i < follows.length; i++) {
-          const user = await UserViaId(follows[i].secondUser.toString());
+          const user = await GetUserViaIdApi(follows[i].secondUser.toString());
           if (!friends.includes(user)) {
             setFriends((list) => [...list, user]);
 

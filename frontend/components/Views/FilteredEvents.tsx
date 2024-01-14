@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import EventsCollection from "../collections/EventsCollection";
 import { ScrollView } from "react-native-gesture-handler";
-import { EventsGetAll, IEvent } from "../../functions/Events";
+import { GetEventArrayApi, IEvent } from "../../functions/Events";
 import EventCard from "../cards/EventCard";
 import EventTypeList, { IEventType } from "../../constants/EventTypeList";
 
@@ -24,11 +24,15 @@ const FilteredEvents = () => {
 
   useEffect(() => {
     const getEvents = async () => {
-      const content = await EventsGetAll(false, false, true, false, "").then(
-        (response) => {
-          return response;
-        }
-      );
+      const content = await GetEventArrayApi(
+        false,
+        false,
+        true,
+        false,
+        ""
+      ).then((response) => {
+        return response;
+      });
 
       setEventData(content);
     };
