@@ -14,6 +14,7 @@ export interface IEvent {
   coverImg: string;
   regionCords: string;
   time?: string;
+  isExpired?: boolean;
 }
 
 export const CreateEventApi = async (
@@ -47,7 +48,8 @@ export const GetEventArrayApi = async (
   isOnlyLiked: boolean = false,
   excludeDisliked: boolean = false,
   isBaisedOnGroup: boolean = false,
-  groupTitle: string = ""
+  groupTitle: string = "",
+  includeExpired: boolean = false
 ): Promise<Array<IEvent>> => {
   const response = api.get("event/", {
     params: {
@@ -57,6 +59,7 @@ export const GetEventArrayApi = async (
       excludeDisliked,
       isBaisedOnGroup,
       groupTitle,
+      includeExpired,
     },
   });
 

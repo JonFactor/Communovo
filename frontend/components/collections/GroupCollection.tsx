@@ -15,7 +15,7 @@ const GroupCollection = ({
   cardWidth = 96,
   cardSquare = false,
   horizontal = false,
-  groupIds,
+  groupIds = [],
 }) => {
   const [groupUser, setGroupUser] = useState<Array<IGroup>>(null);
   useEffect(() => {

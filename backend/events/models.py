@@ -14,7 +14,8 @@ class Event(models.Model):
     coverImg = models.CharField(max_length=225, default="test.png")
     regionCords = models.CharField(max_length=1000, default="null")
     time = models.TimeField(default=datetime.time.min)
-
+    isExpired = models.BooleanField(default=False)
+    
 class User2Event(models.Model):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     event = models.ForeignKey("event", on_delete=models.CASCADE)

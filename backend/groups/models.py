@@ -22,4 +22,3 @@ class Event2Group(models.Model):
     group = models.ForeignKey("Group", on_delete=models.CASCADE)
     event = models.ForeignKey("events.Event", on_delete=models.CASCADE)
     isPromoted = models.BooleanField()
-    

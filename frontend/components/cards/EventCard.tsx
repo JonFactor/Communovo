@@ -16,6 +16,8 @@ const EventCard = ({
   eventType,
   id,
   justSmallCards,
+  showIsExpired = false,
+  isExpired = false,
 }) => {
   const monthsToStrings = [
     "jan",
@@ -108,14 +110,31 @@ const EventCard = ({
               colors={["rgba(0,0,0,.15)", "transparent"]}
             >
               <View className=" flex-row">
-                <View className=" flex-col items-center bg-red-400 w-16 aspect-square rounded-full">
-                  <Text className=" text-3xl text-white mt-2  absolute">
-                    {day}
-                  </Text>
-                  <Text className=" text-white mt-10 ">
-                    {monthsToStrings[monthIndex]}
-                  </Text>
-                </View>
+                {!showIsExpired ? (
+                  <View className=" flex-col items-center bg-red-400 w-16 aspect-square rounded-full">
+                    <Text className=" text-3xl text-white mt-2  absolute">
+                      {day}
+                    </Text>
+                    <Text className=" text-white mt-10 ">
+                      {monthsToStrings[monthIndex]}
+                    </Text>
+                  </View>
+                ) : (
+                  <View className=" flex-col items-center bg-red-400 w-16 aspect-square rounded-full">
+                    {!isExpired ? (
+                      <>
+                        <Text className=" text-3xl text-white mt-2  absolute">
+                          {day}
+                        </Text>
+                        <Text className=" text-white mt-10 ">
+                          {monthsToStrings[monthIndex]}
+                        </Text>
+                      </>
+                    ) : (
+                      <Text className=" text-white text-lg mt-4">EXPIRED</Text>
+                    )}
+                  </View>
+                )}
                 <Text className=" ml-2 text-2xl text-white font-semibold w-44">
                   {title}
                 </Text>

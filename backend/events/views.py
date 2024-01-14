@@ -14,6 +14,21 @@ from groups.serializers import GroupSerializer, Event2GroupSerializer
 from users.serializers import UserSerializer
 from functions.getUser import getUser
 
+@staticmethod
+def ExireEventIfPastDate(event, isList):
+    if isList:
+        events = []
+        for i in event:
+            eventExpiredFiltered = ExireEventIfPastDate(i, isList=False)
+            if eventExpiredFiltered == None:
+                continue
+            events.append(eventExpiredFiltered)
+    else: 
+        if event.isExpired:
+            return None
+        if event.date > datetime.datetime.now:
+            event.update(isExpired=True)
+            ExireEventIfPastDate(event, isList)
 
 # Create your views here.
 class EventView(APIView):
@@ -54,12 +69,13 @@ class EventView(APIView):
         if request.query_params.get('requType') == "ID": # id
             requId = request.query_params.get('id')
             event = Event.objects.filter(id = requId).first()
+            event = ExireEventIfPastDate(event, False)
+            
             serializer = EventSerializer(event, many=False)
             return Response(data=serializer.data)
         
         elif request.query_params['requType'] == "COLLECTION": # isBaisedOnGroup, groupTitle, exculdeDisliked, isOnlyDisliked, isOnlyLiked, excludeDisliked
             user = getUser(request)
-            
             if user == None:
                 return Response(status=400)
             filterEvents = None
@@ -97,12 +113,16 @@ class EventView(APIView):
                 events = Event.objects.exclude(id__in=ids)
             else:
                 events = Event.objects.filter(id__in=ids)
-            serializer = EventSerializer(events, many=True)
+                
+            event = ExireEventIfPastDate(events, True)
+            serializer = EventSerializer(event, many=True)
             return Response(data=serializer.data)
         
         elif request.query_params['requType'] == "TITLE": # title
             title = request.query_params['title']
             event = Event.objects.filter(title = title).first()
+            
+            ExireEventIfPastDate(event, False)
             serializer = EventSerializer(event)
             return Response(data=serializer.data)
         return Response({"message":"Did not specify any correct enum of requType"}, status=401)
