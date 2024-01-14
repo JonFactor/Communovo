@@ -40,7 +40,7 @@ import { Notification } from "../../../utils/PushNotifications";
 import { AddEventToCalendar, Calendar } from "../../../utils/Calendar";
 import { OutputMapInfo } from "../../../utils/Maps";
 import NotificationMethodPickerModal from "../../../components/modals/NotificationMethodPickerModal";
-import { SendUserEmail } from "../../../functions/Misc";
+import { SendUserEmailApi } from "../../../functions/Misc";
 import ExitPage from "../../../components/common/ExitPage";
 
 const eventDetailsPage = () => {
@@ -142,7 +142,7 @@ const eventDetailsPage = () => {
 
       const SendEmail = () => {
         // send user and email
-        SendUserEmail(
+        SendUserEmailApi(
           `An event intitled: ${eventData.title}. Is coming up soon on the date: ${eventData.date}. This is an automatic reminder, if you do not wish for the reminders to continue reply with STOP.`,
           "Reminder for an upcoming Event"
         );

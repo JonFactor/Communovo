@@ -15,7 +15,7 @@ import { Storage } from "aws-amplify";
 import GroupCard from "../../../components/cards/GroupCard";
 import { IEvent } from "../../../functions/Events";
 import { IUser } from "../../../functions/Auth";
-import { SearchAllDB } from "../../../functions/Misc";
+import { SearchAllDBApi } from "../../../functions/Misc";
 import UserCollection from "../../../components/collections/UserCollection";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import EventsCollection from "../../../components/collections/EventsCollection";
@@ -52,7 +52,7 @@ const DiscoverPage = () => {
   };
 
   const searchResultsLoad = async (text: string) => {
-    const searchRes = await SearchAllDB(text);
+    const searchRes = await SearchAllDBApi(text);
     setSearchResult(searchRes);
 
     if (searchRes["user"] !== "None") {

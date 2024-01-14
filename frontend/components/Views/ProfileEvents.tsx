@@ -37,7 +37,8 @@ const ProfileEvents = ({ showLikedDisliked = true }) => {
         isSelectedLik,
         false,
         false,
-        ""
+        "",
+        true
       ).then((response) => {
         return response;
       });
@@ -46,9 +47,6 @@ const ProfileEvents = ({ showLikedDisliked = true }) => {
     };
     getEvents();
   }, [isSelectedDis, isSelectedLik]);
-  // useEffect(() => {
-
-  // }, [isSelectedDis, isSelectedLik])
 
   return (
     <View>
@@ -93,7 +91,10 @@ const ProfileEvents = ({ showLikedDisliked = true }) => {
       {eventData !== undefined &&
         eventData.length > 0 &&
         eventData.map(
-          ({ date, eventType, location, title, id, coverImg }, index) => {
+          (
+            { date, eventType, location, title, id, coverImg, isExpired },
+            index
+          ) => {
             const day = date.split("-")[1];
             const month = date.split("-")[2];
             return (
@@ -107,6 +108,8 @@ const ProfileEvents = ({ showLikedDisliked = true }) => {
                   imagePath={coverImg}
                   eventType={eventType}
                   justSmallCards={false}
+                  showIsExpired={true}
+                  isExpired={isExpired}
                 />
               </View>
             );

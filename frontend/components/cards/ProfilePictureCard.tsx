@@ -9,9 +9,9 @@ import useSWR from "swr";
 
 interface IProfilePictureCardParams {
   width: number;
-  userid?: string;
+  userid?: string | number;
   passedPic?: string;
-  passBackSetter?: (param) => {} | null;
+  passBackSetter?: (param) => void | null;
 }
 
 const ProfilePictureCard = ({

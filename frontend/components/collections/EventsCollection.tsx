@@ -4,7 +4,7 @@ import EventCard from "../cards/EventCard";
 import { FilterContext } from "../../app/(tabs)/home";
 import { GetEventArrayApi, IEvent } from "../../functions/Events";
 
-interface params {
+interface IEventCollectionParams {
   filters: string[];
   noFilter: boolean;
   isOnlyLiked: boolean;
@@ -26,7 +26,7 @@ const EventsCollection = ({
   groupTitle,
   justSmallCards,
   counterSetter = (params) => {},
-}: params) => {
+}: IEventCollectionParams) => {
   // pull events from db
   const [smallCards, setSmallCards] = useState(false);
 

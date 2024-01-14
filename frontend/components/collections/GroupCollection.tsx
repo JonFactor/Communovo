@@ -10,13 +10,21 @@ import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import LargeGroupCard from "../cards/LargeGroupCard";
 
+interface IGroupCollectionParams {
+  groupsViaUser?: boolean;
+  cardWidth?: number;
+  cardSquare?: boolean;
+  horizontal?: boolean;
+  groupIds?: Array<number> | null;
+}
+
 const GroupCollection = ({
   groupsViaUser = true,
   cardWidth = 96,
   cardSquare = false,
   horizontal = false,
   groupIds = [],
-}) => {
+}: IGroupCollectionParams) => {
   const [groupUser, setGroupUser] = useState<Array<IGroup>>(null);
   useEffect(() => {
     const getGroups = async () => {

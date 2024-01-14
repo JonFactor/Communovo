@@ -70,7 +70,7 @@ export const UpdateUserProfilePicApi = async (
   return (await response).status === 200;
 };
 
-export const GetUserViaIdApi = async (id: string): Promise<IUser> => {
+export const GetUserViaIdApi = async (id: string | number): Promise<IUser> => {
   const response = api.get("user/", { params: { id: id, requType: "ID" } });
   return (await response).data;
 };

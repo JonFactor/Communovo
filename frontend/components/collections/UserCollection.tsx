@@ -8,7 +8,10 @@ import ProfilePictureCard from "../cards/ProfilePictureCard";
 import router from "../../common/routerHook";
 import { Linker } from "../../utils/Linker";
 
-const UserCollection = ({ userList }) => {
+interface IUserCollecitionParams {
+  userList: Array<number>;
+}
+const UserCollection = ({ userList }: IUserCollecitionParams) => {
   const [currentUserDetails, setCurrentUserDetails] = useState({});
   const GetUserDetails = async (id: number) => {
     const userDetails = await GetUserViaIdApi(id.toString());
