@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { router } from "expo-router";
+
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 import { LinearGradient } from "expo-linear-gradient";

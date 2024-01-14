@@ -1,11 +1,14 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import EventsCollection from "../collections/EventsCollection";
 import { GetEventArrayApi, IEvent } from "../../functions/Events";
 import EventCard from "../cards/EventCard";
 
-const ProfileEvents = ({ showLikedDisliked = true }) => {
+interface IProfileEventsParams {
+  showLikedDisliked?: boolean;
+}
+
+const ProfileEvents = ({ showLikedDisliked = true }: IProfileEventsParams) => {
   const [isSelectedDis, setIsSelectedDis] = useState(false);
   const [isSelectedLik, setIsSelectedLik] = useState(false);
   const [eventData, setEventData] = useState(Array<IEvent> || undefined);

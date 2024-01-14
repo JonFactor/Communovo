@@ -11,7 +11,7 @@ export const InputMapInfo = ({ regionSetter }) => {
     <View className=" w-60 aspect-square ">
       <Modal visible={viewMapModal}>
         <MapModal
-          parrentSetter={setViewMapModal}
+          parentSetter={setViewMapModal}
           input={true}
           location={null}
           passedRegion={null}
@@ -36,7 +36,7 @@ export const OutputMapInfo = ({ location, eventRegion }) => {
     <View>
       <Modal visible={viewMapModal}>
         <MapModal
-          parrentSetter={setViewMapModal}
+          parentSetter={setViewMapModal}
           input={false}
           location={location}
           passedRegion={eventRegion}

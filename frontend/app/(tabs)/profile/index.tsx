@@ -117,7 +117,7 @@ const profile = () => {
   return (
     <ScrollView className=" mt-20">
       <Modal visible={appInfoModalDisplay}>
-        <AppInfoModal parrentSetter={setAppInfoModalDisplay} />
+        <AppInfoModal parentSetter={setAppInfoModalDisplay} />
       </Modal>
       {redirectLogin && <Redirect href="/login"></Redirect>}
       {/* {menuModal && (

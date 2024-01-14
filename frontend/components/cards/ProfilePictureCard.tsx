@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { AuthContext } from "../../context/AuthContext";
 import { GetUserViaIdApi } from "../../functions/Auth";
-import { Storage, StorageClass } from "aws-amplify";
+import { Storage } from "aws-amplify";
 
 import useSWR from "swr";
 

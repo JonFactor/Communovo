@@ -1,11 +1,8 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { IUser, GetUserViaIdApi } from "../../functions/Auth";
+import { GetUserViaIdApi } from "../../functions/Auth";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Image } from "expo-image";
-import { Storage } from "aws-amplify";
 import ProfilePictureCard from "../cards/ProfilePictureCard";
-import router from "../../common/routerHook";
 import { Linker } from "../../utils/Linker";
 
 interface IUserCollecitionParams {
@@ -26,16 +23,6 @@ const UserCollection = ({ userList }: IUserCollecitionParams) => {
           const name = currentUserDetails["name"];
           const id = currentUserDetails["id"];
 
-          // const userPhotoUri = currentUserDetails["profilePic"];
-
-          // if (userPhotoUri.includes("www.")) {
-          //   const photo = userPhotoUri;
-          //   return;
-          // }
-
-          // const getUserPicture = async () => {
-          //   const photo: string = await Storage.get(userPhotoUri);
-          // };
           return (
             <TouchableOpacity
               className=" w-28 aspect-square bg-gray-200 border-2 border-black border-solid rounded-xl mt-2 ml-4"

@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import EventsCollection from "../collections/EventsCollection";
 import { ScrollView } from "react-native-gesture-handler";
 import { GetEventArrayApi, IEvent } from "../../functions/Events";
 import EventCard from "../cards/EventCard";

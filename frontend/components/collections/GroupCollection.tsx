@@ -1,13 +1,10 @@
-import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   GetGroupViaIdApi,
   GetGroupArrayViaUserApi,
   IGroup,
 } from "../../functions/Groups";
-import { IUser } from "../../functions/Auth";
-import { Image } from "expo-image";
-import { Storage } from "aws-amplify";
 import LargeGroupCard from "../cards/LargeGroupCard";
 
 interface IGroupCollectionParams {

@@ -7,7 +7,19 @@ import { GetSelfFollowingApi } from "../../functions/Auth";
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
 
-const AddUserModal = ({ setter, parentSetter, parentValue, isGuests }) => {
+interface IAddUserModalParams {
+  parentSetter: (param) => void;
+  setter: (param) => void;
+  parentValue: any;
+  isGuests: boolean;
+}
+
+const AddUserModal = ({
+  setter,
+  parentSetter,
+  parentValue,
+  isGuests,
+}: IAddUserModalParams) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [friends, setFriends] = useState(Array<IUser>);
   const [profilePics, setProfilePics] = useState([]);
@@ -53,7 +65,7 @@ const AddUserModal = ({ setter, parentSetter, parentValue, isGuests }) => {
     }
   };
   return (
-    <EventRegisterModalTemplate setter={setter}>
+    <EventRegisterModalTemplate parentSetter={setter}>
       <ScrollView className=" px-4">
         <View className=" w-full flex items-center">
           <Text className=" text-4xl">{isGuests ? "Guests" : "Co-Owner"}</Text>

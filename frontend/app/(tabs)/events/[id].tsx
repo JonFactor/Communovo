@@ -32,7 +32,7 @@ import {
   GetUserDetailsApi,
   PhoneNotifyUserApi,
 } from "../../../functions/Auth";
-import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
+import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCard";
 import { Linker } from "../../../utils/Linker";
 import { GetWeatherData } from "../../../utils/Weather";
 import { UserAddPhoneModal } from "../../../components/modals/UserAddPhoneModal";
@@ -226,7 +226,7 @@ const eventDetailsPage = () => {
           </Modal>
           <Modal visible={userNotificationSelectionModal}>
             <NotificationMethodPickerModal
-              parrentSetter={setUserNotificationSelectionModal}
+              parentSetter={setUserNotificationSelectionModal}
               notificationMethodsSetter={setUserNotfificationMethods}
             />
           </Modal>
@@ -306,10 +306,10 @@ const eventDetailsPage = () => {
                       key={index}
                       className=" px-8 py-2 border-4 border-md-purple rounded-full"
                     >
-                      <ProfileHorizontal
+                      <ProfileHorizontalCard
                         profile={value}
                         goToProfile={true}
-                      ></ProfileHorizontal>
+                      ></ProfileHorizontalCard>
                     </View>
                   );
                 })}
@@ -325,10 +325,10 @@ const eventDetailsPage = () => {
                       key={index}
                       className=" px-8 py-2 border-4 border-md-purple rounded-full"
                     >
-                      <ProfileHorizontal
+                      <ProfileHorizontalCard
                         profile={value}
                         goToProfile={true}
-                      ></ProfileHorizontal>
+                      ></ProfileHorizontalCard>
                     </View>
                   );
                 })}

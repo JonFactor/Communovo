@@ -3,13 +3,20 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import EventRegisterModalTemplate from "./EventRegisterModalTemplate";
 import { TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import EventTypeList, { IEventType } from "../../constants/EventTypeList";
-import router from "../../common/routerHook";
 import { GetGroupArrayViaUserApi } from "../../functions/Groups";
-import { Image } from "expo-image";
 import GroupCard from "../cards/GroupCard";
 
-const GroupSelectionModal = ({ setter, parentSetter, parentValue }) => {
+interface IGroupSelectionModalParams {
+  setter: (params) => void;
+  parentSetter: (params) => void;
+  parentValue: any;
+}
+
+const GroupSelectionModal = ({
+  setter,
+  parentSetter,
+  parentValue,
+}: IGroupSelectionModalParams) => {
   const [selectedItems, setSelectedItems] = useState(null);
   const [userGroups, setUserGroups] = useState([]);
 

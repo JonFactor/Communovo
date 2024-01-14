@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Image, ImageBackground } from "expo-image";
+import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Storage } from "aws-amplify";
-import { router } from "expo-router";
+
 import { CreateUser2EventPreferenceApi } from "../../functions/Events";
 import { Linker } from "../../utils/Linker";
 

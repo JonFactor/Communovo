@@ -4,13 +4,16 @@ import EventRegisterModalTemplate from "./EventRegisterModalTemplate";
 import { TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import EventTypeList, { IEventType } from "../../constants/EventTypeList";
-import router from "../../common/routerHook";
 
-const GroupSelectionModal = ({ setter, parentSetter, parentValue }) => {
+interface IGroupSelectionModalParams {
+  parentSetter: (param) => void;
+}
+
+const GroupSelectionModal = ({ parentSetter }: IGroupSelectionModalParams) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const GroupSelection = (value) => {};
   return (
-    <EventRegisterModalTemplate setter={setter}>
+    <EventRegisterModalTemplate parentSetter={parentSetter}>
       <ScrollView className=" p-4">
         <View className=" flex space-y-6 mt-10">
           {EventTypeList.map((value: IEventType, index: number) => {

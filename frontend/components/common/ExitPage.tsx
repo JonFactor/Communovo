@@ -3,11 +3,17 @@ import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Linker } from "../../utils/Linker";
 
+interface IExitPageParams {
+  redirectLink?: string;
+  modalSetter?: (param) => void;
+  largeText?: boolean;
+}
+
 const ExitPage = ({
   redirectLink = "",
   modalSetter = (param) => {},
-  largeText,
-}) => {
+  largeText = false,
+}: IExitPageParams) => {
   return (
     <TouchableOpacity
       onPress={() => {

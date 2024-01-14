@@ -16,7 +16,7 @@ import GroupSelectionModal from "../../../components/modals/GroupSelectionModal"
 import EventTypeModal from "../../../components/modals/EventTypeModal";
 import AddUserModal from "../../../components/modals/AddUserModal";
 import { IGroup } from "../../../functions/Groups";
-import ProfileHorizontal from "../../../components/cards/ProfileHorizontal";
+import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCard";
 import { Linker } from "../../../utils/Linker";
 import { InputMapInfo } from "../../../utils/Maps";
 import ExitPage from "../../../components/common/ExitPage";
@@ -450,10 +450,10 @@ const events = () => {
                   {eventCoHosts.map((value: IUser, index: number) => {
                     return (
                       <View key={index}>
-                        <ProfileHorizontal
+                        <ProfileHorizontalCard
                           profile={value}
                           goToProfile={false}
-                        ></ProfileHorizontal>
+                        ></ProfileHorizontalCard>
                       </View>
                     );
                   })}
@@ -482,10 +482,10 @@ const events = () => {
                   {eventGuests.map((value: IUser, index: number) => {
                     return (
                       <View key={index}>
-                        <ProfileHorizontal
+                        <ProfileHorizontalCard
                           profile={value}
                           goToProfile={false}
-                        ></ProfileHorizontal>
+                        ></ProfileHorizontalCard>
                       </View>
                     );
                   })}

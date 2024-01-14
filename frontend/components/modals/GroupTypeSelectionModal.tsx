@@ -1,11 +1,20 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import router from "../../common/routerHook";
 import { Image } from "expo-image";
 import GroupTypes from "../../constants/GroupTypes";
 
-const GroupTypeSelectionModal = ({ parentSetter, textSetter, textValue }) => {
+interface IGroupTypeSelectionModalParams {
+  parentSetter: (params) => void;
+  textSetter: (params) => void;
+  textValue: string;
+}
+
+const GroupTypeSelectionModal = ({
+  parentSetter,
+  textSetter,
+  textValue,
+}: IGroupTypeSelectionModalParams) => {
   const valuesBeforeOpening = textValue;
   const [indexOfSelected, setIndexOfSelected] = useState(null);
   const handleTypeClick = (name: string, index: number) => {

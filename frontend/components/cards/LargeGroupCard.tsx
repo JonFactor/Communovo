@@ -4,7 +4,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import { IGroup } from "../../functions/Groups";
 import { Storage } from "aws-amplify";
-import { router } from "expo-router";
 import { Linker } from "../../utils/Linker";
 
 interface ILargeGroupCardParams {

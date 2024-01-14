@@ -3,9 +3,18 @@ import React, { useEffect, useState } from "react";
 import EventRegisterModalTemplate from "./EventRegisterModalTemplate";
 import { ScrollView } from "react-native-gesture-handler";
 import EventTypeList, { IEventType } from "../../constants/EventTypeList";
-import router from "../../common/routerHook";
 
-const EventTypeModal = ({ setter, parentSetter, parentValue }) => {
+interface IEventTypeModalParams {
+  setter: (params) => void;
+  parentSetter: (params) => void;
+  parentValue: any;
+}
+
+const EventTypeModal = ({
+  setter,
+  parentSetter,
+  parentValue,
+}: IEventTypeModalParams) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const EventTypeClick = (value: IEventType) => {
     if (parentValue.includes(value.name)) {
@@ -24,7 +33,7 @@ const EventTypeModal = ({ setter, parentSetter, parentValue }) => {
   }, []);
 
   return (
-    <EventRegisterModalTemplate setter={setter}>
+    <EventRegisterModalTemplate parentSetter={setter}>
       <ScrollView className=" p-4">
         <View className=" flex space-y-6 mt-10">
           {EventTypeList.map((value: IEventType, index: number) => {

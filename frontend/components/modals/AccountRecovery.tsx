@@ -4,7 +4,11 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import { GetPasswordResetCodeApi, SendEmailApi } from "../../functions/Auth";
 
-const AccountRecovery = ({ parentSetter }) => {
+interface IAccountRecoveryParams {
+  parentSetter: (param) => void;
+}
+
+const AccountRecovery = ({ parentSetter }: IAccountRecoveryParams) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);

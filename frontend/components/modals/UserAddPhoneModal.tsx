@@ -7,12 +7,19 @@ import {
   PhoneNotifyUserApi,
 } from "../../functions/Auth";
 
+interface IUserAddPhoneModalParams {
+  parentSetter: (params) => void;
+  eventId: number | string;
+  eventTitle: string;
+  eventDate: string;
+}
+
 export const UserAddPhoneModal = ({
   eventId,
   parentSetter,
   eventTitle,
   eventDate,
-}) => {
+}: IUserAddPhoneModalParams) => {
   const [number, setNumber] = useState("");
   const handlePhoneNumberSubmit = async () => {
     if (number === "" || number === undefined) {
@@ -33,7 +40,7 @@ export const UserAddPhoneModal = ({
       <View className=" flex-row w-full">
         <TouchableOpacity
           onPress={() => {
-            // parentSetter(false);
+            parentSetter(false);
             Linker(`/events/${eventId}`);
           }}
         >

@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import EventCard from "../cards/EventCard";
 import { FilterContext } from "../../app/(tabs)/home";
 import { GetEventArrayApi, IEvent } from "../../functions/Events";

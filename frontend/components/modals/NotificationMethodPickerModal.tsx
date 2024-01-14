@@ -2,13 +2,17 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import ExitPage from "../common/ExitPage";
-import useSWR from "swr";
 import { Image } from "expo-image";
 
+interface INotificationMethodPickerModalParams {
+  parentSetter: (params) => void;
+  notificationMethodsSetter: (params) => void;
+}
+
 const NotificationMethodPickerModal = ({
-  parrentSetter,
+  parentSetter,
   notificationMethodsSetter,
-}) => {
+}: INotificationMethodPickerModalParams) => {
   const methods = ["Text", "Email"]; //"Calender Event"];
   const [selectedMethods, setSelectedMethods] = useState([]);
 
@@ -18,7 +22,7 @@ const NotificationMethodPickerModal = ({
   return (
     <ScrollView className=" mt-10">
       <View className=" ml-6 mt-2">
-        <ExitPage modalSetter={parrentSetter} />
+        <ExitPage modalSetter={parentSetter} />
       </View>
       <View className=" w-full flex items-center mt-6">
         <Text className=" text-2xl">Select Method Of Notification</Text>
@@ -55,7 +59,7 @@ const NotificationMethodPickerModal = ({
         <TouchableOpacity
           className=" flex-1 w-60 aspect-square mt-24 "
           onPress={() => {
-            parrentSetter(false);
+            parentSetter(false);
           }}
         >
           <Image

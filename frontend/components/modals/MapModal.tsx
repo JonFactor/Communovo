@@ -4,13 +4,21 @@ import ExitPage from "../common/ExitPage";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 
+interface IMapModalParams {
+  parentSetter: (params) => void;
+  input: boolean;
+  location: string;
+  regionSetter: (params) => void;
+  passedRegion: any;
+}
+
 const MapModal = ({
-  parrentSetter,
+  parentSetter,
   input,
   location,
   regionSetter,
   passedRegion,
-}) => {
+}: IMapModalParams) => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [region, setRegion] = useState(null);
   useEffect(() => {
@@ -35,7 +43,7 @@ const MapModal = ({
   return (
     <ScrollView className=" mt-10">
       <View className=" ml-4">
-        <ExitPage modalSetter={parrentSetter}></ExitPage>
+        <ExitPage modalSetter={parentSetter}></ExitPage>
       </View>
       {input && (
         <View className=" w-full mt-4 flex items-center">
@@ -43,7 +51,7 @@ const MapModal = ({
             className=" w-full  text-center py-2 items-center flex  bg-md-blue"
             onPress={() => {
               setNewLocation();
-              parrentSetter(false);
+              parentSetter(false);
             }}
           >
             <Text className=" text-3xl">Set New Location</Text>

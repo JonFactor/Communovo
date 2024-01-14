@@ -2,15 +2,17 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import ExitPage from "../common/ExitPage";
 import { ScrollView } from "react-native-gesture-handler";
-import { Linker } from "../../utils/Linker";
-import useSWR from "swr";
 import { PrivacyPolicy } from "../../constants/PrivacyPolicy";
 
-const AppInfoModal = ({ parrentSetter }) => {
+interface IAppInfoModal {
+  parentSetter: (param) => void;
+}
+
+const AppInfoModal = ({ parentSetter }: IAppInfoModal) => {
   const [showPrivacy, setshowPrivacy] = useState(false);
   return (
     <ScrollView className=" mt-12 px-6">
-      <ExitPage redirectLink={""} modalSetter={parrentSetter} />
+      <ExitPage redirectLink={""} modalSetter={parentSetter} />
       <View className=" w-full flex items-center mt-2">
         <Text className=" text-4xl">App Info</Text>
       </View>
