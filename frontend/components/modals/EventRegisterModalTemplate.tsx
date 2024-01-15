@@ -7,6 +7,13 @@ interface IEventModalTemplateParams {
   parentSetter: (param) => void;
 }
 
+/*------------------------------------------------- EVENT REGISTER TEMP MODAL -
+  |
+  |  Purpose:  
+  |          Provide a basic template layout for the models in the event creation page.
+  |          
+  *-------------------------------------------------------------------*/
+
 const EventRegisterModalTemplate = ({
   children,
   parentSetter,

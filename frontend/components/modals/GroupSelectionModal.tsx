@@ -12,6 +12,19 @@ interface IGroupSelectionModalParams {
   parentValue: any;
 }
 
+/*------------------------------------------------- GROUP SELECT MODAL -
+  |
+  |  Purpose:  
+  |          use the template to select which group this event belongs to, if any.
+  |
+  |  Main Logic:  
+  |          When a user selects a item if the item is in the array it is removed, if not
+  |          add it to the parentSetter and change bg of the item. 
+  |             
+  |           
+  |           
+  *-------------------------------------------------------------------*/
+
 const GroupSelectionModal = ({
   setter,
   parentSetter,
@@ -42,7 +55,7 @@ const GroupSelectionModal = ({
   }, []);
 
   return (
-    <EventRegisterModalTemplate setter={setter}>
+    <EventRegisterModalTemplate parentSetter={setter}>
       <ScrollView className=" px-4">
         <View className=" w-full items-center flex">
           <Text className="text-5xl">Group</Text>

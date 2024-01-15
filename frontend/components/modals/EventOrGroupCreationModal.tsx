@@ -6,6 +6,16 @@ interface IAppInfoModalParams {
   parentSetter: (param) => void;
 }
 
+/*------------------------------------------------- EVENT / GROUP MODAL -
+  |
+  |  Purpose:  
+  |          Let the user choose to goto an event or group creation page.
+  | 
+  |  Main Logic:  
+  |             redirect to whichever is selected and hide the model with parentSetter
+  |             
+  *-------------------------------------------------------------------*/
+
 const EventOrGroupCreationModal = ({ parentSetter }: IAppInfoModalParams) => {
   const handleEventClick = () => {
     const redirected = Linker("/events");

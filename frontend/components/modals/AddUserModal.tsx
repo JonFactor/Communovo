@@ -14,6 +14,18 @@ interface IAddUserModalParams {
   isGuests: boolean;
 }
 
+/*------------------------------------------------- ADD USER MODAL -
+  |
+  |  Purpose:  
+  |          Add a user to a parent useState hook via the logged in users friends
+  |
+  |  Main Logic:  
+  |          when the user card is clicked either add it (id) to the parent setter or
+  |          remove it from the parent setter depending on if its in the list,
+  |          while changing the title via the isGuest boolean.
+  |           
+  *-------------------------------------------------------------------*/
+
 const AddUserModal = ({
   setter,
   parentSetter,

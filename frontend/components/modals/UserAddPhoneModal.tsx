@@ -14,6 +14,13 @@ interface IUserAddPhoneModalParams {
   eventDate: string;
 }
 
+/*------------------------------------------------- USER ADD PHONE MODAL -
+  |
+  |  Purpose:  
+  |          update the user row in the db to add a phone number for notification.
+  |                     
+  *-------------------------------------------------------------------*/
+
 export const UserAddPhoneModal = ({
   eventId,
   parentSetter,

@@ -10,6 +10,18 @@ interface IEventTypeModalParams {
   parentValue: any;
 }
 
+/*------------------------------------------------- EVENT TYPE MODAL -
+  |
+  |  Purpose:  
+  |          Use the modal template to select which type this event falls under when
+  |          creating a new event.
+  |           
+  |  Main Logic:  
+  |          When a user selects a item if the item is in the array it is removed, if not
+  |          add it to the parentSetter and change bg of the item. 
+  |             
+  *-------------------------------------------------------------------*/
+
 const EventTypeModal = ({
   setter,
   parentSetter,

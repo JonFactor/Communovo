@@ -8,6 +8,19 @@ interface IAccountRecoveryParams {
   parentSetter: (param) => void;
 }
 
+/*------------------------------------------- ACCOUNT RECOVERY MODAL -
+  |
+  |  Purpose:  
+  |        provide a form for users to reset their forgoten passwords via their email.  
+  |          
+  |  Main Logic:  
+  |          First send the request to the backend to send the email to the user,
+  |          with a timeout so an email inbox cant be spammed.
+  |          Then the user is prompted to input a new password then presses the pass reset,
+  |          and is redirected to the login pg.
+  |           
+  *-------------------------------------------------------------------*/
+
 const AccountRecovery = ({ parentSetter }: IAccountRecoveryParams) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");

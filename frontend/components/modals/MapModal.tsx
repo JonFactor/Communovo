@@ -12,6 +12,19 @@ interface IMapModalParams {
   passedRegion: any;
 }
 
+/*------------------------------------------------- MAP MODAL -
+  |
+  |  Purpose:  
+  |          display a map given cords / no cords, with the addition of input if needed
+  |          to set a location cords.
+  |          
+  |  Main Logic:  
+  |          set the map to the passedRegion
+  |          when a location is selected via the input boolean being true, set name to picked.
+  |          set a new region to parent setter when btn for it is clicked
+  |                 
+  *-------------------------------------------------------------------*/
+
 const MapModal = ({
   parentSetter,
   input,
@@ -31,14 +44,12 @@ const MapModal = ({
     } else {
       setSelectedLocation(location);
     }
-    console.log(passedRegion);
   }, []);
 
   const setNewLocation = () => {
     if (region !== null) {
       regionSetter(region);
     }
-    // TODO mk setting region be this feild
   };
   return (
     <ScrollView className=" mt-10">

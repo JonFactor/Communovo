@@ -10,6 +10,19 @@ interface IGroupTypeSelectionModalParams {
   textValue: string;
 }
 
+/*------------------------------------------------- GROUP TYPE MODAL -
+  |
+  |  Purpose:  
+  |          Select the type of group to create from the constant list of group types.
+  |          
+  |  Main Logic:  
+  |          When a user selects a item if the item is in the array it is removed, if not
+  |          add it to the parentSetter and change bg of the item. 
+  |             
+  |           
+  |           
+  *-------------------------------------------------------------------*/
+
 const GroupTypeSelectionModal = ({
   parentSetter,
   textSetter,

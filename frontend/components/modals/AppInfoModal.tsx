@@ -7,6 +7,15 @@ import { PrivacyPolicy } from "../../constants/PrivacyPolicy";
 interface IAppInfoModal {
   parentSetter: (param) => void;
 }
+/*------------------------------------------------- APP INFO MODAL -
+  |
+  |  Purpose:  
+  |          Display the apps mission, privacy policy and more infomraiton.
+  |          
+  |  Main Logic:  
+  |             just a useState for the showing of privacy policy.
+  |             
+  *-------------------------------------------------------------------*/
 
 const AppInfoModal = ({ parentSetter }: IAppInfoModal) => {
   const [showPrivacy, setshowPrivacy] = useState(false);

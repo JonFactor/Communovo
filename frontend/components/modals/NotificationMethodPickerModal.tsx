@@ -9,6 +9,17 @@ interface INotificationMethodPickerModalParams {
   notificationMethodsSetter: (params) => void;
 }
 
+/*------------------------------------------------- NOTIFICATION METHOD MODAL -
+  |
+  |  Purpose:  
+  |          let the user select how they want to be notified for an event.
+  |          
+  |  Main Logic:  
+  |          have a dynamic list of notification methods to be mapped and selected.
+  |          when selected set parent value and hide this modal.
+  |           
+  *-------------------------------------------------------------------*/
+
 const NotificationMethodPickerModal = ({
   parentSetter,
   notificationMethodsSetter,
