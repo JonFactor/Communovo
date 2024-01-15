@@ -18,16 +18,18 @@ from groups.models import Group
 #------------------------------------------------- Search DB View ---------
 #   
 #     Purpose:  
-#             
-#             
-#             
+#             - get
+#              let the users search for anything that is inside of the db providing a centeralized
+#              discovery lookup page.
+#
 #     Input / Params:  
-#             
-#             
+#             - get
+#             search -> string / filter
 #              
 #     Output / Response:  
-#             
-#             
+#             - get
+#             dict of userList, eventList, and groupList each being an array of their respective objects
+#             is returned from this function, sometimes being nothing at all
 #             
 #-------------------------------------------------------------------------
 
@@ -68,16 +70,52 @@ class SearchDatabaseView(APIView): # search | returns a list of ids for the give
 #------------------------------------------------- User View ---------
 #   
 #     Purpose:  
+#             - post
 #             
 #             
 #             
-#     Input / Params:  
-#             
+#             - get
 #             
 #              
+#
+#              - patch
+#             
+#              
+#              
+#              - delete
+#              
+#              
+#     Input / Params:  
+#             - post
+#             
+#             
+#             
+#             - get
+#             
+#              
+#
+#              - patch
+#             
+#              
+#              
+#              - delete
+#              
+#
 #     Output / Response:  
+#             - post
 #             
 #             
+#             
+#             - get
+#             
+#              
+#
+#              - patch
+#             
+#              
+#              
+#              - delete
+#              
 #             
 #-------------------------------------------------------------------------
 
@@ -128,15 +166,15 @@ class UserView(APIView):
 #------------------------------------------------- Login View ---------
 #   
 #     Purpose:  
-#             
+#             - post
 #             
 #             
 #     Input / Params:  
-#             
+#             - post
 #             
 #              
 #     Output / Response:  
-#             
+#             - post
 #             
 #             
 #-------------------------------------------------------------------------
@@ -190,15 +228,15 @@ class LoginView(APIView):
 #------------------------------------------------- Logout View ---------
 #   
 #     Purpose:  
-#             
+#             - post
 #             
 #             
 #     Input / Params:  
-#             
+#             - post
 #             
 #              
 #     Output / Response:  
-#             
+#             - post
 #             
 #             
 #-------------------------------------------------------------------------
@@ -216,17 +254,26 @@ class LogoutView(APIView):
 #------------------------------------------------- Relationship View ---------
 #   
 #     Purpose:  
+#             - post
 #             
+#             
+#             - get
 #             
 #             
 #     Input / Params:  
-#             
+#             - post
 #             
 #              
+#             - get
+#             
+#             
 #     Output / Response:  
+#             - post
 #             
 #             
+#             - get
 #             
+#              
 #-------------------------------------------------------------------------
 
 class RelationshipView(APIView):
@@ -376,14 +423,20 @@ class SetNewPasswordView(APIView): # code, password
 #------------------------------------------------- User Add Phone View -
 #   
 #     Purpose:  
+#             - post
+#             
 #             
 #             
 #             
 #     Input / Params:  
+#             - post
+#             
 #             
 #             
 #              
 #     Output / Response:  
+#             - post
+#             
 #             
 #             
 #             
@@ -408,14 +461,20 @@ class UserAddPhoneView(APIView):
 #------------------------------------------------- User Notify Views ---------
 #   
 #     Purpose:  
+#             - post
+#             
 #             
 #             
 #             
 #     Input / Params:  
+#             - post
+#             
 #             
 #             
 #              
 #     Output / Response:  
+#             - post
+#             
 #             
 #             
 #             
@@ -450,14 +509,20 @@ class SendSelfEmailView(APIView):
 #----------------------------------- User2user Status Change View ---------
 #   
 #     Purpose:  
+#             - post
+#             
 #             
 #             
 #             
 #     Input / Params:  
+#             - post
+#             
 #             
 #             
 #              
 #     Output / Response:  
+#             - post
+#             
 #             
 #             
 #             

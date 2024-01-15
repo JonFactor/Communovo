@@ -1,19 +1,19 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
-import jwt, datetime
-from django.views.decorators.csrf import csrf_exempt
+import datetime
 from django.db.models import Q
 
 from .serializers import EventSerializer, User2EventSerialzier, UserEventPreferencesSerializer
 from .models import Event, UserEventPreferences, User2Event
 from users.models import User
 from groups.models import Group, Event2Group
-from groups.serializers import GroupSerializer, Event2GroupSerializer
 from users.serializers import UserSerializer
 from functions.getUser import getUser
 
+# This makes sure that every event that is being pulled is not past its date and will
+# return none if this is true and set it to be expired, this functin utilzes recursion to
+# handle list cases, avoiding the need for loops and returning the non-expired events.
 @staticmethod
 def ExireEventIfPastDate(event, isList):
     now = datetime.datetime.utcnow() 
@@ -30,9 +30,7 @@ def ExireEventIfPastDate(event, isList):
             return None
         if event.isExpired:
             return None
-        print(now.date() > event.date, event.date)
         if now.date() > event.date:
-            print(event)
             Event.objects.filter(id=event.id).update(isExpired=True)
             return None
         else:

@@ -1,11 +1,5 @@
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
-import jwt
-from django.views.decorators.csrf import csrf_exempt
-import datetime
 
 from .serializers import Event2GroupSerializer, User2GroupSerialzier, GroupSerializer
 from users.models import User
@@ -19,17 +13,34 @@ from functions.getUser import getUser
 #------------------------------------------------- Group View ---------
 #   
 #     Purpose:  
+#             - post
+#             create a new group for users to join and interact with in the apps frontend,
+#             making more communities inside of this community baised app.
 #             
-#             
-#             
+#             - get
+#             pull data for user viewing and judging of wether or not they should interact
+#             with this group / this is group is right for them
+#              
 #     Input / Params:  
+#             - post
+#             title -> string, description -> string, image -> string / key, owner -> id,
+#             groupType -> string
 #             
-#             
+#             - get
+#             requType -> enum / string
+#             ID:      id        -> string / number / identifier
+#             TITLE:   title     -> string
+#             VIATYPE: groupType -> string
+#             ALL:     none
 #              
 #     Output / Response:  
-#             
-#             
-#             
+#             - post
+#             inputed data in seralizer format
+#
+#             - get
+#             ID & TITLE -> return a single group's data while,
+#             VIATYPE && ALL -> return a list of group details for collection views mainly
+#              
 #-------------------------------------------------------------------------
 
 class GroupView(APIView):
@@ -76,17 +87,31 @@ class GroupView(APIView):
 #------------------------------------------------- Group 2 User View --
 #   
 #     Purpose:  
+#             - post
 #             
 #             
 #             
-#     Input / Params:  
+#             - get
 #             
 #             
 #              
+#     Input / Params:  
+#             - post
+#             email -> string / filter / user, title -> string / filter / group
+#             
+#             - get
+#             requType -> string / enum
+#             TITLE: title -> string / filter / group, isStaffOnly -> boolean / filter
+#             USER: none
+#              
 #     Output / Response:  
-#             
-#             
-#             
+#             - post
+#             the new relationship data that was entered into the db table as a new row.
+#
+#             - get
+#             no matter the requType this endpoint will return a filtered list of either groups
+#             or users respectfully (user -> groups, title -> users)
+#              
 #-------------------------------------------------------------------------
         
 class Group2UserView(APIView):
@@ -170,16 +195,16 @@ class Group2UserView(APIView):
 #------------------------------------------------- Group 2 Event View --
 #   
 #     Purpose:  
-#             
-#             
+#             - post
+#             let a group own events in a relationship table with statuses shared in this relationship
 #             
 #     Input / Params:  
-#             
-#             
+#             - post
+#             groupName -> string / filter, eventName -> string / filter, isPromoted -> boolean / status
 #              
 #     Output / Response:  
-#             
-#             
+#              - post
+#             return the data for the seralizer that was passed (ids mainly)
 #             
 #-------------------------------------------------------------------------
         
@@ -207,4 +232,4 @@ class Group2EventView(APIView):
         serializer = Event2GroupSerializer(requestData)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer)     
+        return Response(serializer.data)     
