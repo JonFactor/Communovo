@@ -70,52 +70,36 @@ class SearchDatabaseView(APIView): # search | returns a list of ids for the give
 #------------------------------------------------- User View ---------
 #   
 #     Purpose:  
-#             - post
-#             
-#             
-#             
-#             - get
-#             
-#              
-#
-#              - patch
-#             
-#              
-#              
-#              - delete
-#              
+#             to maintain user accounts through post, delete, and patch requests with the little
+#             access granted to these endpoints as is allowed via making the viewing of data not
+#             being able to alter the table through get requests.
 #              
 #     Input / Params:  
 #             - post
-#             
-#             
-#             
-#             - get
-#             
+#             'name', 'firstName', 'lastName', 'email', 'password', 'profilePic', 'description', 'phoneNum'
 #              
+#             - get
+#             requType: SELF / ID: id -> string / number / filter
 #
 #              - patch
-#             
-#              
+#             id -> string / number / filter, profilePicUrl -> string / input data
 #              
 #              - delete
-#              
+#              NONE
 #
 #     Output / Response:  
 #             - post
-#             
+#             the inputed data, in addition to any automated information.
 #             
 #             
 #             - get
-#             
+#             a user seralized for data output
 #              
-#
 #              - patch
-#             
-#              
-#              
+#              a empty response.
+#                        
 #              - delete
-#              
+#              status of deletion.
 #             
 #-------------------------------------------------------------------------
 
@@ -167,16 +151,12 @@ class UserView(APIView):
 #   
 #     Purpose:  
 #             - post
-#             
+#             To authorize the user to access the database.
 #             
 #     Input / Params:  
 #             - post
-#             
-#              
-#     Output / Response:  
-#             - post
-#             
-#             
+#             requType -> COOKIES: jwt -> string, CREDENTIALS -> email / password -> string / filters
+#                
 #-------------------------------------------------------------------------
     
 class LoginView(APIView):
@@ -229,15 +209,7 @@ class LoginView(APIView):
 #   
 #     Purpose:  
 #             - post
-#             
-#             
-#     Input / Params:  
-#             - post
-#             
-#              
-#     Output / Response:  
-#             - post
-#             
+#             remove cookies from the user.
 #             
 #-------------------------------------------------------------------------
 
@@ -252,27 +224,20 @@ class LogoutView(APIView):
         return response
 
 #------------------------------------------------- Relationship View ---------
-#   
-#     Purpose:  
-#             - post
-#             
-#             
-#             - get
-#             
-#             
+#
 #     Input / Params:  
 #             - post
-#             
+#             secondUserEmail, isBlocked, isFollowed
 #              
 #             - get
-#             
+#             userEmail, checkFollow, checkBlocked
 #             
 #     Output / Response:  
 #             - post
-#             
+#             inputed data back to the frontend
 #             
 #             - get
-#             
+#             a list of all users that did not get filtered out and have realtionships with the user.
 #              
 #-------------------------------------------------------------------------
 
@@ -321,23 +286,13 @@ class RelationshipView(APIView):
 #------------------------------------------------- Password Reset Views --
 #   
 #     Purpose:  
-#             
-#             
-#             
-#     Input / Params:  
-#             
-#             
-#              
-#     Output / Response:  
-#             
-#             
-#             
+#             Provide a seperated class for different levels of access that the user should
+#             not be able to have while still making it possible to validate their new password.
+#               
 #-------------------------------------------------------------------------
 
 class RequestPasswordResetEmailView(APIView):
             
-    # seralizerClass = PasswordResetSerializer
-    #method_decorator(csrf_exempt)
     def post(self, request):
         email = request.data['email']
         
@@ -407,14 +362,11 @@ class SetNewPasswordView(APIView): # code, password
         user = User.objects.filter(id=userId).first()
         
         if not PasswordResetTokenGenerator().check_token(user, token=token):
-            # make sure link has not already been used
             raise AuthenticationFailed('The reset code is invalid', 401)
         
         
         user.set_password(password)
         user.save()
-        # serializer = SetNewPasswordSeralizer(data={'uidb64':uidb64, 'token':token, 'password':request.data['password']})
-        # serializer.is_valid(raise_exception=True)
         
         
         return Response({'success':True, 'message':'Password Reset Successful'},
@@ -424,22 +376,17 @@ class SetNewPasswordView(APIView): # code, password
 #   
 #     Purpose:  
 #             - post
-#             
-#             
-#             
-#             
+#             Get required information for sending sms reminders, while sending the user a reminder
+#             to an event in the process.
+#
 #     Input / Params:  
 #             - post
+#             number, eventTitle, eventDate
 #             
-#             
-#             
-#              
 #     Output / Response:  
 #             - post
-#             
-#             
-#             
-#             
+#             the success of a request or failure.
+#
 #-------------------------------------------------------------------------
         
 class UserAddPhoneView(APIView):
@@ -462,22 +409,17 @@ class UserAddPhoneView(APIView):
 #   
 #     Purpose:  
 #             - post
-#             
-#             
-#             
-#             
+#             Send a message to the user via TWILLO and the utils class defined in the utils file.
+#             wether this be theough TWILLOS messages or djangos built in email sending.
+#
 #     Input / Params:  
 #             - post
-#             
-#             
-#             
-#              
+#             eventTitle, eventDate
+#
 #     Output / Response:  
 #             - post
-#             
-#             
-#             
-#             
+#             response status
+#
 #-------------------------------------------------------------------------
     
 class UserNotifyPhoneView(APIView):
@@ -506,27 +448,6 @@ class SendSelfEmailView(APIView):
         
         return Response({"message":"Email has been sent"}, status=200)
     
-#----------------------------------- User2user Status Change View ---------
-#   
-#     Purpose:  
-#             - post
-#             
-#             
-#             
-#             
-#     Input / Params:  
-#             - post
-#             
-#             
-#             
-#              
-#     Output / Response:  
-#             - post
-#             
-#             
-#             
-#             
-#-------------------------------------------------------------------------
     
 class User2userStatusChangeView(APIView):
     def post(self, request):
