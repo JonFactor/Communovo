@@ -18,6 +18,24 @@ import {
 } from "../../../functions/Auth";
 import { AuthContext } from "../../../context/AuthContext";
 
+/*------------------------------------ Other User Profile Page -------
+|
+|  Purpose:  
+|     - Let users explore and interact with other users on this platform via
+|     just going through the users groups and events realtionships,
+|     or directly following the user.
+|
+|  Main JS Section:
+|     - This is mostly made up of the user data loading along with the following
+|     and unfollowing actions that have their respective api call functions and params.
+|
+|  Main Html Sections:
+|     - this html section is the excat same as the profile self page except for the in
+|     clution of the follow and unfollow buttons, that would simply not make any sense to
+|     be included in the self profile page, except the profile actions section.
+|
+*-------------------------------------------------------------------*/
+
 const OtherProfile = () => {
   const { id } = useGlobalSearchParams();
   const [navSelected, setNavSelected] = useState(0);
@@ -30,10 +48,6 @@ const OtherProfile = () => {
       const id2 = id[0];
       const content: IUser = await GetUserViaIdApi(id2);
 
-      // set user desc
-      if (content == null) {
-        return <Redirect href={"/login"}></Redirect>;
-      }
       const profilePic = await getUserProfilePhoto(true, content.id.toString());
       setUserProfilePic(profilePic);
 
@@ -72,9 +86,6 @@ const OtherProfile = () => {
             </Text>
           </View>
         </View>
-        {
-          // messageing and following is not yet finished, set to true when feature functional
-        }
         {true && (
           <View className=" flex-col mt-4 w-full items-center  flex">
             <View className=" flex-row mt-4">
@@ -186,17 +197,5 @@ const OtherProfile = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  exit: {
-    fontSize: 32,
-  },
-  name: {
-    fontSize: 32,
-  },
-  desc: {
-    fontSize: 24,
-  },
-});
 
 export default OtherProfile;

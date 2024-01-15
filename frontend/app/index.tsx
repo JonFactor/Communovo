@@ -8,6 +8,22 @@ import { Amplify } from "aws-amplify";
 import awsmobile from "../src/aws-exports.js";
 Amplify.configure(awsmobile);
 
+/*------------------------------------------------ Start Page -------
+|
+|  Purpose:  
+|     - Direct the user to the page they need to be on wether that be the login or home page,
+|     for the auto-login feature.
+|
+|  Main JS Sections:
+|     - utilizing auth contexts functions to test if the user should be automatically loggedin
+|
+|  Main Html Sections:
+|     - REDIRECTS are used to do what the name says and goto the different paths of the app
+|       mostly used for auto-user login when their token has not expired. 
+|  
+|
+*-------------------------------------------------------------------*/
+
 const StartPage = () => {
   const { isLoading, getUserInfo, isLoggedIn } = useContext(AuthContext);
   const [isExpired, setIsExpired] = useState(true);

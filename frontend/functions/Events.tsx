@@ -66,8 +66,8 @@ export const GetEventArrayApi = async (
   return (await response).data;
 };
 
-export const GetEventDetailsApi = async (id: string): Promise<IEvent> => {
-  const response = api.get("event/", { params: { id, requType: "ID" } });
+export const GetEventDetailsApi = async (eventId: string): Promise<IEvent> => {
+  const response = api.get("event/", { params: { eventId, requType: "ID" } });
   return (await response).data;
 };
 

@@ -17,6 +17,62 @@ import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCa
 import { Linker } from "../../../utils/Linker";
 import { InputMapInfo } from "../../../utils/Maps";
 import ExitPage from "../../../components/common/ExitPage";
+import { fetchImageFromUri } from "../../../common/fetchImageFromUri";
+
+/*------------------------------------------------ Create Event Page -
+|
+|  Purpose:  
+|     - This page is centered over the event model and event2... users,
+|     mainly used as a form that uses other forms to collect data that 
+|     if left in this page the form would simply be to large, so its split
+|     into the diffrent modals, even with this addition this page is still over
+|     600 lines of code.
+|
+| ------------------------
+|
+|  Main JS Sections:
+|     - The code is split into 4 different sections each coming together to create
+|     a united form. 
+|      -- The first section is the useState hooks each seperated into different
+|      variables for data refreshing / loading purposes, split into 4 sections
+|      1.) page status, 2.) event information / input 3.) modal view setters
+|      4.) user relations, hostName, and hostEmail (misc)
+|
+|      -- The second section is the user data, setting the hostname for owner
+|      ship setting of the event, for the details page. Loaded when the page is
+|      directed to.
+|
+|      -- The third section is the event submition handler, occurs like the name
+|      suggest to create an event, before this occurs the validation needs to be 
+|      passed making sure that all the entered information will really create
+|      an event instead of throwing an error, only redirecting at the end if the 
+|      API call returns an OK message.
+|
+|      -- The fourth section is all of the data entry handlers, extracting the
+|      logic out of the html and keeping it in the js section of the page.
+|
+| ------------------------
+|
+|  Main Html Sections:
+|     - the html like the JS is split into sections (5) that are closely related.
+|      -- 1.) The smallest section is the loading view, encapulating everything in the
+|      html setting a view for when the form is submitting the data, letting the user
+|      know that all the infromation they have entered is going somewhere.
+|
+|      -- 2.) While seemly being the second smallest section the modals 
+|      is actually one of the largest sections. Extracting all of this logic into
+|      diffrent files for specialized user data entry.
+|
+|      -- 3.) Besides the image picker this section contains mostly textEntry feilds
+|      some are specialized for dates or times but this section is mostly basic
+|
+|      -- 4.) The event type and event group / users are all modals that return lists
+|      that are used later in the submition process to either be directly for the event
+|      information of relationships that are needed to tie in the echosystem of users and groups.
+|
+|      -- 5.) lastly you have the submit / exit buttons. they do what they sound like they do.
+|
+*-------------------------------------------------------------------*/
 
 const events = () => {
   const { getUserInfo } = useContext(AuthContext);
@@ -42,10 +98,6 @@ const events = () => {
   const [selectEventTypeModal, setSelectEventTypeModal] = useState(false);
 
   const [userRelation, setUserRelation] = useState("");
-
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [modalType, setModalType] = useState("");
-
   const [hostName, setHostName] = useState("");
 
   useEffect(() => {
@@ -109,13 +161,6 @@ const events = () => {
       return false;
     }
     return true;
-  };
-
-  const fetchImageFromUri = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    return blob;
   };
 
   const handleEventSubmit = async () => {
@@ -218,10 +263,6 @@ const events = () => {
     setIsLoading(false);
 
     setIsLoading(false);
-    Linker("/home");
-  };
-
-  const handleEventBack = () => {
     Linker("/home");
   };
 

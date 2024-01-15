@@ -2,6 +2,26 @@ import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
+/*--------------------------------------- Bottom Nav Function -------
+|
+|  Purpose:  
+|     - provide a dynamic, minimistic, and quickly accessable ui for page navigation.
+|
+|  Main JS Sections:
+|     - logoSetting provides the svg for the correct tab, with another layer of conditions
+|     to check if the page that they have selected / currently on is this tab and changing the 
+|     tab icon baised on this.
+|
+|  Main Html Sections:
+|     - TAB_BAR_STYLE_NONE -> this allows the tabs to be routed to while not being displayed
+|                             in the built in bottom navbar.
+|
+|     - DISPLAYED_TAB_BARS -> utilizing the logoSetting function these tabs are dynamically
+|                            loaded for the icons, while being as simple and intuitve to the user
+|                            as humanly possible, using the industry standard practices for social media apps.
+|
+*-------------------------------------------------------------------*/
+
 export default () => {
   const logoSetting = (imgSrc: string, focused) => {
     let imageSource;
@@ -24,26 +44,13 @@ export default () => {
         imageSource = require("../../assets/navbarIcons/profileUnfilled.svg");
       }
     }
-    // const imageSource = require(imgSrc.toString());
-    // if (imgSrc !== "") {
-    //   imgSrc = require(imgSrc);
-    // }
     return (
       <View style={styles.mainContain}>
-        {/* <View style={styles.logoAbove}></View> */}
         <View style={styles.logoContain}>
           {imgSrc !== "" && (
             <Image style={styles.logo} source={imageSource} contentFit="fill" />
           )}
         </View>
-      </View>
-    );
-  };
-
-  const HomeScreen = () => {
-    return (
-      <View>
-        <Text>Hello</Text>
       </View>
     );
   };

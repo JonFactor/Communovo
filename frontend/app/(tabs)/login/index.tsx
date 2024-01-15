@@ -7,6 +7,38 @@ import router from "../../../common/routerHook";
 import AccountRecovery from "../../../components/modals/AccountRecovery";
 import { Linker } from "../../../utils/Linker";
 
+/*------------------------------------------------ Login Page ------
+|
+|  Purpose:  
+|     - The barior / gate of the app to keep those milcious users out and keep
+|       the average user in via creditials and jwt (json web tokens) (for backend)
+|       letting the backend restrict the amount of requests accepted by a user and event
+|       banning a user if needed,
+|
+|     - along with keeping the users data safe through standard
+|       encrytion for all data and a doubly encryted password that is handled by the backends
+|       built in encryption algorythm function that is maintained yearly. (keeping the data safe)
+|
+|  Main JS Sections:
+|     - there are two main sections 2 ...
+|      -- 1) logging in the user either through the stored authentication token or via
+|          their own credentails (password, email) or both at the same time, just incase
+|          an edgecase occurs.
+|
+|      -- 2) The other sections settup the use of this pages models of forgot password and
+|          the sign up page for new users.
+|
+|  Main Html Sections:
+|     - 2 sections ...
+|      -- 1) the graphics are meant to create a homey / community feeling to the app
+|           giving the user that saught after sence of community, what the app's main
+|           purpose for creation is in a sociality plauged by chronic onlineness.
+|
+|      -- 2) the functional parts include the buttons to login, register, and reset password
+|           along with an error text display for the login button for incorrect emails or passw0rds.
+|
+*-------------------------------------------------------------------*/
+
 const LoginPage = () => {
   const { loginViaCookies, loginViaCredentials, getUserInfo } =
     useContext(AuthContext);

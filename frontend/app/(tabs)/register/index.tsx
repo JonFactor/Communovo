@@ -3,8 +3,27 @@ import React, { useState } from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { RegisterUserApi } from "../../../functions/Auth";
 import { Image } from "expo-image";
-
 import { Linker } from "../../../utils/Linker";
+
+/*----------------------------------------- Register User Page -------
+|
+|  Purpose:  
+|     - Be the start of a users experince with communovo, setting themselves up with
+|     success for staying on the app via the sunk cost falicy taking effect after the user
+|     inputs all of their personal details without being too invasive.
+|
+|  Main JS Sections:
+|     - Form submition is the only section in this page, consisting of a strict regex
+|     password creation for security and email validation via regex (if contains . and @),
+|     that will only redirect the user to the home screen and store cookies after the backend
+|     successfully responds to the users request.
+|
+|  Main Html Sections:
+|     - This page consits of the app title, user data entry text boxes, secure entries,
+|     and the submit btn, along with error messages.
+|  
+|
+*-------------------------------------------------------------------*/
 
 const register = () => {
   const [firstName, setFirstName] = useState("");

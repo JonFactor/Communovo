@@ -9,7 +9,46 @@ import EventOrGroupCreationModal from "../../../components/modals/EventOrGroupCr
 import { Linker } from "../../../utils/Linker";
 import FilteredEvents from "../../../components/Views/FilteredEvents";
 
-export const FilterContext = createContext(null);
+/*------------------------------------------------ Home Page -------
+|
+|  Purpose:  
+|     - Provide a landing page for logged in users along with redirecting users that
+|     have somehow gone to the home page that are not logged in to the login screen.
+|     
+|     - Let the users scroll through an event feed that they can "join" on the click of
+|     a green button or a simple left swipe, "join"ing means that they create a relationship
+|     with the event and goto a details page. While being able to dislike the same event.
+|
+|     - Give the users the oprotunity to create a new event or group that routes to the 
+|     createGroup or event index page.
+|
+|  Main JS Sections:
+|     - 3 main sections make up the JS... 
+|      -- 1) This is the randomized message to incouarge the user to create a event / group.
+|      creating a new text for every viewing of this page.
+|
+|      -- 2) The user data is mainly used to personalize the users homescreen with their
+|      name and profile picture, this
+|
+|      -- 3) The last and most important section redirects a non-loggedin user to the login 
+|      screen, making sure no malicious users get into the app without logging in.
+|
+|  Main Html Sections:
+|     - these 3 sections are made up of a lot more than just this page's JS section.
+|      -- MODAL    -> the one model in this page is used to direct the user to the event / 
+|                    group creation page so they can choose which they would like to create. 
+|
+|     -- USER_DATA -> This section is just the data fetched in the js section displayed
+|                    to create a more personalized experience for the user, leading way
+|                    to potentionally an even more personalized experince with the projects
+|                    plans. 
+|
+|      -- CONTENT  -> The content of event feed is a heavily parameterized element that 
+|                    displays all of the events that have not been disliked by the user
+|                    these events can be filtered by their type with a horozontally scrolling
+|                    dynamically displayed event type list of buttons, updating in real time.
+|
+*-------------------------------------------------------------------*/
 
 const home = () => {
   const randomInRange = (min: number, max: number): number => {
@@ -17,7 +56,7 @@ const home = () => {
   };
 
   const PostMessages = [
-    "Spread the Word! 🤐",
+    "Spread the Word! 🥳",
     "Share your next Event! 😶‍🌫️",
     "Let the people know! 📢",
     "Just Click it 🤓",
@@ -28,7 +67,6 @@ const home = () => {
 
   const [displayCreationModal, setDisplayCreationModal] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState([]);
   const [gotoLogin, setGotoLogin] = useState(false);
 
   const { getUserInfo, setStopLoading } = useContext(AuthContext);
@@ -51,19 +89,6 @@ const home = () => {
       Linker("/login");
     }
   }, [gotoLogin]);
-
-  const handleFilterBtnPress = (index: number) => {
-    console.log(index);
-    if (!currentFilter.includes(groupTypes[index])) {
-      setCurrentFilter((currentFilter) => [
-        ...currentFilter,
-        groupTypes[index],
-      ]);
-    } else {
-      let i = groupTypes.indexOf(groupTypes[index]);
-      setCurrentFilter(currentFilter.filter((value) => value === i));
-    }
-  };
 
   return (
     <View className="w-screen flex">

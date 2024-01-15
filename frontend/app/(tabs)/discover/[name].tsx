@@ -18,6 +18,32 @@ import EventsCollection from "../../../components/collections/EventsCollection";
 import { Storage } from "aws-amplify";
 import { Linker } from "../../../utils/Linker";
 
+/*----------------------------------------- Group Details Page -------
+|
+|  Purpose:  
+|     - Provide a view for the details of the group and actions for the user
+|     in the group. Along with other details loaded on page load (weather, ...).
+|
+| ------------------------
+|
+|  Main JS Sections:
+|     - useStates are for the group data and stats for the group that are
+|     loaded on view time, via the useEffect hook and their apis.
+|
+|     - loadProfile is used to set the order of data to be loaded going: 
+|     groupData, groupImg, groupMembers, and stats + other data and
+|     handleUserJoin is for when the user clicks join group, creating a new
+|     relationship between the user and group via the api call.
+|
+| ------------------------
+|
+|  Main Html Sections:
+|     - this section is split into 2 mostly related parts split by a purple divider:
+|      -- above and around contains the essentials, title pic desc stats type
+|      -- below has the members, events, and member joining / leaving
+|
+*-------------------------------------------------------------------*/
+
 const CatigoryDetailsPage = () => {
   const { name } = useLocalSearchParams();
   const nameString: string = name.toString().replace("%20", " ");

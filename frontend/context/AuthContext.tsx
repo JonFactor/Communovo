@@ -11,6 +11,7 @@ import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
 
 import useSWR from "swr";
+import { fetchImageFromUri } from "../common/fetchImageFromUri";
 
 interface IAuthContextProps {
   loginViaCookies: (
@@ -99,13 +100,6 @@ export const AuthProvider = ({ children }) => {
 
     setIsLoading(false);
     return success;
-  };
-
-  const fetchImageFromUri = async (uri: string): Promise<Blob> => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    return blob;
   };
 
   const getUserProfilePhoto = async (

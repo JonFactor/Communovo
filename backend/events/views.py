@@ -16,6 +16,7 @@ from functions.getUser import getUser
 
 @staticmethod
 def ExireEventIfPastDate(event, isList):
+    now = datetime.datetime.utcnow() 
     if isList:
         events = []
         for i in event:
@@ -23,12 +24,19 @@ def ExireEventIfPastDate(event, isList):
             if eventExpiredFiltered == None:
                 continue
             events.append(eventExpiredFiltered)
+        return events
     else: 
+        if event == None:
+            return None
         if event.isExpired:
             return None
-        if event.date > datetime.datetime.now:
-            event.update(isExpired=True)
-            ExireEventIfPastDate(event, isList)
+        print(now.date() > event.date, event.date)
+        if now.date() > event.date:
+            print(event)
+            Event.objects.filter(id=event.id).update(isExpired=True)
+            return None
+        else:
+            return event
 
 # Create your views here.
 class EventView(APIView):
@@ -67,10 +75,11 @@ class EventView(APIView):
     # get requests / request data
     def get(self, request): # requType
         if request.query_params.get('requType') == "ID": # id
-            requId = request.query_params.get('id')
+            requId = request.query_params.get('eventId')
             event = Event.objects.filter(id = requId).first()
             event = ExireEventIfPastDate(event, False)
-            
+            if event == None:
+                return Response(status=401)
             serializer = EventSerializer(event, many=False)
             return Response(data=serializer.data)
         

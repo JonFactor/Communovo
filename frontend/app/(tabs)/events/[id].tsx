@@ -2,7 +2,6 @@ import { View, Text, ActivityIndicator, ScrollView, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
 import {
   DeleteEventApi,
   GetEventDetailsApi,
@@ -28,6 +27,51 @@ import NotificationMethodPickerModal from "../../../components/modals/Notificati
 import { SendUserEmailApi } from "../../../functions/Misc";
 import ExitPage from "../../../components/common/ExitPage";
 
+/*------------------------------------------------ Event Detail Page -
+|
+|  Purpose:  
+|     - Give the user information needed to plan for and attend the listed events, while
+|     giving off the feel / envorinment for the event, letting the user decide if this
+|     event is the best for them.
+|
+| ------------------------
+|
+|  Main JS Sections:
+|     - The JS sections are errily similar to the Html section
+|      -- USE_STATE  1) These useStates are for displaying db-data, realtime-data, 
+|       modal displaying, and user actions baised on their perms to the event
+|
+|      -- USE_EFFECT 2) On page load, this is by far the most important section of the 
+|       page, set all of the useState hooks via a multitude of api responses, while this
+|       is happing the page will show a loading screen, so the user does not this the app
+|       is lagging behind. While the second useEffect runs right after the add phone modal
+|       is closed, giving the effect of awaiting, an non-async function for user notification.
+|
+|      -- ACTIONS    3) The actions are deleteing the event if you are the event owner and
+|       joining the event (if they havent already joined (: ) and adding a reminder via
+|       txt, email, or (in dev) calendar reminders. The problem with calendar reminders
+|       is that you are required by expo to have an apple dev account to test them and this
+|       account COSTS $100 dollars a year (money i simply cannot spend).
+|
+| ------------------------
+|
+|  Main Html Sections:
+|     - The UI is split into 3 sections with the first two being similar...
+|      -- DATA    1) The event cover, description, ... are all used to give the end user
+|      a better understanding of what this event is made for and if it is really right for them,
+|      taking most of the data from the useState hooks after being loaded by the useEffect section
+|      tieing in the JS section 1 and 2 along with this html second 2.
+|
+|      -- MEMBERS 2) This would be apart of the data but this section takes up most of the code
+|      lines in this page due to the complication relationships of users to the events, this is 
+|      used to give the users the opprotunity to scout out just who they would be attending the event with.
+|
+|      -- ACTIONS 3) These 3 actions are simple buttons that when used start the actions in the js section,
+|      while giving the user the ability to go back on their actions via a manditory confirmation
+|      press when doing any permident action.
+|
+*-------------------------------------------------------------------*/
+
 const eventDetailsPage = () => {
   const { id } = useLocalSearchParams();
   const readId: string = id.toString();
@@ -43,6 +87,7 @@ const eventDetailsPage = () => {
   const [userNotificationMethods, setUserNotfificationMethods] = useState([]);
   const [eventIsOwner, setEventIsOwner] = useState(false);
   const [delEventText, setDelEventText] = useState("Delete Event");
+  const [userOwnerEmail, setUserOwnerEmail] = useState("");
 
   useEffect(() => {
     const eventDetails = async () => {
@@ -66,13 +111,25 @@ const eventDetailsPage = () => {
       const responseStaff = await GetEventMembersApi(readId, true);
       if (responseStaff != null) {
         setEventStaff(responseStaff);
+        setUserOwnerEmail(responseStaff[0].email);
       }
 
-      const responseWeather = await GetWeatherData(
-        JSON.parse(content.regionCords)
-      );
-      if (responseWeather !== null) {
-        setEventWeather(responseWeather);
+      if (
+        content.regionCords === null ||
+        content.regionCords === undefined ||
+        content.regionCords === ""
+      ) {
+        const responseWeather = await GetWeatherData(content.location);
+        if (responseWeather !== null) {
+          setEventWeather(responseWeather);
+        }
+      } else {
+        const responseWeather = await GetWeatherData(
+          JSON.parse(content.regionCords)
+        );
+        if (responseWeather !== null) {
+          setEventWeather(responseWeather);
+        }
       }
 
       const responseIsOwner = await GetEventSelfIsOwnerApi(content.id);
@@ -146,12 +203,7 @@ const eventDetailsPage = () => {
         } else if (userNotificationMethods[i] === "Calender Event") {
           notficationBooleans.calender = true;
         }
-        // } else if (userNotificationMethods[i] === "Text") {
-        //   notficationBooleans.phone = true;
-        // }
       }
-
-      console.log(notficationBooleans);
 
       if (notficationBooleans.email) {
         SendEmail();
@@ -257,11 +309,17 @@ const eventDetailsPage = () => {
             </View>
             <View className=" flex-row">
               <Text className="text-2xl">Time: </Text>
-              <Text className=" ml-1 text-2xl">
-                {eventData.time.split(":")[0] +
-                  ":" +
-                  eventData.time.split(":")[1]}
-              </Text>
+              <View>
+                {eventData.time !== null ? (
+                  <Text className=" ml-1 text-2xl">
+                    {eventData.time.split(":")[0] +
+                      ":" +
+                      eventData.time.split(":")[1]}
+                  </Text>
+                ) : (
+                  <Text className=" ml-1 text-2xl">No Time avalible</Text>
+                )}
+              </View>
             </View>
             <View className=" flex-row">
               <Text className="text-2xl">Locaiton: </Text>
@@ -275,12 +333,16 @@ const eventDetailsPage = () => {
             ) : (
               <Text>No map data provided</Text>
             )}
-
             <View>
               <Text className=" mt-4 text-2xl">Current Weather Conditions</Text>
               <Text className=" text-xl mt-2 ml-4">{eventWeather}</Text>
             </View>
+            <View>
+              <Text className=" mt-4 text-2xl">Owner Email:</Text>
+              <Text className=" text-xl mt-2 ml-4">{userOwnerEmail}</Text>
+            </View>
           </View>
+
           <View className=" mt-4">
             <Text className=" ml-8 text-3xl font-semibold">Staff</Text>
             <ScrollView horizontal className="px-4 py-2 space-x-8">

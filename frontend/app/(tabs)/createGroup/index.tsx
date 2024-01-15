@@ -17,6 +17,34 @@ import { v4 as uuidv4 } from "uuid";
 import { Storage } from "aws-amplify";
 import { Linker } from "../../../utils/Linker";
 import ExitPage from "../../../components/common/ExitPage";
+import { fetchImageFromUri } from "../../../common/fetchImageFromUri";
+
+/*------------------------------------------------ Create Group Page -
+|
+|  Purpose:  Provide an simple yet interactive UI (display) for the user the
+|    create a new group via selected parameters, as streamlined as possible.
+|
+| ------------------------
+|
+|  Main JS Sections:
+|     - All of the useState Hooks (35-46): is used due to the multiple diffrent types of 
+|    objects they are capturing and putting them all in one hook would make any change 
+|    reset the whole page of data.
+|
+|    - handle Group submit uses the validate entry function to make sure that no error occurs
+|    when trying to create a new group via the group API function. 
+|
+| ------------------------
+|
+|  Main Html Sections:
+|    - image picker is used to collection images from the phone to use as a cover image.
+|    this will set a tone / fell for the group and let the users get a better impression
+|    of what the group is about.
+|
+|    - touchable opacities are used to display diffrent secreens for users to enter their groups
+|    data, along with submiting the form. 
+|  
+*-------------------------------------------------------------------*/
 
 const createGroup = () => {
   const [groupTitle, setGroupTitle] = useState("");
@@ -95,13 +123,6 @@ const createGroup = () => {
     Linker("/home");
   };
 
-  const fetchImageFromUri = async (uri: string) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    return blob;
-  };
-
   const handleAddPhoto = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -126,8 +147,6 @@ const createGroup = () => {
 
     setGroupImageKey(imgPath);
   };
-
-  const handleAddFriends = async () => {};
 
   const handleSelectType = () => {
     setShowTypeModal(true);
@@ -208,14 +227,6 @@ const createGroup = () => {
                   <Text className=" text-2xl ">
                     {groupType === "" ? "Type" : groupType}
                   </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                className=" w-72 py-2 border-4 border-md-purple bg-blue-100 rounded-full"
-                onPress={handleAddFriends}
-              >
-                <View className=" flex items-center w-full">
-                  <Text className=" text-2xl ">Invite Friends</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity

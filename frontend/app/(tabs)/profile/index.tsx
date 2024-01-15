@@ -2,7 +2,6 @@ import { View, Text, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { ScrollView } from "react-native";
@@ -19,6 +18,54 @@ import { Redirect } from "expo-router";
 import { Linker } from "../../../utils/Linker";
 import AppInfoModal from "../../../components/modals/AppInfoModal";
 import { LinearGradient } from "expo-linear-gradient";
+import { fetchImageFromUri } from "../../../common/fetchImageFromUri";
+
+/*------------------------------------------------ Self Profile Page -
+|
+|  Purpose:  
+|     - Let the user set their own profile picture.
+| 
+|     - Give the user actions to delete their account, view app info, or logout via
+|     the three dotted menu button, in a unquie and self designed screen.
+| 
+|     - View the diffrent groups and events they have or are going to join, and the users
+|     they asociate with. Along with seeing what other users will see when they view their own profile.
+|
+|  Main JS Sections:
+|     - LOAD_USER       -> this loads all of the user data into a varible and dispurses
+|                         the data to the different useState hooks to update this data,
+|                         along with the uses profile picture element, all in a useEffect hook.
+|                         
+|     - PROFILE_PIC_SET -> fetch the uri of the image that has been set to the profile picture
+|                         element, and store it in a aws s3 bucket along with storing its
+|                         key / id into the table in the db for this user.
+|                         
+|     - MODALS (KINDA)  -> The user actions stated previously can be viewed via a useState varible being set
+|                         along with three different views of the users relationships... 
+|                         events, groups, and following.
+|                         
+|     - DELETE_ACCOUNT  -> this function will check if the user has confirmed that they would
+|                         like to remove their account and then do so and redirect them if clicked
+|                         once more.
+|
+|  Main Html Sections:
+|     - USER_DATA      : all set via the users cookie (yum)...
+|      -- the users profile picture is on display at centerfold (in the center)
+|      -- then the userName and discription of the users account follow in descending importance
+|
+|     - REALTION_VIEWS : a 3 pronged attack at tackeling all of the users other data...
+|      -- Events are split into their liked and disliked events with their created events getting presidence
+|      -- Groups are the groups that the user is apart of or has started.
+|      -- Following is a list of users that the user follows or that the user has a following of
+|      encapsulating their circle of people.
+|
+|     - USER_ACTIONS   : after you press the menu icon on the top left of the screen...
+|      -- Logout   -> ressets the users auth cookies and redirects them to login
+|      -- App info -> redirects the user to the app info screen with the privacy policy
+|      -- Delete account -> after confirmation this will remove their account from the db
+|                           and redirect them to the login screen.
+|
+*-------------------------------------------------------------------*/
 
 const profile = () => {
   const { logout, getUserInfo, getUserProfilePhoto, setUserProfilePhoto } =
@@ -26,7 +73,6 @@ const profile = () => {
 
   const [following, setFollowing] = useState(Array<IUser>);
   const [userProfilePic, setUserProfilePic] = useState(null);
-  const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [userDescription, setUserDesctiption] = useState("");
   const [navSelected, setNavSelected] = useState(0);
@@ -39,7 +85,7 @@ const profile = () => {
   useEffect(() => {
     const loadUser = async () => {
       const content: IUser = await getUserInfo();
-      // set user desc
+
       if (content == null) {
         return <Redirect href={"/login"}></Redirect>;
       }
@@ -51,7 +97,7 @@ const profile = () => {
       setUserProfilePic(profilePic);
 
       const follows = await GetSelfFollowingApi(content.email);
-      console.log(follows);
+
       if (follows === null) {
       } else {
         for (let i = 0; i < follows.length; i++) {
@@ -61,9 +107,6 @@ const profile = () => {
       }
     };
     loadUser();
-
-    const findFollowing = async () => {};
-    findFollowing();
   }, []);
 
   const handleAddPhotos = async () => {
@@ -75,13 +118,6 @@ const profile = () => {
       setUserProfilePic(response);
     });
     setUserProfilePhoto(result);
-  };
-
-  const fetchImageFromUri = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    return blob;
   };
 
   const handleLoadEvents = () => {

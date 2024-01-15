@@ -13,6 +13,35 @@ import UserCollection from "../../../components/collections/UserCollection";
 import GroupCollection from "../../../components/collections/GroupCollection";
 import EventsCollection from "../../../components/collections/EventsCollection";
 
+/*--------------------------------------------- Discover Page -------
+|
+|  Purpose:  
+|    - Give the user a content stream seperated by group type of groups
+|    to help promote user interaction within a group and to inflate overall
+|    group member numbers, making the owners engament raise.
+|
+|    - Let the user search for any type of object within the db (user, event, group)
+|    effectivly tieing in events, groups, and users together on an equal level.
+|
+| ------------------------
+|
+|  Main JS Sections:
+|    - the useStates are seperated by the two purposes, the group feed and
+|    search results and text for searching it, the results being split by type.
+|
+|    - the useEffect occurs when the page loads, loading the group data from the
+|    backend while the searchResultsLoad occurs when the text is inputed.
+|
+| ------------------------
+|
+|  Main Html Sections:
+|    - The html is split into 2 sections the input and output, 
+|     -- input being the search textbox
+|     -- output everything under that search bar, to display the search 
+|      results and group feed. 
+|
+*-------------------------------------------------------------------*/
+
 const DiscoverPage = () => {
   const [groupData, setGroupData] = useState(Array<IGroup>);
   const [searchActivated, setSearchActivated] = useState(false);
@@ -21,11 +50,6 @@ const DiscoverPage = () => {
     event: Array<IEvent>,
     group: Array<IGroup>,
     user: Array<IUser>,
-  });
-  const [searchResultsThere, setSearchResultsThere] = useState({
-    events: false,
-    groups: false,
-    users: false,
   });
 
   useEffect(() => {
@@ -43,10 +67,6 @@ const DiscoverPage = () => {
   const searchResultsLoad = async (text: string) => {
     const searchRes = await SearchAllDBApi(text);
     setSearchResult(searchRes);
-
-    if (searchRes["user"] !== "None") {
-      setSearchResultsThere({ events: false, groups: false, users: true });
-    }
   };
 
   return (
