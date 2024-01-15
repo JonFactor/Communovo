@@ -8,6 +8,9 @@ interface IProfileEventsParams {
   showLikedDisliked?: boolean;
 }
 
+// much like the other event view this uses the event collection to filter baised on the
+// users preferences and two filter buttons.
+
 const ProfileEvents = ({ showLikedDisliked = true }: IProfileEventsParams) => {
   const [isSelectedDis, setIsSelectedDis] = useState(false);
   const [isSelectedLik, setIsSelectedLik] = useState(false);

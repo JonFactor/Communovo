@@ -16,6 +16,25 @@ interface IGroupCollectionParams {
   groupIds?: any | null;
 }
 
+/*------------------------------------------------- GROUP CARD COLLECTION -
+  |  CORISPONDING CARD: group
+  |
+  |  Purpose:  
+  |          display all of the group cards, or just the ones that relate to a user
+  |          
+  |  Main Logic:  
+  |          onLoad get all the required / filtered groups if the groupIds
+  |          param is not yet set, or when that happens get info from ids.
+  |           
+  |  Input / Params:  
+  |          viaUser -> filter boolean, width / square / horizontal -> display booean / number
+  |          groupIds -> filter list.
+  |           
+  |  Display / Output:  
+  |          a list of the filtered groups cards (title, background)
+  |          
+  *-------------------------------------------------------------------*/
+
 const GroupCollection = ({
   groupsViaUser = true,
   cardWidth = 96,

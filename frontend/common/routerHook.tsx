@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
-const router = useRouter();
 
+// provide a centeralized location for the router hook, (so router state does not get messed up)
+const router = useRouter();
 export default router;

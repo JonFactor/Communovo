@@ -1,3 +1,4 @@
+// use router (auto generated)
 module.exports = function (api) {
   api.cache(true);
   return {

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+
+// used to accelerate the inline styling proccess with an abundance of features
 module.exports = {
   content: [
   "./app/(tabs)/**/*.{js,jsx,ts,tsx}", 

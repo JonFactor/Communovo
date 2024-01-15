@@ -3,7 +3,7 @@ import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-elements";
 import MapModal from "../components/modals/MapModal";
 
-export const MAP_API_KEY = "AIzaSyCS_zdjnBorQw1PsbhVtsPdTSV1ia9o-_Y";
+export const MAP_API_KEY = process.env.API_MAPS_KEY;
 
 export const InputMapInfo = ({ regionSetter }) => {
   const [viewMapModal, setViewMapModal] = useState(false);

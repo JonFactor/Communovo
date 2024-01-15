@@ -9,9 +9,56 @@ import {
 } from "../functions/Auth";
 import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
-
-import useSWR from "swr";
 import { fetchImageFromUri } from "../common/fetchImageFromUri";
+
+/*------------------------------------------------- AUTH_CONTEXT -----
+  |
+  |  What?: 
+  |   - Context: a context in the react js / expo js world is in basic terms
+  |              an element that encapsulates the whole program providing pros and cons,
+  |              pros being the ease of importing these functions becasuse they are already
+  |              in memory, while cons being they are always in memory but for this generation
+  |              of devices this should not pose any issues. 
+  |
+  |   - AUTH: auth or authentication is used for user actions and db actions, outside of login
+  |           you need to be auth'ed to proform any api calls, this auth or auth token (jwt)
+  |           is used to store your app session details to the backend api.
+  |
+  |  How ?:   by declaring a useContext hook inside of the page that uses these functions
+  |           these funcion pointers can be used (for name scoping reasons). Along with 
+  |           the Auth.provider element being used above the scope of the app navigator.
+  |
+  |  Purpose:  Provide an easily accesible and centeralized location for all of the auth
+  |            needs of any user, with pleanty of functions for any need.
+  |
+  |  Main Functions: 
+  |          - LOGIN (gate opener)
+  |           either via the stored cookie or credentials (pass, email) the login functions
+  |           accoplish the same goal of user authentication access.
+  |           
+  |          - LOGOUT (gate close)
+  |           set the user token to nothing and redirect them to the login screen effectivly
+  |           dening the user access to the appl
+  |           
+  |          - USER_INFO (messanger)
+  |           get the users own information in a typed response if they have valid credentials,
+  |           or get another users information provided their account id.
+  |           
+  |          - USER_PROFILE_PHOTO (camera)
+  |           set or get this accounts photo given they have proper credentials and set
+  |           the aws s3 instance key in the users row in the db, along with viewing other
+  |           users profile pictures.
+  |           
+  |          - IS_LOGGED_IN (gate keeper)
+  |           send a get user details request to the server and if the server says
+  |           that you are not authenticated then a boolean of the value of false is retruned
+  |           along with the opposite for successfull requests.
+  |
+  |          - LOADING (gate downtime)
+  |           let the app know when it is waiting for the backend to response, wether
+  |           this downtime is caused by server or user side latency.
+  |
+  *-------------------------------------------------------------------*/
 
 interface IAuthContextProps {
   loginViaCookies: (
@@ -27,7 +74,6 @@ interface IAuthContextProps {
   isLoggedIn: () => Promise<boolean>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setStopLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  // useAuth: () => IAuthContextProps;
 }
 
 export const AuthContext = createContext<IAuthContextProps>(null);
@@ -42,7 +88,6 @@ export const AuthProvider = ({ children }) => {
     email: string,
     pass: string
   ): Promise<any> => {
-    console.log(await LoginUserApi(email, pass, false, "", true));
     return await LoginUserApi(email, pass, false, "", true);
   };
 
@@ -107,10 +152,6 @@ export const AuthProvider = ({ children }) => {
     userId: string = "0"
   ): Promise<string> => {
     setIsLoading(true);
-    // check of already saved
-    // if (userProfilePic !== null) {
-    //   return userProfilePic;
-    // }
 
     // check from storage
     let userPhotoUri;
@@ -199,10 +240,6 @@ export const AuthProvider = ({ children }) => {
     isLoggedIn();
   }, []);
 
-  // const useAuth: () => IAuthContextProps = () => {
-  //   return useContext<IAuthContextProps>(AuthContext);
-  // };
-
   return (
     <AuthContext.Provider
       value={{
@@ -216,7 +253,6 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         setIsLoading,
         setStopLoading,
-        // useAuth,
       }}
     >
       {children}

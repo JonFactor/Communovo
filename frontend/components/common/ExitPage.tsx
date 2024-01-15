@@ -9,6 +9,8 @@ interface IExitPageParams {
   largeText?: boolean;
 }
 
+// make a standardized function for all page exiting, giving each page the control it needs
+// on the logic side while leaving the ui universal, besides the largeText boolean
 const ExitPage = ({
   redirectLink = "",
   modalSetter = (param) => {},

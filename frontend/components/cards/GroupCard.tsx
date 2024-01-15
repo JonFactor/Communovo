@@ -13,6 +13,23 @@ interface IGroupCardParams {
   routingIgnore: string;
 }
 
+/*------------------------------------------------- GROUP CARD ---------
+  |
+  |  Purpose:  
+  |          display the title and backround of this group to give off a minilistic look
+  |          while staying personal for the group collection of these cards.
+  |           
+  |  Main Logic:  
+  |          goto group if clicked, load group backround and title to display
+  |          
+  |  Input / Params:  
+  |          group object for logic and routingIgnore to skip if clicked goto group.
+  |          
+  |  Display / Output:  
+  |          the backround of the card along with the title without a backround gradient
+  |              
+  *-------------------------------------------------------------------*/
+
 const GroupCard = ({ item, routingIgnore }: IGroupCardParams) => {
   const [image, setImage] = useState(null);
 

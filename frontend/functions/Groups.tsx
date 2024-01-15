@@ -9,6 +9,28 @@ export interface IGroup {
   owner: number;
 }
 
+/*------------------------------------------------- Group -------------
+  |
+  |  Purpose:  
+  |          Handle the use of axios for the group api endpoints in one locations for
+  |          easier imports and standardization, much like the Auth, and Events pages.
+  |          
+  |  Main Functions:
+  |                 - CREATE
+  |                 take in all of the params to get a minimal group and send this data
+  |                 via a post request to the backend server to create a new row or return 
+  |                 false.
+  |                 
+  |                 - GET
+  |                 much like previous gets, take in params, filter, output data or null
+  |                 for array repeat over and over again.
+  |
+  |                 - RELATIONSHIP
+  |                 similar to the other files, get or create a new relationship to users
+  |                 or events depending, all of which have their own endpoints in the backend.
+  |                 
+  *-------------------------------------------------------------------*/
+
 export const CreateGroupApi = async (
   title: string,
   description: string,

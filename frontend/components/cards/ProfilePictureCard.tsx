@@ -14,6 +14,24 @@ interface IProfilePictureCardParams {
   passBackSetter?: (param) => void | null;
 }
 
+/*------------------------------------------------- PROFILE PICTURE CARD -
+  |
+  |  Purpose:  
+  |          display the users own profile picture or a specified users profile picture.
+  |          
+  |  Main Logic:  
+  |          get the profile from the user information,
+  |          set the profile via a passBackSetter and this cards own img setter and the useContext hooks functions
+  |           
+  |  Input / Params:  
+  |          styling width attr, useId to be set for ther user information, passedPic for
+  |          extracting the picture logic, and passBackSetter to pass back the set picture.
+  |           
+  |  Display / Output:  
+  |          a photo that the user either sets or can just view (other peoples)
+  |          
+  *-------------------------------------------------------------------*/
+
 const ProfilePictureCard = ({
   width,
   userid = null,

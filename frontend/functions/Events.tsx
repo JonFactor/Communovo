@@ -17,6 +17,30 @@ export interface IEvent {
   isExpired?: boolean;
 }
 
+/*------------------------------------------------------ Events -----
+  |
+  |  Purpose:  
+  |          House all of the event related api endpoints, much like the Auth.tsx file
+  |          to create a more centeralized and less cluttered location for the api endpoints
+  |          to be reused.
+  |          
+  |  Main Functions:
+  |                 - CREATE
+  |                 take in all the params for a minimal event creation, and make a row
+  |                 in the event_event table if success otherwise just return false.
+  |                 (opposite is true for success)
+  |                 
+  |                 - GET
+  |                 get either on events details or a whole array of events information
+  |                 baised on parameter input wether that be filters or a singular
+  |                 events id.
+  |                 
+  |                 - RELATIONSHIP
+  |                 create or view the user2event or group2event relationships via the 
+  |                 inputed parameters with outputed data or status.
+  |                   
+  *-------------------------------------------------------------------*/
+
 export const CreateEventApi = async (
   title: string,
   description: string,

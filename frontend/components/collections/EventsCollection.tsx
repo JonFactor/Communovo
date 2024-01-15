@@ -1,7 +1,6 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import EventCard from "../cards/EventCard";
-import { FilterContext } from "../../app/(tabs)/home";
 import { GetEventArrayApi, IEvent } from "../../functions/Events";
 
 interface IEventCollectionParams {
@@ -15,6 +14,27 @@ interface IEventCollectionParams {
   justSmallCards: boolean;
   counterSetter?: (params) => void;
 }
+
+/*------------------------------------------------- EVENT CARD COLLECTION -
+  |  CORISPONDING CARD: event
+  |
+  |  Purpose:  
+  |          to display all of the events in a uniform and filtered manner.
+  |
+  |  Main Logic:  
+  |          in the useEffect send an api call to get all non filtered events objects,
+  |          while the isFiltered will hide any types that are not selected for the 
+  |          home screen filters. 
+  |
+  |  Input / Params:  
+  |          filters / noFilter -> home screen, isOnly... -> booleans to filter in api,
+  |          group -> filter via the group of event, smallCards -> styling boolean,
+  |          counter -> extract the number of events rendered to parent page.
+  |           
+  |  Display / Output:  
+  |          a list of the events that did not get blocked from the filters.
+  |          
+  *-------------------------------------------------------------------*/
 
 const EventsCollection = ({
   filters,

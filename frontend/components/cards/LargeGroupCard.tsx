@@ -12,6 +12,23 @@ interface ILargeGroupCardParams {
   cardSquare?: boolean;
 }
 
+/*------------------------------------------------- LARGE GROUP CARD ---
+  |
+  |  Purpose:  
+  |          In the profile page the group section is larger than in any other place
+  |          giving the need for a group card but larger.
+  |           
+  |  Main Logic:  
+  |          load image and group title (standard)
+  |        
+  |  Input / Params:  
+  |          group object and styling params
+  |
+  |  Display / Output:  
+  |          larger version of group card.
+  |   
+  *-------------------------------------------------------------------*/
+
 const LargeGroupCard = ({
   group,
   cardWidth = 96,

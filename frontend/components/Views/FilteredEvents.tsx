@@ -5,6 +5,8 @@ import { GetEventArrayApi, IEvent } from "../../functions/Events";
 import EventCard from "../cards/EventCard";
 import EventTypeList, { IEventType } from "../../constants/EventTypeList";
 
+// this view is an extention of the event collection but uses its filter properties
+// to search via the events type on the homescreen.
 const FilteredEvents = () => {
   const [currentFilter, setCurrentFilter] = useState([]);
   const [eventData, setEventData] = useState(Array<IEvent>);

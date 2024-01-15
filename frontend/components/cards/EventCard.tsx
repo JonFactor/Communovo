@@ -20,6 +20,29 @@ interface IEventCardParams {
   isExpired?: boolean;
 }
 
+/*------------------------------------------------- EVENT CARD ---------
+  |
+  |  Purpose:  
+  |          Standardize the display of basic event information to be mainly used
+  |          in this cards collection element, and extract logic from said card collection
+  |           
+  |  Main Logic:  
+  |          map the month to a string, user actions to look into and add event
+  |          while also giving the option to dislike the event via apis
+  |           
+  |  Input / Params:  
+  |          location -> name, month -> number, day -> number, title -> string, imgPath ->
+  |          url, eventType -> abrivated, id -> data loading, smallCards -> bool / display,
+  |          showExpired / isExpire -> set the date view to be expired and non viewable.
+  |           
+  |  Display / Output:  
+  |          an event card with either just a title and backround or ... 
+  |          the date in the top left, name top middle, type top right, location bottom left,
+  |          actions bottom right, backround image in the backround, dark gradient to give white,
+  |          text some backround to work with.
+  |               
+  *-------------------------------------------------------------------*/
+
 const EventCard = ({
   location,
   month,

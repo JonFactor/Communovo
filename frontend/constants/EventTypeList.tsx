@@ -5,6 +5,7 @@ export interface IEventType {
   secondaryBgColor: string;
 }
 
+// list out all of the event types and their respective colors to be implimented later
 const EventTypeList: Array<IEventType> = [
   {
     name: "Job Fairs",

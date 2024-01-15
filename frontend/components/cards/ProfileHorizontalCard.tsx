@@ -11,6 +11,26 @@ interface IProfileHorizontalCardParams {
   goToProfile?: boolean;
 }
 
+/*------------------------------------------------- PROFILE HORIZONTAL CARD -
+  |
+  |  Purpose:  
+  |          display the basic user infromation to be used in a collection but in 
+  |          a horizontal manner, for user adding to events/groups and user following information
+  |           
+  |  Main Logic:  
+  |          get the profile picture via the profile object.
+  |          
+  |  Input / Params:  
+  |          the profile / user object and like the groupcard a goto boolean to prevent 
+  |          the click action from working.
+  |           
+  |  Display / Output:  
+  |          a left to right vertically concious view of the users basic details for 
+  |          account information section.
+  |           
+  |               
+  *-------------------------------------------------------------------*/
+
 const ProfileHorizontalCard = ({
   profile,
   goToProfile = false,

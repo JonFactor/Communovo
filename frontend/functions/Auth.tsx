@@ -13,6 +13,50 @@ export interface IUser {
   phoneNum?: string;
 }
 
+/*------------------------------------------------- Auth / User -----
+  |
+  |  Purpose:  
+  |          Provide a centeralized location for all of the user related api endpoints
+  |          and use logic with parameters to consolidate the endpoint functions required
+  |          making an overall easier to read / develop exeriance for the developer / coder. (me (: )
+  |          
+  |  Main Functions:
+  |                 - USER_DETAILS
+  |                 Get either this users details / information or a users infromation via
+  |                 a multitude of methods and params, but all returning either a user object
+  |                 or a list of user objects.
+  |                 
+  |                 - LOGIN
+  |                 Set a session either with an already established auth token or to
+  |                 create a new authentication, session token for the user, each returning 
+  |                 the status of the api call in boolean format.
+  |                 
+  |                 - REGISTER
+  |                 input all the required information to create a new account in the register page
+  |                 while returning the status of the request, after a row is either added
+  |                 or an error in the backend is displayed. (doesnt stop server)
+  |                 
+  |                 - UPDATE
+  |                 set an exisiting users profile picture and other information to a new
+  |                 value, returning either the user object itself or the status converted
+  |                 to a boolean.
+  |                 
+  |                 - PHONE_NUMBER
+  |                 add or send a message to a phone number via the utils class's sendSms
+  |                 function on the backend side with a free google messanger account number
+  |                 through a third party librarys un-update code (i hade to update it)
+  |                 
+  |                 - PASSWORD_RESET
+  |                 do the process of sending the user an email with a code, store that code
+  |                 in a temp table, use that code to get the users uid (encrypted id)
+  |                 and reset the password of that user to the inputed information
+  |                  
+  |                 - USER_RELATIONS
+  |                 update, or view user 2 user relationships to make the app have a more
+  |                 community feel.
+  |                 
+  *-------------------------------------------------------------------*/
+
 export const GetUserDetailsApi = async (): Promise<IUser> => {
   const response = api
     .get("user/", { params: { requType: "SELF" } })

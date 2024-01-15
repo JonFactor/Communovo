@@ -8,18 +8,31 @@ import { Linker } from "../../utils/Linker";
 interface IUserCollecitionParams {
   userList: any;
 }
+
+/*------------------------------------------------- USER CARD COLLECTION -
+  |  CORISPONDING CARD: user
+  |
+  |  Purpose:  
+  |          display a list of users via the user card in a .map function.
+  |          
+  |  Main Logic:  
+  |          extract the user card details in a useState hook outside of the map()
+  |           
+  |  Input / Params:  
+  |          userList -> list of ids
+  |          
+  |  Display / Output:  
+  |          a list of user cards
+  |          
+  *-------------------------------------------------------------------*/
+
 const UserCollection = ({ userList }: IUserCollecitionParams) => {
   const [currentUserDetails, setCurrentUserDetails] = useState({});
-  const GetUserDetails = async (id: number) => {
-    const userDetails = await GetUserViaIdApi(id.toString());
-    setCurrentUserDetails(userDetails);
-  };
 
   return (
     <ScrollView horizontal={true} className=" h-32 w-full ">
       {userList.map != undefined &&
         userList.map((user: number, index) => {
-          // GetUserDetails(user);
           const name = currentUserDetails["name"];
           const id = currentUserDetails["id"];
 
