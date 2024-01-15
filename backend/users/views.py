@@ -15,6 +15,22 @@ from .utils import Util
 from events.models import Event, User2Event
 from groups.models import Group
 
+#------------------------------------------------- Search DB View ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
+
 # this view is for all the apps but has no other place to be put but the main app
 class SearchDatabaseView(APIView): # search | returns a list of ids for the given models
     def get(self, request):
@@ -48,6 +64,22 @@ class SearchDatabaseView(APIView): # search | returns a list of ids for the give
         
         
         return Response(data={"user":userList, "event":eventList, "group":groupList})
+
+#------------------------------------------------- User View ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
 
 class UserView(APIView):
     def post(self, request): # 'name', 'firstName', 'lastName', 'email', 'password', 'profilePic', 'description', 'phoneNum']
@@ -92,6 +124,23 @@ class UserView(APIView):
         user.delete()
         
         return Response(status=200)        
+    
+#------------------------------------------------- Login View ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
+    
 class LoginView(APIView):
     def post(self, request): # requType
         
@@ -138,6 +187,21 @@ class LoginView(APIView):
         
         return Response({"message":"incorrect enum requType"}, staus=401)
 
+#------------------------------------------------- Logout View ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
 
 class LogoutView(APIView):
     def post(self, request):
@@ -148,6 +212,22 @@ class LogoutView(APIView):
         }
 
         return response
+
+#------------------------------------------------- Relationship View ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
 
 class RelationshipView(APIView):
     def post(self, request): # secondUserEmail, isBlocked, isFollowed
@@ -191,7 +271,22 @@ class RelationshipView(APIView):
         
         return(Response(data=serializer.data))
 
-# password reset section
+#------------------------------------------------- Password Reset Views --
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
+
 class RequestPasswordResetEmailView(APIView):
             
     # seralizerClass = PasswordResetSerializer
@@ -278,6 +373,22 @@ class SetNewPasswordView(APIView): # code, password
         return Response({'success':True, 'message':'Password Reset Successful'},
                         status=200)
         
+#------------------------------------------------- User Add Phone View -
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
+        
 class UserAddPhoneView(APIView):
     def post(self, request): # number, eventTitle, eventDate
         # update users phone number
@@ -293,6 +404,22 @@ class UserAddPhoneView(APIView):
             return Response({"message":"Confrimation message has not been sent but is still scheduled."},status=401)
         
         return Response(status=200)
+    
+#------------------------------------------------- User Notify Views ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
     
 class UserNotifyPhoneView(APIView):
     def post(self, request): # eventTitle, eventDate TWILLO CAPS THE REQUESTS
@@ -319,6 +446,22 @@ class SendSelfEmailView(APIView):
         emailSent = Util.SendEmail({"emailSubject":request.data["emailHeader"], 'emailBody':request.data["emailBody"], "emailTo":[user.email]})
         
         return Response({"message":"Email has been sent"}, status=200)
+    
+#----------------------------------- User2user Status Change View ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
     
 class User2userStatusChangeView(APIView):
     def post(self, request):

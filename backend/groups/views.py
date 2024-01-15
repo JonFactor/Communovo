@@ -16,7 +16,21 @@ from events.serializers import EventSerializer
 from django.db.models import Q
 from functions.getUser import getUser
 
-# Create your views here. TODO PUT THESE IN POSTMAN
+#------------------------------------------------- Group View ---------
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
 
 class GroupView(APIView):
     def post(self, request): # title, description, image, owner, groupType
@@ -58,10 +72,22 @@ class GroupView(APIView):
             return Response(serializer.data)
         
         return Response({"message":"incorrect enum requType"}, staus=401)
-    def delete(self, request): # groupId
-        user = getUser(request)
-        groupId = request.data['groupId']
-        # TODO 
+    
+#------------------------------------------------- Group 2 User View --
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
         
 class Group2UserView(APIView):
     def post(self, request): # email, title
@@ -140,7 +166,22 @@ class Group2UserView(APIView):
         User2Group.objects.filter(user=userId, group=groupId).delete()
         
         return Response(userToGroupSerializer.data)
-        # TODO THIS IN FRONTEND
+        
+#------------------------------------------------- Group 2 Event View --
+#   
+#     Purpose:  
+#             
+#             
+#             
+#     Input / Params:  
+#             
+#             
+#              
+#     Output / Response:  
+#             
+#             
+#             
+#-------------------------------------------------------------------------
         
 class Group2EventView(APIView):
     
