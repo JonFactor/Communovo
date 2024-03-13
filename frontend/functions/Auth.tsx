@@ -103,6 +103,7 @@ export const RegisterUserApi = async (
     firstName,
     lastName,
   });
+  console.log((await response).status)
   return (await response).status === 200;
 };
 

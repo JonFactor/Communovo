@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-qh5en!x%-_&)(pe-wtph(bz##y3p0!b1li8=$k(xs#olvrx+aj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".awsapprunner.com", "*"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware"
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -85,9 +85,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "communovo",
-        'USER': 'postgres',
-        'PASSWORD': 'Holygrail97',
-        'HOST': 'communovo.c5wm2yqqooyn.us-east-1.rds.amazonaws.com',
+        'USER': 'jonfactor',
+        'PASSWORD': 'VBBG9DAa1',
+        'HOST': 'communovo.cxwiogioeqap.us-east-2.rds.amazonaws.com',
         'PORT': '5432'
     }
 }
@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    }
 ]
 
 

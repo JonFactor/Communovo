@@ -146,7 +146,7 @@ const LoginPage = () => {
             </View>
             <TextInput
               autoCapitalize="none"
-              className="w-72 h-12 text-3xl"
+              className="w-72 h-12 text-2xl"
               placeholder="Email"
               onChangeText={(text) => setUserEmail(text)}
               value={userEmail}
@@ -167,7 +167,7 @@ const LoginPage = () => {
                 />
               </View>
               <TextInput
-                className=" w-56 h-12 text-3xl"
+                className=" w-56 h-12 text-2xl"
                 placeholder="Password"
                 secureTextEntry={displayPassword}
                 onChangeText={(text) => setUserPassword(text)}
