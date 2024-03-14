@@ -87,7 +87,7 @@ DATABASES = {
         "NAME": "communovo",
         'USER': 'jonfactor',
         'PASSWORD': 'VBBG9DAa1',
-        'HOST': 'communovo.cxwiogioeqap.us-east-2.rds.amazonaws.com',
+        'HOST': 'communovov2.cxwiogioeqap.us-east-2.rds.amazonaws.com',
         'PORT': '5432'
     }
 }
