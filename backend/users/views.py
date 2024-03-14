@@ -15,6 +15,8 @@ from .utils import Util
 from events.models import Event, User2Event
 from groups.models import Group
 
+from braces.views import CsrfExemptMixin
+
 #------------------------------------------------- Search DB View ---------
 #   
 #     Purpose:  
@@ -103,7 +105,7 @@ class SearchDatabaseView(APIView): # search | returns a list of ids for the give
 #             
 #-------------------------------------------------------------------------
 
-class UserView(APIView):
+class UserView(CsrfExemptMixin, APIView):
     def post(self, request): # 'name', 'firstName', 'lastName', 'email', 'password', 'profilePic', 'description', 'phoneNum']
         request.data.update({"description":"nothing to see here"})
         request.data.update({"profilePic":"http://www.gravatar.com/avatar"})

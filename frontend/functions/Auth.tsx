@@ -96,14 +96,24 @@ export const RegisterUserApi = async (
   firstName: string,
   lastName: string
 ) => {
-  const response = api.post("user/", {
-    name,
-    email,
-    password,
-    firstName,
-    lastName,
-  });
-  console.log((await response).status)
+  console.log("test");
+  const response = api
+    .post("user/", {
+      name,
+      email,
+      password,
+      firstName,
+      lastName,
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      console.log(err);
+      return null;
+    });
+  console.log("test1");
+  console.log((await response).status);
   return (await response).status === 200;
 };
 

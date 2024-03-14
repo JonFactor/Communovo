@@ -58,7 +58,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "backend.urls"
-CSRF_COOKIE_SECURE = False
 
 TEMPLATES = [
     {
@@ -165,5 +164,5 @@ EMAIL_HOST_PASSWORD = 'nvyz ptzb lkhi prao'
 
 #crsf not working
 CSRF_COOKIE_SECURE = False
-
+#CSRF_TRUSTED_ORIGINS = ["https://postman.com", "http://localhost:3000"]
 SMS_BACKEND = 'sms.backends.console.SmsBackend'
