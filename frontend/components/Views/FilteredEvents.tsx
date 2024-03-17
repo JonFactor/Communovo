@@ -100,7 +100,7 @@ const FilteredEvents = () => {
                 }
 
                 if (badFiltersCount >= currentFilter.length) {
-                  return <View></View>;
+                  return <View key={index}></View>;
                 }
               }
               return (

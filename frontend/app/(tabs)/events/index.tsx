@@ -18,6 +18,7 @@ import { Linker } from "../../../utils/Linker";
 import { InputMapInfo } from "../../../utils/Maps";
 import ExitPage from "../../../components/common/ExitPage";
 import { fetchImageFromUri } from "../../../common/fetchImageFromUri";
+import { router } from "expo-router";
 
 /*------------------------------------------------ Create Event Page -
 |
@@ -159,6 +160,9 @@ const events = () => {
     } else if (eventType === null) {
       setWarning("Please set a cover image.");
       return false;
+    } else if (eventTitle.length > 25) {
+      setWarning("Event title is too long.");
+      return false;
     }
     return true;
   };
@@ -189,7 +193,7 @@ const events = () => {
       parseInt(splittedtime[0]) + 12;
     }
     const formatedTime = splittedtime.join(":");
-    console.log(formatedTime);
+
     const responseOk = await CreateEventApi(
       eventTitle,
       eventDescription,
@@ -263,7 +267,7 @@ const events = () => {
     setIsLoading(false);
 
     setIsLoading(false);
-    Linker("/home");
+    router.replace("/home");
   };
 
   const handleAddPhoto = async () => {
@@ -313,6 +317,8 @@ const events = () => {
     <View className=" bg-gray-200 h-full">
       {isLoading ? (
         <View>
+          <View className="h-12 w-2 bg-white" />
+          <ExitPage redirectLink="/events" />
           <ActivityIndicator size={"large"} className=" mt-72  " />
         </View>
       ) : (

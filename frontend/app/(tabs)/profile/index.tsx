@@ -86,9 +86,6 @@ const profile = () => {
     const loadUser = async () => {
       const content: IUser = await getUserInfo();
 
-      if (content == null) {
-        return <Redirect href={"/login"}></Redirect>;
-      }
       setUserDesctiption(content.description);
       setUserName(content.name);
       setUserId(content.id);

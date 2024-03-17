@@ -13,6 +13,7 @@ export const GetWeatherData = async (location): Promise<string> => {
   const response = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`
   );
+
   const data = await response.json();
   if ((await response.status) === 200) {
     return data.weather[0].description;

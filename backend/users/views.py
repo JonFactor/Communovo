@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
 import datetime
+from django.db.models import Q 
 
 from .serializers import UserSerializer, UserRelationshipSerializer, SetNewPasswordSeralizer, EmailVerificationCodeSeralizer
 from .models import User, UserRelationships, EmailVerificationCode
@@ -39,10 +40,19 @@ from braces.views import CsrfExemptMixin
 class SearchDatabaseView(APIView): # search | returns a list of ids for the given models
     def get(self, request):
         keywords = str(request.query_params["search"])
+            
+        queryKeywords = Q()
+        for word in keywords.split(" "):
+            queryKeywords |= (Q(title__icontains=word))
+            
+        queryKeywords2 = Q()
+        for word in keywords.split(" "):
+            queryKeywords2 |= (Q(name__icontains=word))
+            
 
-        groups = Group.objects.filter(title__contains=keywords)
-        events = Event.objects.filter(title__contains=keywords)
-        users = User.objects.filter(name__contains=keywords)
+        groups = Group.objects.filter(queryKeywords)
+        events = Event.objects.filter(queryKeywords)
+        users = User.objects.filter(queryKeywords2)
         
         userList = []
         eventList = []

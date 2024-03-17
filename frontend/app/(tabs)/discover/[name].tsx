@@ -46,7 +46,11 @@ import { Linker } from "../../../utils/Linker";
 
 const CatigoryDetailsPage = () => {
   const { name } = useLocalSearchParams();
-  const nameString: string = name.toString().replace("%20", " ");
+  const nameString: string = name
+    .toString()
+    .replace("%20", " ")
+    .replace("%20", " ")
+    .replace("%20", " ");
 
   const { getUserInfo } = useContext(AuthContext);
 
@@ -100,6 +104,8 @@ const CatigoryDetailsPage = () => {
       loadProfile();
     });
   }, []);
+
+  useEffect(() => {}, [groupImg]);
 
   const handleUserJoin = async () => {
     const user = await getUserInfo();
@@ -162,7 +168,11 @@ const CatigoryDetailsPage = () => {
         <View className=" flex-row">
           <Text className=" text-lg">Type: </Text>
           <Text className=" text-lg ml-2">
-            {groupData === undefined ? "..." : groupData.groupType}
+            {groupData === undefined
+              ? "..."
+              : groupData.groupType.length > 6
+              ? groupData.groupType.slice(0, 6)
+              : groupData.groupType}
           </Text>
         </View>
         <View className=" flex-row">

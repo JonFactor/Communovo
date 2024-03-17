@@ -76,6 +76,7 @@ const DiscoverPage = () => {
           <TextInput
             className=" p-4 text-2xl w-64"
             placeholder="Search"
+            autoCapitalize={"none"}
             value={searchText}
             onChangeText={(text) => {
               setSearchText(text);

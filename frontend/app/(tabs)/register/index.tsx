@@ -235,9 +235,10 @@ const register = () => {
                 source={require("../../../assets/login/lock.svg")}
               />
             </View>
+            <View className="bg-white w-1 h-2" />
             <TextInput
               autoCapitalize="none"
-              secureTextEntry={true}
+              secureTextEntry={false}
               className=" text-2xl ml-4"
               value={password}
               onChangeText={(text) => {
@@ -260,7 +261,7 @@ const register = () => {
             </View>
             <TextInput
               autoCapitalize="none"
-              secureTextEntry={true}
+              secureTextEntry={false}
               className=" text-2xl ml-4"
               value={passConfrim}
               onChangeText={(text) => {

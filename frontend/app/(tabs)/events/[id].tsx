@@ -127,6 +127,7 @@ const eventDetailsPage = () => {
         const responseWeather = await GetWeatherData(
           JSON.parse(content.regionCords)
         );
+
         if (responseWeather !== null) {
           setEventWeather(responseWeather);
         }

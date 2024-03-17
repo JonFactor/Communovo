@@ -25,7 +25,7 @@ Amplify.configure(awsmobile);
 *-------------------------------------------------------------------*/
 
 const StartPage = () => {
-  const { isLoading, getUserInfo, isLoggedIn } = useContext(AuthContext);
+  const { isLoading, isLoggedIn } = useContext(AuthContext);
   const [isExpired, setIsExpired] = useState(true);
 
   useEffect(() => {

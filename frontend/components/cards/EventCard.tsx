@@ -199,7 +199,7 @@ const EventCard = ({
                     />
                   </View>
                   <Text className="text-black ml-2 mt-2 text-md">
-                    {location}
+                    {location.length > 20 ? location.slice(0, 20) : location}
                   </Text>
                 </TouchableOpacity>
                 <View className=" flex-row">

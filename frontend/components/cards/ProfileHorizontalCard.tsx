@@ -42,6 +42,7 @@ const ProfileHorizontalCard = ({
     const getImg = async () => {
       const profileImg = profile.profilePic;
       const result = await Storage.get(profileImg);
+      console.log(result);
       setUserProfilePic(result);
     };
     getImg();
@@ -58,7 +59,7 @@ const ProfileHorizontalCard = ({
           }
         }}
       >
-        <View className=" flex aspect-square w-12">
+        <View className=" flex aspect-square w-12 bg-gray-400 rounded-full">
           <Image
             className="flex-1 rounded-full "
             contentFit="cover"

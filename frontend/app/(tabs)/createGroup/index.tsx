@@ -74,6 +74,11 @@ const createGroup = () => {
       return false;
     }
 
+    if (groupTitle.length > 17) {
+      setWarning("Title is above the length of 17 chars, please shorten it");
+      return false;
+    }
+
     if (groupType === "") {
       setWarning("Group Type is required");
       return false;

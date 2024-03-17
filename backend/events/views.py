@@ -102,6 +102,7 @@ class EventView(APIView):
         request.data.pop("time")
         request.data.update({"time":formatedTime})
         
+        print(request.data)
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid() == False:
             return Response(status=401)

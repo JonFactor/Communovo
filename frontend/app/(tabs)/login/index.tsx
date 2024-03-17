@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Modal } from "react-native";
+import { View, Text, TextInput, Modal, Linking } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
@@ -6,6 +6,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import router from "../../../common/routerHook";
 import AccountRecovery from "../../../components/modals/AccountRecovery";
 import { Linker } from "../../../utils/Linker";
+import { Router } from "@react-navigation/native";
 
 /*------------------------------------------------ Login Page ------
 |
@@ -91,7 +92,7 @@ const LoginPage = () => {
       );
       const responseOk = await getUserInfo();
       if (responseOk) {
-        router.replace("/home");
+        Linker("/home");
         return;
       }
     }
@@ -110,7 +111,7 @@ const LoginPage = () => {
 
     loginViaCookies(cookie);
 
-    router.replace("/home");
+    Linker("/home");
   };
 
   const handleSignUpClick = () => {
