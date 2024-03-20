@@ -71,18 +71,24 @@ const home = () => {
 
   const { getUserInfo, setStopLoading } = useContext(AuthContext);
 
-  useEffect(() => {
-    const setUser = async () => {
-      const userD = await getUserInfo(); // .then((response) => {
-      setUserData(userD);
-      if (userD === null) {
-        setGotoLogin(true);
-      }
-      setStopLoading(true);
-    };
+  const setUser = async () => {
+    const userD = await getUserInfo(); // .then((response) => {
+    setUserData(userD);
+    if (userD === null) {
+      setGotoLogin(true);
+    }
+    setStopLoading(true);
+  };
 
+  useEffect(() => {
     setUser();
   }, []);
+
+  useEffect(() => {
+    if (userData === null) {
+      setUser();
+    }
+  }, [userData]);
 
   useEffect(() => {
     if (gotoLogin) {

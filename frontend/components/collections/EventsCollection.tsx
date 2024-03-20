@@ -86,7 +86,11 @@ const EventsCollection = ({
         params = [];
       }
 
+      console.log("test");
       content = await GetEventArrayApi(...params);
+      if (content.length < 1) {
+        getEventData();
+      }
       counterSetter(content.length);
       setEventData(content);
     };

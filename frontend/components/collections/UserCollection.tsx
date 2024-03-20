@@ -38,7 +38,7 @@ const UserCollection = ({ userList }: IUserCollecitionParams) => {
 
           return (
             <TouchableOpacity
-              className=" w-28 aspect-square bg-gray-200 border-2 border-black border-solid rounded-xl mt-2 ml-4"
+              className=" w-28 aspect-square bg-gray-200  rounded-xl mt-2 ml-4"
               key={index}
               onPress={() => {
                 Linker(`/profile/${id}`);
@@ -50,7 +50,7 @@ const UserCollection = ({ userList }: IUserCollecitionParams) => {
                   userid={user}
                   passBackSetter={setCurrentUserDetails}
                 ></ProfilePictureCard>
-                <Text className=" text-md mt-1 font-semibold w-[90%] text-center">
+                <Text className=" text-md bg-white font-semibold text-center w-full h-24 mt-6">
                   {name}
                 </Text>
               </View>

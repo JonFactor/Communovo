@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
@@ -53,19 +53,21 @@ const LargeGroupCard = ({
     <View>
       {cardSquare ? (
         <TouchableOpacity
-          className={`w-${cardWidth} aspect-square bg-gray-200 rounded-lg flex`}
+          className={`w-${cardWidth} aspect-square bg-red-200 rounded-lg flex`}
           onPress={handleGroupClick}
         >
-          {image !== null && (
+          {image !== null ? (
             <Image
               className="flex-1 rounded-lg flex items-center"
               contentFit="cover"
               source={image}
             >
-              <Text className=" bg-white w-full py-1 mt-26 text-xl text-center font-semibold">
+              <Text className=" bg-white w-full py-1 mt-24 text-md text-center font-semibold h-24">
                 {group.title}
               </Text>
             </Image>
+          ) : (
+            <ActivityIndicator></ActivityIndicator>
           )}
         </TouchableOpacity>
       ) : (

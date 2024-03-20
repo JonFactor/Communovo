@@ -82,39 +82,54 @@ const profile = () => {
   const [appInfoModalDisplay, setAppInfoModalDisplay] = useState(false);
   const [deleteAccountTxt, setDeleteAccountTxt] = useState("Delete Account");
 
-  useEffect(() => {
-    const loadUser = async () => {
-      const content: IUser = await getUserInfo();
+  const loadUser = async () => {
+    const content: IUser = await getUserInfo();
 
-      setUserDesctiption(content.description);
-      setUserName(content.name);
-      setUserId(content.id);
+    setUserDesctiption(content.description);
+    setUserName(content.name);
+    setUserId(content.id);
 
-      const profilePic = await getUserProfilePhoto(false, "");
-      setUserProfilePic(profilePic);
+    const profilePic = await getUserProfilePhoto(false, "");
+    setUserProfilePic(profilePic);
 
-      const follows = await GetSelfFollowingApi(content.email);
+    const follows = await GetSelfFollowingApi(content.email);
 
-      if (follows === null) {
-      } else {
-        for (let i = 0; i < follows.length; i++) {
-          const user = await GetUserViaIdApi(follows[i].secondUser.toString());
-          setFollowing((list) => [...list, user]);
-        }
+    if (follows === null) {
+    } else {
+      for (let i = 0; i < follows.length; i++) {
+        const user = await GetUserViaIdApi(follows[i].secondUser.toString());
+        setFollowing((list) => [...list, user]);
       }
-    };
+    }
+  };
+
+  useEffect(() => {
     loadUser();
   }, []);
+
+  let oldVal;
+
+  useEffect(() => {
+    if (userProfilePic === null) {
+      loadUser();
+      console.log("2");
+    }
+    if (oldVal === userProfilePic) {
+      loadUser();
+      console.log("3");
+    }
+    console.log("1");
+  }, [userProfilePic]);
 
   const handleAddPhotos = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
     });
-    await fetchImageFromUri(result.assets[0].uri).then((response) => {
-      setUserProfilePic(response);
-    });
+    const response = await fetchImageFromUri(result.assets[0].uri);
+    setUserProfilePic(response);
     setUserProfilePhoto(result);
+    oldVal = response;
   };
 
   const handleLoadEvents = () => {
@@ -143,12 +158,13 @@ const profile = () => {
     Linker("/login");
   };
 
+  useEffect(() => {}, [userProfilePic]);
+
   return (
     <ScrollView className=" mt-20">
       <Modal visible={appInfoModalDisplay}>
         <AppInfoModal parentSetter={setAppInfoModalDisplay} />
       </Modal>
-      {redirectLogin && <Redirect href="/login"></Redirect>}
       {!menuModal ? (
         <View className=" flex-row ml-16 ">
           <View className=" w-5/6 flex items-center mt-2">
@@ -158,7 +174,13 @@ const profile = () => {
                 userProfilePic === null && " bg-gray-400 items-center flex"
               }`}
             >
-              {userProfilePic !== null && <ProfilePictureCard width={24} />}
+              {userProfilePic !== null && (
+                <ProfilePictureCard
+                  width={24}
+                  passedPic={userProfilePic}
+                  passBackSetter={setUserProfilePic}
+                />
+              )}
             </TouchableOpacity>
             <View className=" mt-2 items-center w-full">
               <Text className=" flex text-3xl font-bold ">{userName}</Text>
@@ -191,6 +213,7 @@ const profile = () => {
                 onPress={() => {
                   logout(true);
                   setRedirectLogin(true);
+                  Linker("/login");
                 }}
               >
                 <LinearGradient

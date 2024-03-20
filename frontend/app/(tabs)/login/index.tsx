@@ -7,7 +7,7 @@ import router from "../../../common/routerHook";
 import AccountRecovery from "../../../components/modals/AccountRecovery";
 import { Linker } from "../../../utils/Linker";
 import { Router } from "@react-navigation/native";
-
+import { useRouter } from "expo-router";
 /*------------------------------------------------ Login Page ------
 |
 |  Purpose:  
@@ -84,6 +84,7 @@ const LoginPage = () => {
 
   useEffect(() => {}, [displayPassword]);
 
+  const router = useRouter();
   const handleSignInclick = async () => {
     const isValid = validateUserEntry();
     if (!isValid) {

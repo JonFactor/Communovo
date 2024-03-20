@@ -240,13 +240,14 @@ const EventCard = ({
             contentFit="cover"
             className="rounded-lg flex-1"
           >
-            <View className=" flex-col items-center bg-red-400 w-14 h-12">
+            <View className=" flex-col items-center bg-red-400 mt-2 ml-2 w-12 h-12 rounded-full">
               <Text className=" text-white mt-1 text-md ">
                 {monthsToStrings[monthIndex]}
               </Text>
+              <Text className=" text-white text-md ">{day}</Text>
             </View>
-            <View className=" bg-white w-full h-10 mt-20 flex items-center">
-              <Text className=" mt-2 font-bold">{title}</Text>
+            <View className=" bg-white w-full h-10 mt-16 flex items-center">
+              <Text className=" mt-3 font-semibold">{title}</Text>
             </View>
           </Image>
         </TouchableOpacity>
