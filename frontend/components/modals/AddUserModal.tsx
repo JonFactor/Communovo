@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import EventRegisterModalTemplate from "./EventRegisterModalTemplate";
 import { IUser, GetUserViaIdApi } from "../../functions/Auth";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext, useAuth } from "../../context/AuthContext";
 import { GetSelfFollowingApi } from "../../functions/Auth";
 import { Image } from "expo-image";
 import { Storage } from "aws-amplify";
@@ -36,11 +36,11 @@ const AddUserModal = ({
   const [friends, setFriends] = useState(Array<IUser>);
   const [profilePics, setProfilePics] = useState([]);
 
-  const { getUserInfo } = useContext(AuthContext);
+  const { user } = useAuth();
 
   useEffect(() => {
     const getFriends = async () => {
-      const userData = await getUserInfo();
+      const userData = user
       const follows = await GetSelfFollowingApi(userData.email);
       if (follows === null) {
       } else {

@@ -8,7 +8,7 @@ import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
 import { LinearGradient } from "expo-linear-gradient";
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, useAuth } from "../../../context/AuthContext";
 import { IUser } from "../../../functions/Auth";
 import GroupSelectionModal from "../../../components/modals/GroupSelectionModal";
 import EventTypeModal from "../../../components/modals/EventTypeModal";
@@ -76,7 +76,7 @@ import { router } from "expo-router";
 *-------------------------------------------------------------------*/
 
 const events = () => {
-  const { getUserInfo } = useContext(AuthContext);
+  const { user } = useAuth();
 
   const [warning, setWarning] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -103,8 +103,6 @@ const events = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const user: IUser = await getUserInfo();
-
       if (user === null) {
         return;
       }

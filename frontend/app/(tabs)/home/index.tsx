@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, useAuth } from "../../../context/AuthContext";
 import groupTypes from "../../../constants/GroupTypes";
 
 import ProfilePictureCard from "../../../components/cards/ProfilePictureCard";
@@ -69,15 +69,14 @@ const home = () => {
   const [userData, setUserData] = useState(null);
   const [gotoLogin, setGotoLogin] = useState(false);
 
-  const { getUserInfo, setStopLoading } = useContext(AuthContext);
+  const { user } = useAuth();
 
   const setUser = async () => {
-    const userD = await getUserInfo(); // .then((response) => {
+    const userD = user; 
     setUserData(userD);
     if (userD === null) {
       setGotoLogin(true);
     }
-    setStopLoading(true);
   };
 
   useEffect(() => {

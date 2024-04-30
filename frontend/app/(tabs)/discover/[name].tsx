@@ -13,7 +13,7 @@ import {
 } from "../../../functions/Groups";
 import ProfileHorizontalCard from "../../../components/cards/ProfileHorizontalCard";
 import { IUser } from "../../../functions/Auth";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, useAuth } from "../../../context/AuthContext";
 import EventsCollection from "../../../components/collections/EventsCollection";
 import { Storage } from "aws-amplify";
 import { Linker } from "../../../utils/Linker";
@@ -52,7 +52,7 @@ const CatigoryDetailsPage = () => {
     .replace("%20", " ")
     .replace("%20", " ");
 
-  const { getUserInfo } = useContext(AuthContext);
+  const { user } = useAuth();
 
   const [groupData, setGroupData] = useState<IGroup>();
   const [groupImg, setGroupImg] = useState("");
@@ -108,7 +108,6 @@ const CatigoryDetailsPage = () => {
   useEffect(() => {}, [groupImg]);
 
   const handleUserJoin = async () => {
-    const user = await getUserInfo();
 
     const responseOk = await CreateGroupUserRelationshipApi(
       user.email,

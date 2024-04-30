@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, useAuth } from "../../../context/AuthContext";
 import * as ImagePicker from "expo-image-picker";
 import {
   CreateGroupUserRelationshipApi,
@@ -58,11 +58,11 @@ const createGroup = () => {
 
   const [warning, setWarning] = useState("");
 
-  const { getUserInfo, isLoading, setIsLoading } = useContext(AuthContext);
+  const { user } = useAuth();
 
   useEffect(() => {
     const getGroupOwner = async () => {
-      const userInfo = await getUserInfo();
+      const userInfo = user;
       setGroupOwner(userInfo.email);
     };
     getGroupOwner();
@@ -88,9 +88,7 @@ const createGroup = () => {
   };
 
   const handleGroupSubmit = async () => {
-    setIsLoading(true);
     if (!entryValidation()) {
-      setIsLoading(false);
       return;
     }
 
@@ -114,17 +112,14 @@ const createGroup = () => {
       );
 
       if (!setAsOwner) {
-        setIsLoading(false);
         return;
       }
     });
     if (groupData === null) {
       setWarning("Failed to create group, please try again.");
-      setIsLoading(false);
       return;
     }
 
-    setIsLoading(false);
     Linker("/home");
   };
 
@@ -159,7 +154,7 @@ const createGroup = () => {
 
   return (
     <View>
-      {isLoading ? (
+      {false ? (
         <View>
           <ActivityIndicator
             size={"large"}

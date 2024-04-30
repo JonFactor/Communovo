@@ -15,6 +15,7 @@ import {
   IUser,
   User2UserStatusChangeApi,
   GetUserViaIdApi,
+  getUserProfilePhoto,
 } from "../../../functions/Auth";
 import { AuthContext } from "../../../context/AuthContext";
 
@@ -42,13 +43,12 @@ const OtherProfile = () => {
   const [following, setFollowing] = useState(null);
   const [userProfilePic, setUserProfilePic] = useState(null);
   const [userData, setUserData] = useState<IUser | undefined>();
-  const { getUserProfilePhoto } = useContext(AuthContext);
   useEffect(() => {
     const GetUserProfile = async () => {
       const id2 = id[0];
       const content: IUser = await GetUserViaIdApi(id2);
 
-      const profilePic = await getUserProfilePhoto(true, content.id.toString());
+      const profilePic = await getUserProfilePhoto(true, content.id.toString()); // TODO FIX USER PROFILE PHOTO
       setUserProfilePic(profilePic);
 
       setUserData(content);

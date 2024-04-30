@@ -2,7 +2,7 @@ import { View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { AuthContext } from "../../context/AuthContext";
-import { GetUserViaIdApi } from "../../functions/Auth";
+import { GetUserViaIdApi, getUserProfilePhoto } from "../../functions/Auth";
 import { Storage } from "aws-amplify";
 
 import useSWR from "swr";
@@ -38,7 +38,6 @@ const ProfilePictureCard = ({
   passedPic = null,
   passBackSetter = null,
 }: IProfilePictureCardParams) => {
-  const { getUserProfilePhoto, isLoading } = useContext(AuthContext);
   const [userProfilePic, setUserProfilePic] = useState(null);
 
   useEffect(() => {
@@ -77,7 +76,7 @@ const ProfilePictureCard = ({
   }, []);
   return (
     <View className={` flex w-${width} aspect-square`}>
-      {userProfilePic !== null || !isLoading ? (
+      {userProfilePic !== null ? (
         <Image
           className=" flex-1 rounded-full"
           source={userProfilePic}

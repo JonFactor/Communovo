@@ -1,6 +1,6 @@
 import { View, Text, Modal } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, useAuth } from "../../../context/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
@@ -10,6 +10,7 @@ import {
   DeleteSelfUserApi,
   IUser,
   GetUserViaIdApi,
+  getUserProfilePhoto,
 } from "../../../functions/Auth";
 import { GetSelfFollowingApi } from "../../../functions/Auth";
 import ProfileEvents from "../../../components/Views/ProfileEvents";
@@ -68,8 +69,7 @@ import { fetchImageFromUri } from "../../../common/fetchImageFromUri";
 *-------------------------------------------------------------------*/
 
 const profile = () => {
-  const { logout, getUserInfo, getUserProfilePhoto, setUserProfilePhoto } =
-    useContext(AuthContext);
+  const { session, user } = useAuth();
 
   const [following, setFollowing] = useState(Array<IUser>);
   const [userProfilePic, setUserProfilePic] = useState(null);
@@ -83,16 +83,15 @@ const profile = () => {
   const [deleteAccountTxt, setDeleteAccountTxt] = useState("Delete Account");
 
   const loadUser = async () => {
-    const content: IUser = await getUserInfo();
 
-    setUserDesctiption(content.description);
-    setUserName(content.name);
-    setUserId(content.id);
+    setUserDesctiption(user.description);
+    setUserName(user.name);
+    setUserId(user.id);
 
     const profilePic = await getUserProfilePhoto(false, "");
     setUserProfilePic(profilePic);
 
-    const follows = await GetSelfFollowingApi(content.email);
+    const follows = await GetSelfFollowingApi(user.email);
 
     if (follows === null) {
     } else {
@@ -128,7 +127,7 @@ const profile = () => {
     });
     const response = await fetchImageFromUri(result.assets[0].uri);
     setUserProfilePic(response);
-    setUserProfilePhoto(result);
+    setUserProfilePic(result);
     oldVal = response;
   };
 
@@ -211,7 +210,7 @@ const profile = () => {
               <TouchableOpacity
                 className="  w-36 h-32 rounded-2xl flex items-center"
                 onPress={() => {
-                  logout(true);
+                  session.end()
                   setRedirectLogin(true);
                   Linker("/login");
                 }}

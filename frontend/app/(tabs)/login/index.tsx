@@ -2,12 +2,14 @@ import { View, Text, TextInput, Modal, Linking } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, useAuth } from "../../../context/AuthContext";
 import router from "../../../common/routerHook";
 import AccountRecovery from "../../../components/modals/AccountRecovery";
 import { Linker } from "../../../utils/Linker";
 import { Router } from "@react-navigation/native";
 import { useRouter } from "expo-router";
+import { LoginUserApi } from "../../../functions/Auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 /*------------------------------------------------ Login Page ------
 |
 |  Purpose:  
@@ -41,8 +43,7 @@ import { useRouter } from "expo-router";
 *-------------------------------------------------------------------*/
 
 const LoginPage = () => {
-  const { loginViaCookies, loginViaCredentials, getUserInfo } =
-    useContext(AuthContext);
+  const { user, session } = useAuth(); // TODO
 
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -88,11 +89,9 @@ const LoginPage = () => {
   const handleSignInclick = async () => {
     const isValid = validateUserEntry();
     if (!isValid) {
-      await loginViaCookies(null, true).then(
-        async (response) => await getUserInfo()
-      );
-      const responseOk = await getUserInfo();
-      if (responseOk) {
+      const response = await LoginUserApi("", "", true, await AsyncStorage.getItem("userToken"), true)
+      if (response) {
+        session.create(response)
         Linker("/home");
         return;
       }
@@ -101,16 +100,13 @@ const LoginPage = () => {
     const email = userEmail;
     const password = userPassword;
 
-    const response: Response = await loginViaCredentials(email, password);
+    const response = await LoginUserApi(email, password);
+    session.create(response)
 
     if (response === null) {
       setEmailError("Authoritization Failed, please try again");
       return;
     }
-
-    const cookie = response["jwt"];
-
-    loginViaCookies(cookie);
 
     Linker("/home");
   };

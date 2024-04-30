@@ -1,4 +1,7 @@
 import api from "./api";
+import { fetchImageFromUri } from "../common/fetchImageFromUri";
+import { Storage } from "aws-amplify";
+import { v4 as uuidv4 } from "uuid";
 
 export interface IUser {
   id: number;
@@ -73,7 +76,7 @@ export const LoginUserApi = async (
   email: string = "",
   password: string = "",
   useToken: boolean = false,
-  jwt: string = "123",
+  jwt: string = "",
   getJwt: boolean = false
 ) => {
   const requType = useToken ? "COOKIES" : "CREDENTIALS";
@@ -207,4 +210,78 @@ export const User2UserStatusChangeApi = async (
 ) => {
   const response = api.post("user2userStatusChange/", { userId, isFollow });
   return (await response).status === 200;
+};
+
+
+export const getUserProfilePhoto = async (
+  viaId: boolean = false,
+  userId: string = "0"
+): Promise<string> => {
+
+  // check from storage
+  let userPhotoUri;
+  // check from db
+  let userInfo;
+  if (viaId) {
+    userInfo = await GetUserViaIdApi(userId);
+  } else {
+    // userInfo = await getUserInfo(); TODO
+  }
+  if (userInfo === null) {
+    return null;
+  }
+
+  userPhotoUri = userInfo.profilePic;
+  if (userPhotoUri.includes("http:")) {
+    return userPhotoUri;
+  }
+  userPhotoUri = "profile/" + userPhotoUri;
+  const photo: string = await Storage.get(userPhotoUri);
+
+  return photo;
+};
+
+export const setUserProfilePhoto = async (image, userId: number = null) => {
+  const imageKey = uuidv4();
+
+  const imgPath = "profile/" + imageKey;
+
+  const img = await fetchImageFromUri(image["assets"][0]["uri"]);
+
+  await Storage.put(imgPath, img, {
+    level: "public",
+    contentType: img.type,
+  });
+
+  let oldUser;
+  if (userId === null) { }
+    // const userInfo: IUser = await getUserInfo(); TODO FIX
+  //   if (userInfo === null) {
+  //     return false;
+  //   }
+
+  //   oldUser = userInfo.profilePic;
+  //   userId = userInfo.id;
+
+  //   const responseOk = await UpdateUserProfilePicApi(
+  //     imageKey,
+  //     userId.toString()
+  //   );
+  //   return responseOk;
+  // }
+  // const userIdConvert: string = userId.toString();
+
+  // const responseSuccess = await UpdateUserProfilePicApi(
+  //   imgPath,
+  //   userIdConvert
+  // ).then((response) => {
+  //   if (response && oldUser !== null) {
+  //     // const removeSuccess = await Storage.remove(oldUser, {
+  //     //   level: "public",
+  //     // });
+  //   }
+  //   return response;
+  // });
+
+  // return responseSuccess;
 };
