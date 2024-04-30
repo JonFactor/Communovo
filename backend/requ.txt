@@ -24,7 +24,6 @@ h11==0.14.0
 idna==3.4
 jmespath==1.0.1
 multidict==6.0.5
-mysqlclient==2.2.0
 numpy==1.25.2
 opencv-python==4.8.0.74
 outcome==1.2.0

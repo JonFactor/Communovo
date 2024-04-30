@@ -84,8 +84,13 @@ export const LoginUserApi = async (
     ? { email, password, requType, jwt }
     : { email, password, requType };
   const response = api.post("login/", responseBody).catch((err) => {
+    console.log(err)
     return null;
   });
+
+  if (await response === null) {
+    return null;
+  }
 
   const returnVal =
     useToken && !getJwt ? await response : (await response).data;

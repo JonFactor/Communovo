@@ -101,13 +101,13 @@ const LoginPage = () => {
     const password = userPassword;
 
     const response = await LoginUserApi(email, password);
-    session.create(response)
 
     if (response === null) {
       setEmailError("Authoritization Failed, please try again");
       return;
     }
 
+    session.create(response)
     Linker("/home");
   };
 
