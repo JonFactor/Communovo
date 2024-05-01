@@ -5,8 +5,8 @@ import { ActivityIndicator, View } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
 import { Amplify } from "aws-amplify";
-import awsmobile from "../src/aws-exports.js";
-Amplify.configure(awsmobile);
+// import awsmobile from "../src/aws-exports.js";
+// Amplify.configure(awsmobile);
 
 /*------------------------------------------------ Start Page -------
 |
