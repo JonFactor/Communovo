@@ -8,9 +8,8 @@ import {
   GetUserViaIdApi,
 } from "../functions/Auth";
 
-import { v4 as uuidv4 } from "uuid";
-import { fetchImageFromUri } from "../common/fetchImageFromUri";
 import { useAsync } from '@react-hookz/web';
+import { Linker } from "../utils/Linker";
 
 /*------------------------------------------------- AUTH_CONTEXT -----
   |
@@ -127,7 +126,8 @@ export const AuthProvider = ({ children }) => {
   // create session
   const createSession = (token:string) => {
     profileActions.execute()
-    AsyncStorage.setItem("userToken", token)
+
+    AsyncStorage.setItem("userToken", token.toString())
     LoginUserApi("", "", true, token, false)
     return true
   }
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }) => {
   const endSession = () => {
     profileActions.reset()
     AsyncStorage.setItem("userToken", "")
-    LoginUserApi("", "", true, "", false)
+    Linker("/login")
     return true
   }
 

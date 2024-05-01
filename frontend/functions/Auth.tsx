@@ -2,6 +2,8 @@ import api from "./api";
 import { fetchImageFromUri } from "../common/fetchImageFromUri";
 import { Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
+import { AuthContext, useAuth } from "../context/AuthContext";
+import { useContext } from "react";
 
 export interface IUser {
   id: number;
@@ -15,6 +17,8 @@ export interface IUser {
   favColor: string;
   phoneNum?: string;
 }
+
+
 
 /*------------------------------------------------- Auth / User -----
   |
@@ -230,7 +234,7 @@ export const getUserProfilePhoto = async (
   if (viaId) {
     userInfo = await GetUserViaIdApi(userId);
   } else {
-    // userInfo = await getUserInfo(); TODO
+    userInfo = await GetUserDetailsApi();
   }
   if (userInfo === null) {
     return null;
@@ -246,7 +250,7 @@ export const getUserProfilePhoto = async (
   return photo;
 };
 
-export const setUserProfilePhoto = async (image, userId: number = null) => {
+const setUserProfilePhoto = async (image, userId: number = null) => {
   const imageKey = uuidv4();
 
   const imgPath = "profile/" + imageKey;
@@ -259,34 +263,34 @@ export const setUserProfilePhoto = async (image, userId: number = null) => {
   });
 
   let oldUser;
-  if (userId === null) { }
-    // const userInfo: IUser = await getUserInfo(); TODO FIX
-  //   if (userInfo === null) {
-  //     return false;
-  //   }
+  if (userId === null) {
+    const userInfo: IUser = await GetUserDetailsApi();
+    if (userInfo === null) {
+      return false;
+    }
 
-  //   oldUser = userInfo.profilePic;
-  //   userId = userInfo.id;
+    oldUser = userInfo.profilePic;
+    userId = userInfo.id;
 
-  //   const responseOk = await UpdateUserProfilePicApi(
-  //     imageKey,
-  //     userId.toString()
-  //   );
-  //   return responseOk;
-  // }
-  // const userIdConvert: string = userId.toString();
+    const responseOk = await UpdateUserProfilePicApi(
+      imageKey,
+      userId.toString()
+    );
+    return responseOk;
+  }
+  const userIdConvert: string = userId.toString();
 
-  // const responseSuccess = await UpdateUserProfilePicApi(
-  //   imgPath,
-  //   userIdConvert
-  // ).then((response) => {
-  //   if (response && oldUser !== null) {
-  //     // const removeSuccess = await Storage.remove(oldUser, {
-  //     //   level: "public",
-  //     // });
-  //   }
-  //   return response;
-  // });
+  const responseSuccess = await UpdateUserProfilePicApi(
+    imgPath,
+    userIdConvert
+  ).then((response) => {
+    if (response && oldUser !== null) {
+      // const removeSuccess = await Storage.remove(oldUser, {
+      //   level: "public",
+      // });
+    }
+    return response;
+  });
 
-  // return responseSuccess;
+  return responseSuccess;
 };

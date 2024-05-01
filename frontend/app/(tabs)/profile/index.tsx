@@ -20,6 +20,7 @@ import { Linker } from "../../../utils/Linker";
 import AppInfoModal from "../../../components/modals/AppInfoModal";
 import { LinearGradient } from "expo-linear-gradient";
 import { fetchImageFromUri } from "../../../common/fetchImageFromUri";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*------------------------------------------------ Self Profile Page -
 |
@@ -84,6 +85,7 @@ const profile = () => {
 
   const loadUser = async () => {
 
+
     setUserDesctiption(user.description);
     setUserName(user.name);
     setUserId(user.id);
@@ -103,7 +105,18 @@ const profile = () => {
   };
 
   useEffect(() => {
-    loadUser();
+
+    const checkIfUserCreated = async () => {
+      console.log(user + " 1 ")
+      if (user === null) {
+        session.create((await AsyncStorage.getItem("userToken")).toString())
+      }
+    }
+
+    checkIfUserCreated().then(() => {
+      loadUser();
+    })
+
   }, []);
 
   let oldVal;

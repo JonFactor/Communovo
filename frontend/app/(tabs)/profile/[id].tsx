@@ -48,7 +48,7 @@ const OtherProfile = () => {
       const id2 = id[0];
       const content: IUser = await GetUserViaIdApi(id2);
 
-      const profilePic = await getUserProfilePhoto(true, content.id.toString()); // TODO FIX USER PROFILE PHOTO
+      const profilePic = await getUserProfilePhoto(true, content.id.toString()); 
       setUserProfilePic(profilePic);
 
       setUserData(content);

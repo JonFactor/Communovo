@@ -43,7 +43,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 *-------------------------------------------------------------------*/
 
 const LoginPage = () => {
-  const { user, session } = useAuth(); // TODO
+  const { user, session } = useAuth();
 
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -85,13 +85,12 @@ const LoginPage = () => {
 
   useEffect(() => {}, [displayPassword]);
 
-  const router = useRouter();
   const handleSignInclick = async () => {
     const isValid = validateUserEntry();
     if (!isValid) {
       const response = await LoginUserApi("", "", true, await AsyncStorage.getItem("userToken"), true)
       if (response) {
-        session.create(response)
+        session.create(response['jwt'])
         Linker("/home");
         return;
       }
@@ -100,14 +99,14 @@ const LoginPage = () => {
     const email = userEmail;
     const password = userPassword;
 
-    const response = await LoginUserApi(email, password);
+    const response = await LoginUserApi(email, password, false, "", true);
 
     if (response === null) {
       setEmailError("Authoritization Failed, please try again");
       return;
     }
 
-    session.create(response)
+    session.create(response["jwt"])
     Linker("/home");
   };
 
